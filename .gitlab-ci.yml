@@ -1,0 +1,28 @@
+Clang (Release):
+  script:
+  - "sudo chown -R `whoami`: ."
+  - git submodule update --init
+  - ls -la
+  - export CC=clang
+  - export CXX=clang++
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
+  - make
+  - ctest
+  tags:
+  - docker
+GCC (Release):
+  script:
+  - "sudo chown -R `whoami`: ."
+  - git submodule update --init
+  - ls -la
+  - export CC=gcc
+  - export CXX=g++
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
+  - make
+  - ctest
+  tags:
+  - docker
