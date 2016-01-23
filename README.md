@@ -1,0 +1,1 @@
+carrot is a C++ library for rendering expressive diagnostic messages.
