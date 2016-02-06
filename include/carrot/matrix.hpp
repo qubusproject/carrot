@@ -13,7 +13,7 @@ public:
     virtual void set(long int row, long int column, char value) = 0;
 };
 
-class simple_matrix : public matrix
+class simple_matrix final : public matrix
 {
 public:
     simple_matrix(long int rows_ = 0, long int columns_ = 0);

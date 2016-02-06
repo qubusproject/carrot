@@ -9,7 +9,7 @@
 namespace carrot
 {
 
-class text_block : public block
+class text_block final : public block
 {
 public:
     explicit text_block(const std::string& content_);

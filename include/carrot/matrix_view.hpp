@@ -6,7 +6,7 @@
 namespace carrot
 {
 
-class matrix_view : public matrix
+class matrix_view final : public matrix
 {
 public:
     matrix_view(matrix& mat_, long int row_offset_, long int column_offset_);

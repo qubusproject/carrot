@@ -8,7 +8,7 @@
 namespace carrot
 {
 
-class underline_block : public block
+class underline_block final : public block
 {
 public:
     explicit underline_block(std::shared_ptr<block> underlined_element_);

@@ -9,7 +9,7 @@
 namespace carrot
 {
 
-class irregular_grid_block : public block
+class irregular_grid_block final : public block
 {
 public:
     class row

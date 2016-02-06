@@ -8,7 +8,7 @@
 namespace carrot
 {
 
-class frame_block : public block
+class frame_block final : public block
 {
 public:
     explicit frame_block(std::shared_ptr<block> framed_block_, long int margin_ = 1);

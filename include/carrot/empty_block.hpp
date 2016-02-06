@@ -6,7 +6,7 @@
 namespace carrot
 {
 
-class empty_block : public block
+class empty_block final : public block
 {
 public:
     void render(matrix& mat) const override;

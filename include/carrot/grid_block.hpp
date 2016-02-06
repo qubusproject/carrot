@@ -12,7 +12,7 @@
 namespace carrot
 {
 
-class grid_block : public block
+class grid_block final : public block
 {
 public:
     grid_block(long int rows_, long int columns_);
