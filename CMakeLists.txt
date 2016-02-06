@@ -41,5 +41,6 @@ include(GenerateExportHeader)
 include(FeatureSummary)
 
 add_subdirectory(src)
+add_subdirectory(tests)
 
 feature_summary(WHAT ALL)
