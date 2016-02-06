@@ -25,6 +25,8 @@ public:
         std::vector<std::shared_ptr<block>> elements_;
     };
 
+    virtual ~irregular_grid_block() = default;
+
     void add_to_row(long int row, std::shared_ptr<block> element);
 
     void render(matrix& mat) const override;

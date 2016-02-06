@@ -9,7 +9,15 @@ namespace carrot
 class matrix
 {
 public:
+    matrix() = default;
     virtual ~matrix() = default;
+
+    matrix(const matrix&) = delete;
+    matrix& operator=(const matrix&) = delete;
+
+    matrix(matrix&&) = delete;
+    matrix& operator=(matrix&&) = delete;
+
     virtual void set(long int row, long int column, char value) = 0;
 };
 

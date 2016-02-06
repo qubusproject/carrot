@@ -12,6 +12,7 @@ class underline_block final : public block
 {
 public:
     explicit underline_block(std::shared_ptr<block> underlined_element_);
+    virtual ~underline_block() = default;
 
     void render(matrix& mat) const override;
 

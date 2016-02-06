@@ -13,6 +13,7 @@ class text_block final : public block
 {
 public:
     explicit text_block(const std::string& content_);
+    virtual ~text_block() = default;
 
     void render(matrix& mat) const override;
 

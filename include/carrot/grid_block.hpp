@@ -16,6 +16,7 @@ class grid_block final : public block
 {
 public:
     grid_block(long int rows_, long int columns_);
+    virtual ~grid_block() = default;
 
     void set(long int row, long int column, std::shared_ptr<block> block);
 

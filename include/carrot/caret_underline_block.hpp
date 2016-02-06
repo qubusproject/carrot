@@ -12,6 +12,7 @@ class caret_underline_block final : public block
 {
 public:
     explicit caret_underline_block(std::shared_ptr<block> underlined_element_, long int pos_);
+    virtual ~caret_underline_block() = default;
 
     void render(matrix& mat) const override;
 

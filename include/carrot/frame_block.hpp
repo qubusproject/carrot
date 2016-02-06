@@ -12,6 +12,7 @@ class frame_block final : public block
 {
 public:
     explicit frame_block(std::shared_ptr<block> framed_block_, long int margin_ = 1);
+    virtual ~frame_block() = default;
 
     void render(matrix& mat) const override;
 
