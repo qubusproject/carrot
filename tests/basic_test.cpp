@@ -18,7 +18,7 @@ int main()
     g.add_to_row(0, std::make_shared<frame_block>(txt));
     g.add_to_row(0, std::make_shared<caret_underline_block>(txt, 4));
 
-    g.add_to_row(1, std::make_shared<frame_block>(txt2));
+    g.add_to_row(1, std::make_shared<indent_block>(std::make_shared<frame_block>(txt2), 4));
 
     g.render(mat);
 

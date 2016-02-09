@@ -8,6 +8,7 @@
 #include <carrot/underline_block.hpp>
 #include <carrot/caret_underline_block.hpp>
 #include <carrot/empty_block.hpp>
+#include <carrot/indent_block.hpp>
 
 #include <carrot/block.hpp>
 
