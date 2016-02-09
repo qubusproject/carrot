@@ -33,6 +33,9 @@ struct style_flags
     formatting_flag formatting;
 };
 
+bool operator==(const style_flags& lhs, const style_flags& rhs);
+bool operator!=(const style_flags& lhs, const style_flags& rhs);
+
 style_flags make_style(color_flag color, formatting_flag formatting);
 
 }

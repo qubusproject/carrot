@@ -3,6 +3,8 @@
 
 #include <carrot/block.hpp>
 
+#include <carrot/style_flags.hpp>
+
 #include <vector>
 #include <string>
 
@@ -13,6 +15,7 @@ class text_block final : public block
 {
 public:
     explicit text_block(const std::string& content_);
+    text_block(const std::string& content_, style_flags style_);
     virtual ~text_block() = default;
 
     void render(form & mat) const override;
@@ -21,6 +24,7 @@ public:
 
 private:
     std::vector<std::string> rows_;
+    style_flags style_;
 };
 }
 
