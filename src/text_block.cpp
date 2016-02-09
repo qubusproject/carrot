@@ -16,13 +16,19 @@ text_block::text_block(const std::string& content_)
     boost::split(rows_, content_, boost::is_any_of("\n"));
 }
 
-void text_block::render(matrix& mat) const
+text_block::text_block(const std::string& content_, style_flags style_)
+: style_(style_)
+{
+    boost::split(rows_, content_, boost::is_any_of("\n"));
+}
+
+void text_block::render(form & mat) const
 {
     for (long int row = 0; row < rows_.size(); ++row)
     {
         for (long int column = 0; column < rows_[row].size(); ++column)
         {
-            mat.set(row, column, rows_[row][column]);
+            mat.set(row, column, glyph(rows_[row][column], style_));
         }
     }
 }

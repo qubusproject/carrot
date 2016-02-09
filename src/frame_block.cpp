@@ -1,6 +1,6 @@
 #include <carrot/frame_block.hpp>
 
-#include <carrot/matrix_view.hpp>
+#include <carrot/form_view.hpp>
 
 namespace carrot
 {
@@ -10,7 +10,7 @@ frame_block::frame_block(std::shared_ptr<block> framed_block_, long int margin_)
 {
 }
 
-void frame_block::render(matrix& mat) const
+void frame_block::render(form & mat) const
 {
     auto extent = framed_block_->extent();
 
@@ -26,7 +26,7 @@ void frame_block::render(matrix& mat) const
         mat.set(i, extent[1] + 2 * margin_ + 1, '|');
     }
 
-    matrix_view view(mat, 1 + margin_, 1 + margin_);
+    form_view view(mat, 1 + margin_, 1 + margin_);
 
     framed_block_->render(view);
 }

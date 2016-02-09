@@ -1,7 +1,7 @@
 #ifndef CARROT_BLOCK_HPP
 #define CARROT_BLOCK_HPP
 
-#include <carrot/matrix.hpp>
+#include <carrot/form.hpp>
 
 #include <array>
 
@@ -20,7 +20,7 @@ public:
     block(block&&) = delete;
     block& operator=(block&&) = delete;
 
-    virtual void render(matrix& mat) const = 0;
+    virtual void render(form & mat) const = 0;
     virtual std::array<long int, 2> extent() const = 0;
 };
 }

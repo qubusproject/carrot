@@ -2,7 +2,7 @@
 
 #include <carrot/empty_block.hpp>
 
-#include <carrot/matrix_view.hpp>
+#include <carrot/form_view.hpp>
 
 #include <algorithm>
 
@@ -25,7 +25,7 @@ void grid_block::set(long int row, long int column, std::shared_ptr<block> block
     blocks_[row][column] = block;
 }
 
-void grid_block::render(matrix& mat) const
+void grid_block::render(form & mat) const
 {
     std::vector<long int> row_heights;
     std::vector<long int> column_widths;
@@ -40,7 +40,7 @@ void grid_block::render(matrix& mat) const
 
         for (long int column = 0; column < blocks_.shape()[1]; ++column)
         {
-            matrix_view view(mat, row_offset, column_offset);
+            form_view view(mat, row_offset, column_offset);
 
             blocks_[row][column]->render(view);
 

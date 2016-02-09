@@ -15,7 +15,7 @@ public:
     class row
     {
     public:
-        void render(matrix& mat) const;
+        void render(form & mat) const;
 
         std::array<long int, 2> extent() const;
 
@@ -29,7 +29,7 @@ public:
 
     void add_to_row(long int row, std::shared_ptr<block> element);
 
-    void render(matrix& mat) const override;
+    void render(form & mat) const override;
 
     std::array<long int, 2> extent() const override;
 

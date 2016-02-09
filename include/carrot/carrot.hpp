@@ -11,7 +11,11 @@
 
 #include <carrot/block.hpp>
 
-#include <carrot/matrix.hpp>
-#include <carrot/matrix_view.hpp>
+#include <carrot/form.hpp>
+#include <carrot/form_view.hpp>
+#include <carrot/glyph.hpp>
+#include <carrot/style_flags.hpp>
+
+#include <carrot/target_info.hpp>
 
 #endif

@@ -9,7 +9,7 @@ caret_underline_block::caret_underline_block(std::shared_ptr<block> underlined_e
 {
 }
 
-void caret_underline_block::render(matrix& mat) const
+void caret_underline_block::render(form & mat) const
 {
     auto extent = underlined_element_->extent();
 

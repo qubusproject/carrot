@@ -14,7 +14,7 @@ public:
     explicit frame_block(std::shared_ptr<block> framed_block_, long int margin_ = 1);
     virtual ~frame_block() = default;
 
-    void render(matrix& mat) const override;
+    void render(form & mat) const override;
 
     std::array<long int, 2> extent() const override;
 
