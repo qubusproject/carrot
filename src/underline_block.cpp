@@ -8,7 +8,7 @@ underline_block::underline_block(std::shared_ptr<block> underlined_element_)
 {
 }
 
-void underline_block::render(matrix& mat) const
+void underline_block::render(form & mat) const
 {
     auto extent = underlined_element_->extent();
 

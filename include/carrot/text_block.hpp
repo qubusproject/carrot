@@ -15,7 +15,7 @@ public:
     explicit text_block(const std::string& content_);
     virtual ~text_block() = default;
 
-    void render(matrix& mat) const override;
+    void render(form & mat) const override;
 
     std::array<long int, 2> extent() const override;
 

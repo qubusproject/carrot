@@ -1,5 +1,5 @@
-#ifndef CARROT_MATRIX_HPP
-#define CARROT_MATRIX_HPP
+#ifndef CARROT_FORM_HPP
+#define CARROT_FORM_HPP
 
 #include <carrot/glyph.hpp>
 
@@ -8,26 +8,26 @@
 namespace carrot
 {
 
-class matrix
+class form
 {
 public:
-    matrix() = default;
-    virtual ~matrix() = default;
+    form() = default;
+    virtual ~form() = default;
 
-    matrix(const matrix&) = delete;
-    matrix& operator=(const matrix&) = delete;
+    form(const form &) = delete;
+    form & operator=(const form &) = delete;
 
-    matrix(matrix&&) = delete;
-    matrix& operator=(matrix&&) = delete;
+    form(form &&) = delete;
+    form & operator=(form &&) = delete;
 
     virtual void set(long int row, long int column, glyph value) = 0;
 };
 
-class simple_matrix final : public matrix
+class simple_form final : public form
 {
 public:
-    simple_matrix(long int rows_ = 0, long int columns_ = 0);
-    virtual ~simple_matrix() = default;
+    simple_form(long int rows_ = 0, long int columns_ = 0);
+    virtual ~simple_form() = default;
 
     void set(long int row, long int column, glyph value) override;
 

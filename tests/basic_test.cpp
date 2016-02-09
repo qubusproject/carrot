@@ -6,7 +6,7 @@ int main()
 {
     using namespace carrot;
 
-    simple_matrix mat;
+    simple_form mat;
 
     irregular_grid_block g;
 

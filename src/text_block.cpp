@@ -16,7 +16,7 @@ text_block::text_block(const std::string& content_)
     boost::split(rows_, content_, boost::is_any_of("\n"));
 }
 
-void text_block::render(matrix& mat) const
+void text_block::render(form & mat) const
 {
     for (long int row = 0; row < rows_.size(); ++row)
     {

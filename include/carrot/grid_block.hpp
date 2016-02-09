@@ -20,7 +20,7 @@ public:
 
     void set(long int row, long int column, std::shared_ptr<block> block);
 
-    void render(matrix& mat) const override;
+    void render(form & mat) const override;
 
     std::array<long int, 2> extent() const override;
 

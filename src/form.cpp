@@ -1,21 +1,21 @@
-#include <carrot/matrix.hpp>
+#include <carrot/form.hpp>
 
 namespace carrot
 {
-simple_matrix::simple_matrix(long int rows_, long int columns_)
+simple_form::simple_form(long int rows_, long int columns_)
 : data_(boost::extents[rows_][columns_])
 {
     clear();
 }
 
-void simple_matrix::set(long int row, long int column, glyph value)
+void simple_form::set(long int row, long int column, glyph value)
 {
     resize_if_outside_matrix(row, column);
 
     data_[row][column] = value;
 }
 
-std::string simple_matrix::to_string() const
+std::string simple_form::to_string() const
 {
     std::string result;
     result.reserve(data_.size());
@@ -32,7 +32,7 @@ std::string simple_matrix::to_string() const
     return result;
 }
 
-void simple_matrix::clear()
+void simple_form::clear()
 {
     for (long int row = 0; row < data_.shape()[0]; ++row)
     {
@@ -43,7 +43,7 @@ void simple_matrix::clear()
     }
 }
 
-void simple_matrix::resize_if_outside_matrix(long int row, long int column)
+void simple_form::resize_if_outside_matrix(long int row, long int column)
 {
     if (row >= data_.shape()[0] || column >= data_.shape()[1])
     {

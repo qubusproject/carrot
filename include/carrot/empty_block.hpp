@@ -11,7 +11,7 @@ class empty_block final : public block
 public:
     virtual ~empty_block() = default;
 
-    void render(matrix& mat) const override;
+    void render(form & mat) const override;
     std::array<long int, 2> extent() const override;
 };
 }

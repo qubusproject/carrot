@@ -14,7 +14,7 @@ public:
     explicit underline_block(std::shared_ptr<block> underlined_element_);
     virtual ~underline_block() = default;
 
-    void render(matrix& mat) const override;
+    void render(form & mat) const override;
 
     std::array<long int, 2> extent() const override;
 

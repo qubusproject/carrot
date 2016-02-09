@@ -3,7 +3,7 @@
 namespace carrot
 {
 
-void empty_block::render(matrix& mat) const
+void empty_block::render(form & mat) const
 {
 }
 
