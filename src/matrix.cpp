@@ -8,7 +8,7 @@ simple_matrix::simple_matrix(long int rows_, long int columns_)
     clear();
 }
 
-void simple_matrix::set(long int row, long int column, char value)
+void simple_matrix::set(long int row, long int column, glyph value)
 {
     resize_if_outside_matrix(row, column);
 
@@ -24,7 +24,7 @@ std::string simple_matrix::to_string() const
     {
         for (long int column = 0; column < data_.shape()[1]; ++column)
         {
-            result += data_[row][column];
+            result += data_[row][column].content;
         }
         result += '\n';
     }
@@ -47,7 +47,7 @@ void simple_matrix::resize_if_outside_matrix(long int row, long int column)
 {
     if (row >= data_.shape()[0] || column >= data_.shape()[1])
     {
-        boost::multi_array<char, 2> old_data = data_;
+        boost::multi_array<glyph, 2> old_data = data_;
 
         if (row >= data_.shape()[0] && column >= data_.shape()[1])
         {
