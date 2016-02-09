@@ -12,6 +12,8 @@
 #include <carrot/block.hpp>
 
 #include <carrot/form.hpp>
-#include "form_view.hpp"
+#include <carrot/form_view.hpp>
+
+#include <carrot/target_info.hpp>
 
 #endif

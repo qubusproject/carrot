@@ -1,5 +1,7 @@
 find_package(Boost 1.58.0 REQUIRED)
 
+find_package(Curses)
+
 set(INCLUDE_FILES irregular_grid_block.hpp form.hpp frame_block.hpp form_view.hpp text_block.hpp grid_block.hpp
         underline_block.hpp caret_underline_block.hpp block.hpp carrot.hpp empty_block.hpp target_info.hpp
         style_flags.hpp glyph.hpp)
@@ -15,6 +17,12 @@ target_compile_features(carrot PUBLIC cxx_final cxx_override cxx_auto_type cxx_r
         cxx_generic_lambdas cxx_return_type_deduction)
 target_include_directories(carrot PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include> ${Boost_INCLUDE_DIRS})
 target_link_libraries(carrot PUBLIC ${Boost_LIBRARIES})
+
+if (CURSES_FOUND)
+    target_include_directories(carrot PUBLIC ${CURSES_INCLUDE_DIR})
+    target_link_libraries(carrot PUBLIC ${CURSES_LIBRARIES})
+    target_compile_definitions(carrot PRIVATE -DHAVE_TERMINFO)
+endif()
 
 generate_export_header(carrot)
 

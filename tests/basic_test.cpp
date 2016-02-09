@@ -6,6 +6,8 @@ int main()
 {
     using namespace carrot;
 
+    auto target= get_stdout_target();
+
     simple_form mat;
 
     irregular_grid_block g;
@@ -20,5 +22,5 @@ int main()
 
     g.render(mat);
 
-    std::cout << mat.to_string() << std::endl;
+    std::cout << mat.to_string(target) << std::endl;
 }

@@ -3,6 +3,8 @@
 
 #include <carrot/glyph.hpp>
 
+#include <carrot/target_info.hpp>
+
 #include <boost/multi_array.hpp>
 
 namespace carrot
@@ -31,7 +33,7 @@ public:
 
     void set(long int row, long int column, glyph value) override;
 
-    std::string to_string() const;
+    std::string to_string(const target_info& target) const;
 
     void clear();
 private:
