@@ -13,6 +13,8 @@
 
 #include <carrot/form.hpp>
 #include <carrot/form_view.hpp>
+#include <carrot/glyph.hpp>
+#include <carrot/style_flags.hpp>
 
 #include <carrot/target_info.hpp>
 
