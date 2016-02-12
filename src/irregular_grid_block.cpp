@@ -78,4 +78,9 @@ std::array<long int, 2> irregular_grid_block::extent() const
 
     return result;
 }
+
+std::shared_ptr<block> make_irregular_grid()
+{
+    return std::make_shared<irregular_grid_block>();
+}
 }

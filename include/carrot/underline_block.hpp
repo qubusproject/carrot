@@ -21,6 +21,8 @@ public:
 private:
     std::shared_ptr<block> underlined_element_;
 };
+
+std::shared_ptr<block> underline(std::shared_ptr<block> underlined_element);
 }
 
 #endif

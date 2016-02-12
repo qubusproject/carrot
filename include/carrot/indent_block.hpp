@@ -22,6 +22,8 @@ private:
     long int indent_;
 };
 
+std::shared_ptr<block> indent(std::shared_ptr<block> indented_block, long int indent);
+
 }
 
 #endif

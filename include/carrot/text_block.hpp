@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 
 namespace carrot
 {
@@ -26,6 +27,10 @@ private:
     std::vector<std::string> rows_;
     style_flags style_;
 };
+
+std::shared_ptr<block> text(const std::string& content);
+std::shared_ptr<block> text(const std::string& content, style_flags style);
+
 }
 
 #endif

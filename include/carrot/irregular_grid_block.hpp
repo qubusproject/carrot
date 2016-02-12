@@ -36,6 +36,8 @@ public:
 private:
     std::vector<row> rows_;
 };
+
+std::shared_ptr<block> make_irregular_grid();
 }
 
 #endif

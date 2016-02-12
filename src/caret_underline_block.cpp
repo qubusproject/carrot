@@ -1,5 +1,7 @@
 #include <carrot/caret_underline_block.hpp>
 
+#include <utility>
+
 namespace carrot
 {
 
@@ -34,4 +36,10 @@ std::array<long int, 2> caret_underline_block::extent() const
 
     return std::array<long int, 2>{extent[0] + 1, extent[1]};
 }
+
+std::shared_ptr<block> underline_with_caret(std::shared_ptr<block> underlined_block, long int caret_position)
+{
+    return std::make_shared<caret_underline_block>(std::move(underlined_block), caret_position);
+}
+
 }

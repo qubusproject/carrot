@@ -22,6 +22,9 @@ private:
     std::shared_ptr<block> framed_block_;
     long int margin_;
 };
+
+std::shared_ptr<block> frame(std::shared_ptr<block> framed_block, long int margin = 1);
+
 }
 
 #endif

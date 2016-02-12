@@ -69,4 +69,9 @@ std::array<long int, 2> line_block::extent() const
 
     return result;
 }
+
+std::shared_ptr<block> make_line(growth_direction direction)
+{
+    return std::make_shared<line_block>(direction);
+}
 }

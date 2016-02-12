@@ -2,6 +2,8 @@
 
 #include <carrot/form_view.hpp>
 
+#include <utility>
+
 namespace carrot
 {
 
@@ -24,6 +26,11 @@ std::array<long int, 2> indent_block::extent() const
     auto extent = indented_block_->extent();
 
     return std::array<long int, 2>{extent[0], extent[1] + indent_};
+}
+
+std::shared_ptr<block> indent(std::shared_ptr<block> indented_block, long int indent)
+{
+    return std::make_shared<indent_block>(std::move(indented_block), indent);
 }
 
 }

@@ -15,7 +15,7 @@ grid_block::grid_block(long int rows, long int columns) : blocks_(boost::extents
     {
         for (long int column = 0; column < blocks_.shape()[1]; ++column)
         {
-            blocks_[row][column] = std::make_shared<empty_block>();
+            blocks_[row][column] = make_empty();
         }
     }
 }
@@ -83,5 +83,10 @@ std::tuple<std::vector<long int>, std::vector<long int>> grid_block::compute_lay
     }
 
     return std::make_tuple(row_heights, column_widths);
+}
+
+std::shared_ptr<block> make_grid(long int rows, long int columns)
+{
+    return std::make_shared<grid_block>(rows, columns);
 }
 }

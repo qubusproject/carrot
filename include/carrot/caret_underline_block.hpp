@@ -14,7 +14,7 @@ public:
     explicit caret_underline_block(std::shared_ptr<block> underlined_element_, long int pos_);
     virtual ~caret_underline_block() = default;
 
-    void render(form & mat) const override;
+    void render(form& mat) const override;
 
     std::array<long int, 2> extent() const override;
 
@@ -22,6 +22,9 @@ private:
     std::shared_ptr<block> underlined_element_;
     long int pos_;
 };
+
+std::shared_ptr<block> underline_with_caret(std::shared_ptr<block> underlined_block,
+                                            long int caret_position);
 }
 
 #endif

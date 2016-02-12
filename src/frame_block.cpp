@@ -2,6 +2,8 @@
 
 #include <carrot/form_view.hpp>
 
+#include <utility>
+
 namespace carrot
 {
 
@@ -37,4 +39,10 @@ std::array<long int, 2> frame_block::extent() const
 
     return std::array<long int, 2>{extent[0] + 2 * margin_ + 2, extent[1] + 2 * margin_ + 2};
 }
+
+std::shared_ptr<block> frame(std::shared_ptr<block> framed_block, long int margin)
+{
+    return std::make_shared<frame_block>(std::move(framed_block), margin);
+}
+
 }

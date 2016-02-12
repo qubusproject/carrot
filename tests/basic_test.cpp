@@ -6,19 +6,19 @@ int main()
 {
     using namespace carrot;
 
-    auto target= get_stdout_target();
+    auto target = get_stdout_target();
 
     simple_form mat;
 
     irregular_grid_block g;
 
-    auto txt = std::make_shared<text_block>("Test\n Test\n  Test");
-    auto txt2 = std::make_shared<text_block>("Test\n Test\n  Test", make_style(color_flag::green, formatting_flag::plain));
+    auto txt = text("Test\n Test\n  Test");
+    auto txt2 = text("Test\n Test\n  Test", make_style(color_flag::green, formatting_flag::plain));
 
-    g.add_to_row(0, std::make_shared<frame_block>(txt));
-    g.add_to_row(0, std::make_shared<caret_underline_block>(txt, 4));
+    g.add_to_row(0, frame(txt));
+    g.add_to_row(0, underline_with_caret(txt, 4));
 
-    g.add_to_row(1, std::make_shared<indent_block>(std::make_shared<frame_block>(txt2), 4));
+    g.add_to_row(1, indent(frame(txt2), 4));
 
     g.render(mat);
 

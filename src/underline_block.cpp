@@ -1,5 +1,7 @@
 #include <carrot/underline_block.hpp>
 
+#include <utility>
+
 namespace carrot
 {
 
@@ -25,5 +27,10 @@ std::array<long int, 2> underline_block::extent() const
     auto extent = underlined_element_->extent();
 
     return std::array<long int, 2>{extent[0] + 1, extent[1]};
+}
+
+std::shared_ptr<block> underline(std::shared_ptr<block> underlined_element)
+{
+    return std::make_shared<underline_block>(std::move(underlined_element));
 }
 }

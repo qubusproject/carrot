@@ -30,6 +30,8 @@ private:
     std::vector<std::shared_ptr<block>> blocks_;
 };
 
+std::shared_ptr<block> make_line(growth_direction direction);
+
 }
 
 #endif
