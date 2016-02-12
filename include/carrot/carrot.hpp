@@ -11,6 +11,7 @@
 #include <carrot/indent_block.hpp>
 #include <carrot/line_block.hpp>
 #include <carrot/list_block.hpp>
+#include <carrot/progress_bar_block.hpp>
 
 #include <carrot/block.hpp>
 
