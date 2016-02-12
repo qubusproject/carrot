@@ -4,6 +4,21 @@ project(carrot)
 
 set(CARROT_VERSION 0.1.0)
 
+SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "An expressive diagnostic rendering library.")
+SET(CPACK_PACKAGE_VENDOR "Christopher Hinz")
+SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
+SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+set(CPACK_PACKAGE_VERSION_MAJOR "0")
+set(CPACK_PACKAGE_VERSION_MINOR "1")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+
+set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}-src")
+set(CPACK_SOURCE_IGNORE_FILES "${CMAKE_CURRENT_BINARY_DIR}/;/.git/;/.kdev4/;echelon.kdev4;~$;${CPACK_SOURCE_IGNORE_FILES}")
+
+include(CPack)
+
+add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
+
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
     message(FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there. You may need to remove CMakeCache.txt.")
 endif()
