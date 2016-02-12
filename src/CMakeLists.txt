@@ -33,7 +33,7 @@ set_property(TARGET carrot PROPERTY INTERFACE_carrot_MINOR_VERSION 1)
 set_property(TARGET carrot APPEND PROPERTY COMPATIBLE_INTERFACE_STRING carrot_MAJOR_VERSION)
 set_property(TARGET carrot APPEND PROPERTY COMPATIBLE_INTERFACE_STRING carrot_MINOR_VERSION)
 
-install(DIRECTORY ../include DESTINATION include/carrot
+install(DIRECTORY ../include DESTINATION .
         FILES_MATCHING PATTERN "*.hpp")
 
 install(TARGETS carrot EXPORT carrot-targets
