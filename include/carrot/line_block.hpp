@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <vector>
+#include <utility>
 
 namespace carrot
 {
@@ -31,6 +32,17 @@ private:
 };
 
 std::shared_ptr<block> make_line(growth_direction direction);
+
+template<typename... Blocks>
+std::shared_ptr<block> connect(Blocks... blocks)
+{
+    auto line = std::make_shared<line_block>(growth_direction::right);
+
+    auto dummy = {(line->add(std::move(blocks)), 0)...};
+    (void)dummy;
+
+    return line;
+}
 
 }
 
