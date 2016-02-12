@@ -16,7 +16,7 @@ enum class growth_direction
     right
 };
 
-class line_block : public block
+class line_block final : public block
 {
 public:
     explicit line_block(growth_direction direction_);

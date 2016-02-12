@@ -8,7 +8,7 @@
 namespace carrot
 {
 
-class indent_block : public block
+class indent_block final : public block
 {
 public:
     indent_block(std::shared_ptr<block> indented_block_, long int indent_);

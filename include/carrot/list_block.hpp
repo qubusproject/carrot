@@ -10,7 +10,7 @@
 namespace carrot
 {
 
-class list_block : public block
+class list_block final : public block
 {
 public:
     list_block();
