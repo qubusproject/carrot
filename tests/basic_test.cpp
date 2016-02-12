@@ -20,6 +20,11 @@ int main()
 
     g.add_to_row(1, indent(frame(txt2), 4));
 
+    auto list = std::make_shared<list_block>();
+    list->add(text("Hello"));
+    list->add(text("world!"));
+    g.add_to_row(1, list);
+
     g.render(mat);
 
     std::cout << mat.to_string(target) << std::endl;

@@ -14,6 +14,8 @@ line_block::line_block(growth_direction direction_) : direction_(direction_)
 line_block& line_block::add(std::shared_ptr<block> b)
 {
     blocks_.push_back(b);
+
+    return *this;
 }
 
 void line_block::render(form& mat) const

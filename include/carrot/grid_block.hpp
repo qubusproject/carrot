@@ -20,6 +20,15 @@ public:
 
     void set(long int row, long int column, std::shared_ptr<block> block);
 
+    void append_rows(long int n);
+    void append_columns(long int n);
+
+    void append_row();
+    void append_column();
+
+    long int rows() const;
+    long int cols() const;
+
     void render(form & mat) const override;
 
     std::array<long int, 2> extent() const override;
