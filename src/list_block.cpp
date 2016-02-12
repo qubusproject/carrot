@@ -28,4 +28,9 @@ std::array<long int, 2> list_block::extent() const
 {
     return grid_->extent();
 }
+
+std::shared_ptr<block> make_list()
+{
+    return std::make_shared<list_block>();
+}
 }

@@ -25,6 +25,8 @@ private:
     std::shared_ptr<grid_block> grid_;
 };
 
+std::shared_ptr<block> make_list();
+
 }
 
 #endif
