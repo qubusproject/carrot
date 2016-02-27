@@ -39,7 +39,7 @@ private:
     boost::multi_array<std::shared_ptr<block>, 2> blocks_;
 };
 
-std::shared_ptr<block> make_grid(long int rows, long int columns);
+std::shared_ptr<grid_block> make_grid(long int rows, long int columns);
 }
 
 #endif
