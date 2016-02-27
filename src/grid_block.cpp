@@ -115,7 +115,7 @@ std::tuple<std::vector<long int>, std::vector<long int>> grid_block::compute_lay
     return std::make_tuple(row_heights, column_widths);
 }
 
-std::shared_ptr<block> make_grid(long int rows, long int columns)
+std::shared_ptr<grid_block> make_grid(long int rows, long int columns)
 {
     return std::make_shared<grid_block>(rows, columns);
 }

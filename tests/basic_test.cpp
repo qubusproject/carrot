@@ -25,6 +25,13 @@ int main()
     list->add(text("world!"));
     g.add_to_row(1, list);
 
+    auto task_list = make_checkbox_list(make_style(color_flag::green, formatting_flag::plain));
+
+    task_list->add(true, text("Task1"));
+    task_list->add(false, text("Task2"));
+
+    g.add_to_row(2, task_list);
+
     g.render(mat);
 
     std::cout << mat.to_string(target) << std::endl;
