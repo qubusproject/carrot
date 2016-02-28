@@ -20,9 +20,9 @@ grid_block::grid_block(long int rows, long int columns) : blocks_(boost::extents
     }
 }
 
-void grid_block::set(long int row, long int column, std::shared_ptr<block> block)
+void grid_block::set(long int row, long int column, block b)
 {
-    blocks_[row][column] = block;
+    blocks_[row][column] = b;
 }
 
 void grid_block::append_rows(long int n)
@@ -72,7 +72,7 @@ void grid_block::render(form & mat) const
         {
             form_view view(mat, row_offset, column_offset);
 
-            blocks_[row][column]->render(view);
+            blocks_[row][column].render(view);
 
             column_offset += column_widths[column];
         }
@@ -105,7 +105,7 @@ std::tuple<std::vector<long int>, std::vector<long int>> grid_block::compute_lay
     {
         for (long int column = 0; column < blocks_.shape()[1]; ++column)
         {
-            auto extent = blocks_[row][column]->extent();
+            auto extent = blocks_[row][column].extent();
 
             row_heights[row] = std::max(row_heights[row], extent[0]);
             column_widths[column] = std::max(column_widths[column], extent[1]);
@@ -115,8 +115,8 @@ std::tuple<std::vector<long int>, std::vector<long int>> grid_block::compute_lay
     return std::make_tuple(row_heights, column_widths);
 }
 
-std::shared_ptr<grid_block> make_grid(long int rows, long int columns)
+grid_block make_grid(long int rows, long int columns)
 {
-    return std::make_shared<grid_block>(rows, columns);
+    return grid_block(rows, columns);
 }
 }

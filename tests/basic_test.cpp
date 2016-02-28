@@ -20,15 +20,15 @@ int main()
 
     g.add_to_row(1, indent(frame(txt2), 4));
 
-    auto list = std::make_shared<list_block>();
-    list->add(text("Hello"));
-    list->add(text("world!"));
+    auto list = list_block();
+    list.add(text("Hello"));
+    list.add(text("world!"));
     g.add_to_row(1, list);
 
     auto task_list = make_checkbox_list(make_style(color_flag::green, formatting_flag::plain));
 
-    task_list->add(true, text("Task1"));
-    task_list->add(false, text("Task2"));
+    task_list.add(true, text("Task1"));
+    task_list.add(false, text("Task2"));
 
     g.add_to_row(2, task_list);
 

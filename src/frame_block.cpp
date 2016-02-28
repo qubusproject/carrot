@@ -7,14 +7,14 @@
 namespace carrot
 {
 
-frame_block::frame_block(std::shared_ptr<block> framed_block_, long int margin_)
+frame_block::frame_block(block framed_block_, long int margin_)
 : framed_block_(framed_block_), margin_(margin_)
 {
 }
 
 void frame_block::render(form & mat) const
 {
-    auto extent = framed_block_->extent();
+    auto extent = framed_block_.extent();
 
     for (long int i = 0; i < extent[1] + 2 * margin_ + 2; ++i)
     {
@@ -30,19 +30,19 @@ void frame_block::render(form & mat) const
 
     form_view view(mat, 1 + margin_, 1 + margin_);
 
-    framed_block_->render(view);
+    framed_block_.render(view);
 }
 
 std::array<long int, 2> frame_block::extent() const
 {
-    auto extent = framed_block_->extent();
+    auto extent = framed_block_.extent();
 
     return std::array<long int, 2>{extent[0] + 2 * margin_ + 2, extent[1] + 2 * margin_ + 2};
 }
 
-std::shared_ptr<block> frame(std::shared_ptr<block> framed_block, long int margin)
+frame_block frame(block framed_block, long int margin)
 {
-    return std::make_shared<frame_block>(std::move(framed_block), margin);
+    return frame_block(std::move(framed_block), margin);
 }
 
 }

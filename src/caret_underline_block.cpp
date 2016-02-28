@@ -5,7 +5,7 @@
 namespace carrot
 {
 
-caret_underline_block::caret_underline_block(std::shared_ptr<block> underlined_element_,
+caret_underline_block::caret_underline_block(block underlined_element_,
                                              long int pos_)
 : underlined_element_(underlined_element_), pos_(pos_)
 {
@@ -13,9 +13,9 @@ caret_underline_block::caret_underline_block(std::shared_ptr<block> underlined_e
 
 void caret_underline_block::render(form & mat) const
 {
-    auto extent = underlined_element_->extent();
+    auto extent = underlined_element_.extent();
 
-    underlined_element_->render(mat);
+    underlined_element_.render(mat);
 
     for (long int i = 0; i < extent[1]; ++i)
     {
@@ -32,14 +32,14 @@ void caret_underline_block::render(form & mat) const
 
 std::array<long int, 2> caret_underline_block::extent() const
 {
-    auto extent = underlined_element_->extent();
+    auto extent = underlined_element_.extent();
 
     return std::array<long int, 2>{extent[0] + 1, extent[1]};
 }
 
-std::shared_ptr<block> underline_with_caret(std::shared_ptr<block> underlined_block, long int caret_position)
+caret_underline_block underline_with_caret(block underlined_block, long int caret_position)
 {
-    return std::make_shared<caret_underline_block>(std::move(underlined_block), caret_position);
+    return caret_underline_block(std::move(underlined_block), caret_position);
 }
 
 }

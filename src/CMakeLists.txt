@@ -12,7 +12,7 @@ endforeach()
 
 set(SOURCE_FILES irregular_grid_block.cpp form.cpp frame_block.cpp form_view.cpp text_block.cpp grid_block.cpp
         underline_block.cpp caret_underline_block.cpp empty_block.cpp target_info.cpp style_flags.cpp glyph.cpp indent_block.cpp line_block.cpp
-        list_block.cpp progress_bar_block.cpp checkbox_list_block.cpp)
+        list_block.cpp progress_bar_block.cpp checkbox_list_block.cpp block.cpp)
 add_library(carrot ${SOURCE_FILES} ${FULL_INCLUDE_FILES})
 target_compile_features(carrot PUBLIC cxx_final cxx_override cxx_auto_type cxx_range_for
         cxx_generic_lambdas cxx_return_type_deduction)

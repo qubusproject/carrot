@@ -11,37 +11,37 @@ checkbox_list_block::checkbox_list_block(style_flags style_, char symbol_)
 {
 }
 
-checkbox_list_block& checkbox_list_block::add(bool enabled, std::shared_ptr<block> description)
+checkbox_list_block& checkbox_list_block::add(bool enabled, block description)
 {
-    grid_->append_row();
+    grid_.append_row();
 
     if (enabled)
     {
-        grid_->set(grid_->rows() - 1, 0, connect(text("["), text(std::string(1, symbol_), style_), text("] ")));
+        grid_.set(grid_.rows() - 1, 0, text("[") << text(std::string(1, symbol_), style_) << text("] "));
     }
     else
     {
-        grid_->set(grid_->rows() - 1, 0, connect(text("[ ] ")));
+        grid_.set(grid_.rows() - 1, 0, text("[ ] "));
     }
 
-    grid_->set(grid_->rows() - 1, 1, description);
+    grid_.set(grid_.rows() - 1, 1, description);
 
     return *this;
 }
 
 void checkbox_list_block::render(form & mat) const
 {
-    grid_->render(mat);
+    grid_.render(mat);
 }
 
 std::array<long int, 2> checkbox_list_block::extent() const
 {
-    return grid_->extent();
+    return grid_.extent();
 }
 
-std::shared_ptr<checkbox_list_block> make_checkbox_list(style_flags style, char symbol)
+checkbox_list_block make_checkbox_list(style_flags style, char symbol)
 {
-    return std::make_shared<checkbox_list_block>(style, symbol);
+    return checkbox_list_block(style, symbol);
 }
 
 }

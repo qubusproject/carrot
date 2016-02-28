@@ -3,21 +3,17 @@
 
 #include <carrot/block.hpp>
 
-#include <memory>
-
 namespace carrot
 {
 
-class empty_block final : public block
+class empty_block final : public block_base<empty_block>
 {
 public:
-    virtual ~empty_block() = default;
-
-    void render(form & mat) const override;
-    std::array<long int, 2> extent() const override;
+    void render(form & mat) const;
+    std::array<long int, 2> extent() const;
 };
 
-std::shared_ptr<block> make_empty();
+block make_empty();
 }
 
 #endif

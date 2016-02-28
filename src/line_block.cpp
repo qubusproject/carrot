@@ -3,6 +3,7 @@
 #include <carrot/form_view.hpp>
 
 #include <algorithm>
+#include <utility>
 
 namespace carrot
 {
@@ -11,9 +12,9 @@ line_block::line_block(growth_direction direction_) : direction_(direction_)
 {
 }
 
-line_block& line_block::add(std::shared_ptr<block> b)
+line_block& line_block::add(block b)
 {
-    blocks_.push_back(b);
+    blocks_.push_back(std::move(b));
 
     return *this;
 }
@@ -24,14 +25,14 @@ void line_block::render(form& mat) const
 
     for (const auto& block : blocks_)
     {
-        auto extent = block->extent();
+        auto extent = block.extent();
 
         switch (direction_)
         {
             case growth_direction::right:
             {
                 form_view view(mat, 0, offset);
-                block->render(view);
+                block.render(view);
 
                 offset += extent[1];
                 break;
@@ -39,7 +40,7 @@ void line_block::render(form& mat) const
             case growth_direction::down:
             {
                 form_view view(mat, offset, 0);
-                block->render(view);
+                block.render(view);
 
                 offset += extent[0];
                 break;
@@ -54,7 +55,7 @@ std::array<long int, 2> line_block::extent() const
 
     for (const auto& block : blocks_)
     {
-        auto extent = block->extent();
+        auto extent = block.extent();
 
         switch (direction_)
         {
@@ -72,8 +73,8 @@ std::array<long int, 2> line_block::extent() const
     return result;
 }
 
-std::shared_ptr<block> make_line(growth_direction direction)
+line_block make_line(growth_direction direction)
 {
-    return std::make_shared<line_block>(direction);
+    return line_block(direction);
 }
 }

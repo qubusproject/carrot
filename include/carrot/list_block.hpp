@@ -5,27 +5,24 @@
 
 #include <carrot/block.hpp>
 
-#include <memory>
-
 namespace carrot
 {
 
-class list_block final : public block
+class list_block final : public block_base<list_block>
 {
 public:
     list_block();
-    virtual ~list_block() = default;
 
-    list_block& add(std::shared_ptr<block> b);
+    list_block& add(block b);
 
-    void render(form & mat) const override;
-    std::array<long int, 2> extent() const override;
+    void render(form & mat) const;
+    std::array<long int, 2> extent() const;
 
 private:
-    std::shared_ptr<grid_block> grid_;
+    grid_block grid_;
 };
 
-std::shared_ptr<block> make_list();
+list_block make_list();
 
 }
 
