@@ -4,12 +4,11 @@
 #include <carrot/block.hpp>
 
 #include <vector>
-#include <memory>
 
 namespace carrot
 {
 
-class irregular_grid_block final : public block
+class irregular_grid_block final : public block_base<irregular_grid_block>
 {
 public:
     class row
@@ -19,25 +18,23 @@ public:
 
         std::array<long int, 2> extent() const;
 
-        void append(std::shared_ptr<block> element);
+        void append(block element);
 
     private:
-        std::vector<std::shared_ptr<block>> elements_;
+        std::vector<block> elements_;
     };
 
-    virtual ~irregular_grid_block() = default;
+    void add_to_row(long int row, block element);
 
-    void add_to_row(long int row, std::shared_ptr<block> element);
+    void render(form & mat) const;
 
-    void render(form & mat) const override;
-
-    std::array<long int, 2> extent() const override;
+    std::array<long int, 2> extent() const;
 
 private:
     std::vector<row> rows_;
 };
 
-std::shared_ptr<block> make_irregular_grid();
+irregular_grid_block make_irregular_grid();
 }
 
 #endif

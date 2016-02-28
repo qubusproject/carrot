@@ -7,29 +7,27 @@
 
 #include <vector>
 #include <string>
-#include <memory>
 
 namespace carrot
 {
 
-class text_block final : public block
+class text_block final : public block_base<text_block>
 {
 public:
     explicit text_block(const std::string& content_);
     text_block(const std::string& content_, style_flags style_);
-    virtual ~text_block() = default;
 
-    void render(form & mat) const override;
+    void render(form & mat) const;
 
-    std::array<long int, 2> extent() const override;
+    std::array<long int, 2> extent() const;
 
 private:
     std::vector<std::string> rows_;
     style_flags style_;
 };
 
-std::shared_ptr<block> text(const std::string& content);
-std::shared_ptr<block> text(const std::string& content, style_flags style);
+text_block text(const std::string& content);
+text_block text(const std::string& content, style_flags style);
 
 }
 

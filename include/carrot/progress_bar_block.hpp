@@ -5,25 +5,22 @@
 
 #include <carrot/block.hpp>
 
-#include <memory>
-
 namespace carrot
 {
 
-class progress_bar_block final : public block
+class progress_bar_block final : public block_base<progress_bar_block>
 {
 public:
     explicit progress_bar_block(long int progress_);
-    virtual ~progress_bar_block() = default;
 
-    void render(form& mat) const override;
-    std::array<long int, 2> extent() const override;
+    void render(form& mat) const;
+    std::array<long int, 2> extent() const;
 
 private:
-    std::shared_ptr<text_block> text_;
+    text_block text_;
 };
 
-std::shared_ptr<block> progress_bar(long int progress);
+progress_bar_block progress_bar(long int progress);
 }
 
 #endif

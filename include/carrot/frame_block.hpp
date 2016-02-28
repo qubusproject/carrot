@@ -3,27 +3,24 @@
 
 #include <carrot/block.hpp>
 
-#include <memory>
-
 namespace carrot
 {
 
-class frame_block final : public block
+class frame_block final : public block_base<frame_block>
 {
 public:
-    explicit frame_block(std::shared_ptr<block> framed_block_, long int margin_ = 1);
-    virtual ~frame_block() = default;
+    explicit frame_block(block framed_block_, long int margin_ = 1);
 
-    void render(form & mat) const override;
+    void render(form & mat) const;
 
-    std::array<long int, 2> extent() const override;
+    std::array<long int, 2> extent() const;
 
 private:
-    std::shared_ptr<block> framed_block_;
+    block framed_block_;
     long int margin_;
 };
 
-std::shared_ptr<block> frame(std::shared_ptr<block> framed_block, long int margin = 1);
+frame_block frame(block framed_block, long int margin = 1);
 
 }
 

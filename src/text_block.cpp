@@ -51,13 +51,13 @@ std::array<long int, 2> text_block::extent() const
     return std::array<long int, 2>{rows, columns};
 }
 
-std::shared_ptr<block> text(const std::string& content)
+text_block text(const std::string& content)
 {
-    return std::make_shared<text_block>(content);
+    return text_block(content);
 }
 
-std::shared_ptr<block> text(const std::string& content, style_flags style)
+text_block text(const std::string& content, style_flags style)
 {
-    return std::make_shared<text_block>(content, style);
+    return text_block(content, style);
 }
 }

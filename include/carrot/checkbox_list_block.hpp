@@ -7,28 +7,25 @@
 
 #include <carrot/style_flags.hpp>
 
-#include <memory>
-
 namespace carrot
 {
 
-class checkbox_list_block final : public block
+class checkbox_list_block final : public block_base<checkbox_list_block>
 {
 public:
     explicit checkbox_list_block(style_flags style_, char symbol_ = 'x');
-    virtual ~checkbox_list_block() = default;
 
-    checkbox_list_block& add(bool enabled, std::shared_ptr<block> description);
+    checkbox_list_block& add(bool enabled, block description);
 
-    void render(form & mat) const override;
-    std::array<long int, 2> extent() const override;
+    void render(form & mat) const;
+    std::array<long int, 2> extent() const;
 private:
-    std::shared_ptr<grid_block> grid_;
+    grid_block grid_;
     style_flags style_;
     char symbol_;
 };
 
-std::shared_ptr<checkbox_list_block> make_checkbox_list(style_flags style, char symbol = 'x');
+checkbox_list_block make_checkbox_list(style_flags style, char symbol = 'x');
 
 }
 

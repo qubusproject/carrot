@@ -3,26 +3,23 @@
 
 #include <carrot/block.hpp>
 
-#include <memory>
-
 namespace carrot
 {
 
-class underline_block final : public block
+class underline_block final : public block_base<underline_block>
 {
 public:
-    explicit underline_block(std::shared_ptr<block> underlined_element_);
-    virtual ~underline_block() = default;
+    explicit underline_block(block underlined_element_);
 
-    void render(form & mat) const override;
+    void render(form & mat) const;
 
-    std::array<long int, 2> extent() const override;
+    std::array<long int, 2> extent() const;
 
 private:
-    std::shared_ptr<block> underlined_element_;
+    block underlined_element_;
 };
 
-std::shared_ptr<block> underline(std::shared_ptr<block> underlined_element);
+underline_block underline(block underlined_element);
 }
 
 #endif

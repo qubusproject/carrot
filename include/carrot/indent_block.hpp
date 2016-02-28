@@ -3,26 +3,23 @@
 
 #include <carrot/block.hpp>
 
-#include <memory>
-
 namespace carrot
 {
 
-class indent_block final : public block
+class indent_block final : public block_base<indent_block>
 {
 public:
-    indent_block(std::shared_ptr<block> indented_block_, long int indent_);
-    virtual ~indent_block() = default;
+    indent_block(block indented_block_, long int indent_);
 
-    void render(form & mat) const override;
+    void render(form & mat) const;
 
-    std::array<long int, 2> extent() const override;
+    std::array<long int, 2> extent() const;
 private:
-    std::shared_ptr<block> indented_block_;
+    block indented_block_;
     long int indent_;
 };
 
-std::shared_ptr<block> indent(std::shared_ptr<block> indented_block, long int indent);
+indent_block indent(block indented_block, long int indent);
 
 }
 
