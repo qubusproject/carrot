@@ -29,8 +29,8 @@ target_compile_options(carrot PRIVATE ${LTO_CXX_OPTIONS})
 set_target_properties(carrot PROPERTIES LINK_FLAGS "${LTO_CXX_OPTIONS}")
 
 if (CURSES_FOUND)
-    target_include_directories(carrot PUBLIC ${CURSES_INCLUDE_DIR})
-    target_link_libraries(carrot PUBLIC ${CURSES_LIBRARIES})
+    target_include_directories(carrot PRIVATE ${CURSES_INCLUDE_DIR})
+    target_link_libraries(carrot PRIVATE ${CURSES_LIBRARIES})
     target_compile_definitions(carrot PRIVATE -DHAVE_TERMINFO)
 endif()
 
