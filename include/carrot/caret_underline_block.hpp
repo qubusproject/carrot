@@ -16,7 +16,7 @@ class caret_underline_block final : public block_base<caret_underline_block>
 public:
     explicit caret_underline_block(block underlined_element_, long int pos_);
 
-    void render(form& mat) const;
+    void render(form& output_form) const;
 
     std::array<long int, 2> extent() const;
 

@@ -22,7 +22,7 @@ public:
     explicit text_block(const std::string& content_);
     text_block(const std::string& content_, style_flags style_);
 
-    void render(form & mat) const;
+    void render(form& output_form) const;
 
     std::array<long int, 2> extent() const;
 

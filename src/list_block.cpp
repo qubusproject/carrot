@@ -24,9 +24,9 @@ list_block& list_block::add(block b)
     return *this;
 }
 
-void list_block::render(form & mat) const
+void list_block::render(form& output_form) const
 {
-    grid_.render(mat);
+    grid_.render(output_form);
 }
 
 std::array<long int, 2> list_block::extent() const

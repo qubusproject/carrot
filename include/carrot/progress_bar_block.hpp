@@ -18,7 +18,7 @@ class progress_bar_block final : public block_base<progress_bar_block>
 public:
     explicit progress_bar_block(long int progress_);
 
-    void render(form& mat) const;
+    void render(form& output_form) const;
     std::array<long int, 2> extent() const;
 
 private:

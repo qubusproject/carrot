@@ -24,7 +24,7 @@ line_block& line_block::add(block b)
     return *this;
 }
 
-void line_block::render(form& mat) const
+void line_block::render(form& output_form) const
 {
     long int offset = 0;
 
@@ -36,7 +36,7 @@ void line_block::render(form& mat) const
         {
             case growth_direction::right:
             {
-                form_view view(mat, 0, offset);
+                form_view view(output_form, 0, offset);
                 block.render(view);
 
                 offset += extent[1];
@@ -44,7 +44,7 @@ void line_block::render(form& mat) const
             }
             case growth_direction::down:
             {
-                form_view view(mat, offset, 0);
+                form_view view(output_form, offset, 0);
                 block.render(view);
 
                 offset += extent[0];

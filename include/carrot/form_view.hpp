@@ -14,13 +14,13 @@ namespace carrot
 class form_view final : public form
 {
 public:
-    form_view(form & mat_, long int row_offset_, long int column_offset_);
+    form_view(form & base_form_, long int row_offset_, long int column_offset_);
     virtual ~form_view() = default;
 
     void set(long int row, long int column, glyph value) override;
 
 private:
-    form * mat_;
+    form* base_form_;
     long int row_offset_;
     long int column_offset_;
 };

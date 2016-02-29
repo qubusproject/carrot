@@ -15,15 +15,15 @@ underline_block::underline_block(block underlined_element_)
 {
 }
 
-void underline_block::render(form & mat) const
+void underline_block::render(form& output_form) const
 {
     auto extent = underlined_element_.extent();
 
-    underlined_element_.render(mat);
+    underlined_element_.render(output_form);
 
     for (long int i = 0; i < extent[1]; ++i)
     {
-        mat.set(extent[0], i, '~');
+        output_form.set(extent[0], i, '~');
     }
 }
 

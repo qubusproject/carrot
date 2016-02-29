@@ -13,7 +13,7 @@ int main()
 
     auto target = get_stdout_target();
 
-    simple_form mat;
+    simple_form form;
 
     irregular_grid_block g;
 
@@ -37,7 +37,7 @@ int main()
 
     g.add_to_row(2, task_list);
 
-    g.render(mat);
+    g.render(form);
 
-    std::cout << mat.to_string(target) << std::endl;
+    std::cout << form.to_string(target) << std::endl;
 }

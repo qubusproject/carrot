@@ -17,23 +17,23 @@ frame_block::frame_block(block framed_block_, long int margin_)
 {
 }
 
-void frame_block::render(form & mat) const
+void frame_block::render(form & output_form) const
 {
     auto extent = framed_block_.extent();
 
     for (long int i = 0; i < extent[1] + 2 * margin_ + 2; ++i)
     {
-        mat.set(0, i, '-');
-        mat.set(extent[0] + 2 * margin_ + 1, i, '-');
+        output_form.set(0, i, '-');
+        output_form.set(extent[0] + 2 * margin_ + 1, i, '-');
     }
 
     for (long int i = 1; i < extent[0] + 2 * margin_ + 1; ++i)
     {
-        mat.set(i, 0, '|');
-        mat.set(i, extent[1] + 2 * margin_ + 1, '|');
+        output_form.set(i, 0, '|');
+        output_form.set(i, extent[1] + 2 * margin_ + 1, '|');
     }
 
-    form_view view(mat, 1 + margin_, 1 + margin_);
+    form_view view(output_form, 1 + margin_, 1 + margin_);
 
     framed_block_.render(view);
 }

@@ -22,7 +22,7 @@ public:
 
     checkbox_list_block& add(bool enabled, block description);
 
-    void render(form & mat) const;
+    void render(form& output_form) const;
     std::array<long int, 2> extent() const;
 private:
     grid_block grid_;

@@ -63,9 +63,9 @@ public:
         return *this;
     }
 
-    void render(form& mat) const
+    void render(form& output_form) const
     {
-        self_->render(mat);
+        self_->render(output_form);
     }
 
     std::array<long int, 2> extent() const
@@ -114,9 +114,9 @@ private:
             return std::make_unique<block_wrapper<Block>>(value_);
         }
 
-        void render(form& mat) const override
+        void render(form& output_form) const override
         {
-            value_.render(mat);
+            value_.render(output_form);
         }
 
         std::array<long int, 2> extent() const override

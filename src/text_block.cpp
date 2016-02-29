@@ -27,13 +27,13 @@ text_block::text_block(const std::string& content_, style_flags style_)
     boost::split(rows_, content_, boost::is_any_of("\n"));
 }
 
-void text_block::render(form & mat) const
+void text_block::render(form& output_form) const
 {
     for (long int row = 0; row < rows_.size(); ++row)
     {
         for (long int column = 0; column < rows_[row].size(); ++column)
         {
-            mat.set(row, column, glyph(rows_[row][column], style_));
+            output_form.set(row, column, glyph(rows_[row][column], style_));
         }
     }
 }

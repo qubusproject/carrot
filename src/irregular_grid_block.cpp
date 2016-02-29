@@ -53,13 +53,13 @@ void irregular_grid_block::add_to_row(long int row, block element)
     rows_.at(row).append(element);
 }
 
-void irregular_grid_block::render(form & mat) const
+void irregular_grid_block::render(form& output_form) const
 {
     long int row_offset = 0;
 
     for (const auto& row : rows_)
     {
-        form_view view(mat, row_offset, 0);
+        form_view view(output_form, row_offset, 0);
 
         row.render(view);
 

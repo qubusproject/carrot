@@ -34,9 +34,9 @@ checkbox_list_block& checkbox_list_block::add(bool enabled, block description)
     return *this;
 }
 
-void checkbox_list_block::render(form & mat) const
+void checkbox_list_block::render(form& output_form) const
 {
-    grid_.render(mat);
+    grid_.render(output_form);
 }
 
 std::array<long int, 2> checkbox_list_block::extent() const

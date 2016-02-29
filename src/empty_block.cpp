@@ -8,7 +8,7 @@
 namespace carrot
 {
 
-void empty_block::render(form & mat) const
+void empty_block::render(form& output_form) const
 {
 }
 

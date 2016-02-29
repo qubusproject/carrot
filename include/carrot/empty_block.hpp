@@ -14,7 +14,7 @@ namespace carrot
 class empty_block final : public block_base<empty_block>
 {
 public:
-    void render(form & mat) const;
+    void render(form & output_form) const;
     std::array<long int, 2> extent() const;
 };
 

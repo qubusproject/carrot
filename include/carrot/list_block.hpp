@@ -20,7 +20,7 @@ public:
 
     list_block& add(block b);
 
-    void render(form & mat) const;
+    void render(form& output_form) const;
     std::array<long int, 2> extent() const;
 
 private:

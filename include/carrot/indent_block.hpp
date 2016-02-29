@@ -16,7 +16,7 @@ class indent_block final : public block_base<indent_block>
 public:
     indent_block(block indented_block_, long int indent_);
 
-    void render(form & mat) const;
+    void render(form& output_form) const;
 
     std::array<long int, 2> extent() const;
 private:

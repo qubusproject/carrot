@@ -16,21 +16,21 @@ caret_underline_block::caret_underline_block(block underlined_element_,
 {
 }
 
-void caret_underline_block::render(form & mat) const
+void caret_underline_block::render(form &output_form) const
 {
     auto extent = underlined_element_.extent();
 
-    underlined_element_.render(mat);
+    underlined_element_.render(output_form);
 
     for (long int i = 0; i < extent[1]; ++i)
     {
         if (i == pos_)
         {
-            mat.set(extent[0], i, '^');
+            output_form.set(extent[0], i, '^');
         }
         else
         {
-            mat.set(extent[0], i, '~');
+            output_form.set(extent[0], i, '~');
         }
     }
 }

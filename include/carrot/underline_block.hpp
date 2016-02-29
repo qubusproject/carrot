@@ -16,7 +16,7 @@ class underline_block final : public block_base<underline_block>
 public:
     explicit underline_block(block underlined_element_);
 
-    void render(form & mat) const;
+    void render(form& output_form) const;
 
     std::array<long int, 2> extent() const;
 

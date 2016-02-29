@@ -16,7 +16,7 @@ class frame_block final : public block_base<frame_block>
 public:
     explicit frame_block(block framed_block_, long int margin_ = 1);
 
-    void render(form & mat) const;
+    void render(form & output_form) const;
 
     std::array<long int, 2> extent() const;
 

@@ -17,11 +17,11 @@ indent_block::indent_block(block indented_block_, long int indent_)
 {
 }
 
-void indent_block::render(form & mat) const
+void indent_block::render(form& output_form) const
 {
     auto extent = indented_block_.extent();
 
-    form_view view(mat, 0, indent_);
+    form_view view(output_form, 0, indent_);
 
     indented_block_.render(view);
 }

@@ -8,13 +8,13 @@
 namespace carrot
 {
 
-form_view::form_view(form & mat_, long int row_offset_, long int column_offset_)
-: mat_(&mat_), row_offset_(row_offset_), column_offset_(column_offset_)
+form_view::form_view(form & base_form_, long int row_offset_, long int column_offset_)
+: base_form_(&base_form_), row_offset_(row_offset_), column_offset_(column_offset_)
 {
 }
 
 void form_view::set(long int row, long int column, glyph value)
 {
-    mat_->set(row_offset_ + row, column_offset_ + column, value);
+    base_form_->set(row_offset_ + row, column_offset_ + column, value);
 }
 }

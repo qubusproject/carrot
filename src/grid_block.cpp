@@ -53,7 +53,7 @@ long int grid_block::cols() const
     return blocks_.shape()[1];
 }
 
-void grid_block::render(form & mat) const
+void grid_block::render(form & output_form) const
 {
     std::vector<long int> row_heights;
     std::vector<long int> column_widths;
@@ -68,7 +68,7 @@ void grid_block::render(form & mat) const
 
         for (long int column = 0; column < blocks_.shape()[1]; ++column)
         {
-            form_view view(mat, row_offset, column_offset);
+            form_view view(output_form, row_offset, column_offset);
 
             blocks_[row][column].render(view);
 
