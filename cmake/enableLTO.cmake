@@ -13,7 +13,6 @@ endif()
 if(${LTO_ENABLE})
     set(LTO_CXX_OPTIONS ${LTO_CXX_OPTIONS} $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Release>>:-flto -ffat-lto-objects>)
     set(LTO_C_OPTIONS ${LTO_C_OPTIONS} $<$<AND:$<C_COMPILER_ID:GNU>,$<CONFIG:Release>>:-flto -ffat-lto-objects>)
-    set(LTO_Fortran_OPTIONS ${LTO_Fortran_OPTIONS} $<$<AND:$<STREQUAL:${CMAKE_Fortran_COMPILER_ID},GNU>,$<CONFIG:Release>>:-flto -ffat-lto-objects>)
 endif()
 
 if(${LTO_ENABLE})
