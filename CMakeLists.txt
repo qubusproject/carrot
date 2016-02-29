@@ -60,6 +60,8 @@ endif()
 include(GenerateExportHeader)
 include(FeatureSummary)
 
+include(enableLTO)
+
 add_subdirectory(src)
 add_subdirectory(tests)
 

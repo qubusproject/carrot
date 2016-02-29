@@ -25,6 +25,8 @@ target_compile_features(carrot PUBLIC cxx_final cxx_override cxx_auto_type cxx_r
         cxx_generic_lambdas cxx_return_type_deduction)
 target_include_directories(carrot PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include> ${Boost_INCLUDE_DIRS})
 target_link_libraries(carrot PUBLIC ${Boost_LIBRARIES})
+target_compile_options(carrot PRIVATE ${LTO_CXX_OPTIONS})
+set_target_properties(carrot PROPERTIES LINK_FLAGS "${LTO_CXX_OPTIONS}")
 
 if (CURSES_FOUND)
     target_include_directories(carrot PUBLIC ${CURSES_INCLUDE_DIR})
