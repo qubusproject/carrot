@@ -26,7 +26,7 @@ struct is_block : std::is_base_of<block_base<T>, T>
 class block
 {
 public:
-    block() = default;
+    block();
 
     template<typename Block, typename Enabler = typename std::enable_if<is_block<Block>::value>::type>
     block(Block self_)

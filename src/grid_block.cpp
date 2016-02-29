@@ -11,13 +11,6 @@ namespace carrot
 
 grid_block::grid_block(long int rows, long int columns) : blocks_(boost::extents[rows][columns])
 {
-    for (long int row = 0; row < blocks_.shape()[0]; ++row)
-    {
-        for (long int column = 0; column < blocks_.shape()[1]; ++column)
-        {
-            blocks_[row][column] = make_empty();
-        }
-    }
 }
 
 void grid_block::set(long int row, long int column, block b)
