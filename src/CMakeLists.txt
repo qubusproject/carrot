@@ -1,3 +1,5 @@
+option(BUILD_SHARED_LIBS "Build the library as a shared library." OFF)
+
 find_package(Boost 1.58.0 REQUIRED)
 
 find_package(Curses)
