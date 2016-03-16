@@ -56,7 +56,7 @@ public:
         self_ = std::move(other.self_);
     }
 
-    block& operator=(block other)
+    block& operator=(block other) noexcept
     {
         other.swap(*this);
 
