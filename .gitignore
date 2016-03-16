@@ -30,6 +30,9 @@
 
 .idea
 
+*.pyc
+*.bak
+
 # Created by .ignore support plugin (hsz.mobi)
 
 build
