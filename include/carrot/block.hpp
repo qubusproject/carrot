@@ -51,7 +51,7 @@ public:
         }
     }
 
-    block(block&& other)
+    block(block&& other) noexcept
     {
         self_ = std::move(other.self_);
     }
