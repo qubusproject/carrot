@@ -3,9 +3,7 @@
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include <carrot/form.hpp>
-
-#include <string>
+#include <carrot/plain_form.hpp>
 
 namespace carrot
 {
@@ -62,20 +60,20 @@ std::string get_escape_sequences_for_style(style_flags style)
 
 }
 
-simple_form::simple_form(long int rows_, long int columns_)
+plain_form::plain_form(long int rows_, long int columns_)
 : data_(boost::extents[rows_][columns_])
 {
     clear();
 }
 
-void simple_form::set(long int row, long int column, glyph value)
+void plain_form::set(long int row, long int column, glyph value)
 {
     resize_if_outside_matrix(row, column);
 
     data_[row][column] = value;
 }
 
-std::string simple_form::to_string(const target_info& target) const
+std::string plain_form::to_string(const target_info& target) const
 {
     std::string result;
     result.reserve(data_.size());
@@ -103,7 +101,7 @@ std::string simple_form::to_string(const target_info& target) const
     return result;
 }
 
-void simple_form::clear()
+void plain_form::clear()
 {
     for (long int row = 0; row < data_.shape()[0]; ++row)
     {
@@ -114,7 +112,7 @@ void simple_form::clear()
     }
 }
 
-void simple_form::resize_if_outside_matrix(long int row, long int column)
+void plain_form::resize_if_outside_matrix(long int row, long int column)
 {
     if (row >= data_.shape()[0] || column >= data_.shape()[1])
     {

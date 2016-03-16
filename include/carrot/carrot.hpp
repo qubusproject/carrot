@@ -23,6 +23,7 @@
 
 #include <carrot/form.hpp>
 #include <carrot/form_view.hpp>
+#include <carrot/plain_form.hpp>
 #include <carrot/glyph.hpp>
 #include <carrot/style_flags.hpp>
 

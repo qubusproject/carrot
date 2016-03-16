@@ -9,7 +9,7 @@ find_package(Boost 1.58.0 REQUIRED)
 
 find_package(Curses)
 
-set(INCLUDE_FILES irregular_grid_block.hpp form.hpp frame_block.hpp form_view.hpp text_block.hpp grid_block.hpp
+set(INCLUDE_FILES irregular_grid_block.hpp form.hpp plain_form.hpp frame_block.hpp form_view.hpp text_block.hpp grid_block.hpp
         underline_block.hpp caret_underline_block.hpp block.hpp carrot.hpp empty_block.hpp target_info.hpp
         style_flags.hpp glyph.hpp indent_block.hpp line_block.hpp list_block.hpp progress_bar_block.hpp checkbox_list_block.hpp)
 
@@ -17,7 +17,7 @@ foreach(file IN LISTS INCLUDE_FILES)
     list(APPEND FULL_INCLUDE_FILES ${CMAKE_SOURCE_DIR}/include/carrot/${file})
 endforeach()
 
-set(SOURCE_FILES irregular_grid_block.cpp form.cpp frame_block.cpp form_view.cpp text_block.cpp grid_block.cpp
+set(SOURCE_FILES irregular_grid_block.cpp plain_form.cpp frame_block.cpp form_view.cpp text_block.cpp grid_block.cpp
         underline_block.cpp caret_underline_block.cpp empty_block.cpp target_info.cpp style_flags.cpp glyph.cpp indent_block.cpp line_block.cpp
         list_block.cpp progress_bar_block.cpp checkbox_list_block.cpp block.cpp)
 add_library(carrot ${SOURCE_FILES} ${FULL_INCLUDE_FILES})

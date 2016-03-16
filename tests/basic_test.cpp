@@ -13,7 +13,7 @@ int main()
 
     auto target = get_stdout_target();
 
-    simple_form form;
+    plain_form form;
 
     irregular_grid_block g;
 
