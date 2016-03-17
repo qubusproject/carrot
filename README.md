@@ -13,8 +13,8 @@ carrot is a C++ library for rendering expressive diagnostic messages.
 
 * Semantic messages
 
-    A certain represenation of your message might not be suitable for all
-    output devices. carrot gives you the ability to declare the intented
+    A certain representation of your message might not be suitable for all
+    output devices. carrot gives you the ability to declare the intended
     semantic of certain parts of the message. Want to emphasise a word.
     Simply mark it as such.
 
@@ -37,5 +37,5 @@ carrot is a C++ library for rendering expressive diagnostic messages.
     messages can be displayed on as many output devices as possible.
     Since not all devices support dynamic output, care must be taken
     not to compromise this goal. Optional dynamic content for some devices
-    with resonable static fallbacks for others might be nice feature for future
+    with reasonable static fallbacks for others might be a nice feature for future
     releases.
