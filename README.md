@@ -24,7 +24,7 @@ carrot is a C++ library for rendering expressive diagnostic messages.
 
 * Why is the library named carrot?
 
-    The name is a pun on caret symbol `^` which is used frequently in
+    The name is a pun on the caret symbol `^` which is used frequently in
     diagnostic messages to mark locations of interest.
 
 * Does carrot support colored output?
