@@ -7,6 +7,7 @@
 #define CARROT_CARET_BLOCK_HPP
 
 #include <carrot/block.hpp>
+#include <carrot/style_flags.hpp>
 
 namespace carrot
 {
@@ -14,7 +15,8 @@ namespace carrot
 class caret_block final : public block_base<caret_block>
 {
 public:
-    explicit caret_block(block marked_block_, long int pos_);
+    caret_block(block marked_block_, long int pos_);
+    caret_block(block marked_block_, long int pos_, style_flags style_);
 
     void render(form& output_form) const;
 
@@ -23,9 +25,11 @@ public:
 private:
     block marked_block_;
     long int pos_;
+    style_flags style_;
 };
 
 caret_block mark_with_caret(block marked_block, long int caret_position);
+caret_block mark_with_caret(block marked_block, long int caret_position, style_flags style);
 }
 
 #endif
