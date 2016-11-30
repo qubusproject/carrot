@@ -18,6 +18,7 @@
 #include <carrot/list_block.hpp>
 #include <carrot/progress_bar_block.hpp>
 #include <carrot/checkbox_list_block.hpp>
+#include <carrot/caret_block.hpp>
 
 #include <carrot/block.hpp>
 

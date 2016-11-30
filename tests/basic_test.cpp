@@ -27,7 +27,7 @@ int main()
 
     auto list = list_block();
     list.add(text("Hello"));
-    list.add(text("world!"));
+    list.add(mark_with_caret(text("world!"), 2));
     g.add_to_row(1, list);
 
     auto task_list = make_checkbox_list(make_style(color_flag::green, formatting_flag::plain));
