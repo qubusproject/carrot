@@ -21,13 +21,13 @@ int main()
     auto txt2 = text("Test\n Test\n  Test", make_style(color_flag::green, formatting_flag::plain));
 
     g.add_to_row(0, frame(txt));
-    g.add_to_row(0, underline_with_caret(txt, 4));
+    g.add_to_row(0, underline_with_caret(txt, 4, make_style(color_flag::red, formatting_flag::bold)));
 
     g.add_to_row(1, indent(frame(txt2), 4));
 
     auto list = list_block();
     list.add(text("Hello"));
-    list.add(text("world!"));
+    list.add(mark_with_caret(text("world!"), 2, make_style(color_flag::red, formatting_flag::bold)));
     g.add_to_row(1, list);
 
     auto task_list = make_checkbox_list(make_style(color_flag::green, formatting_flag::plain), u8"\u2714");
