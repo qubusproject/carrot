@@ -8,6 +8,8 @@
 
 #include <carrot/style_flags.hpp>
 
+#include <string>
+
 namespace carrot
 {
 
@@ -17,9 +19,13 @@ struct glyph
 
     glyph(char content);
 
+    explicit glyph(std::string content);
+
     glyph(char content, style_flags style);
 
-    char content;
+    glyph(std::string content, style_flags style);
+
+    std::string content;
     style_flags style;
 };
 }
