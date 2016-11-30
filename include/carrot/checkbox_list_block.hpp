@@ -12,6 +12,8 @@
 
 #include <carrot/style_flags.hpp>
 
+#include <string>
+
 namespace carrot
 {
 
@@ -19,6 +21,7 @@ class checkbox_list_block final : public block_base<checkbox_list_block>
 {
 public:
     explicit checkbox_list_block(style_flags style_, char symbol_ = 'x');
+    explicit checkbox_list_block(style_flags style_, std::string symbol_ = u8"x");
 
     checkbox_list_block& add(bool enabled, block description);
 
@@ -27,10 +30,11 @@ public:
 private:
     grid_block grid_;
     style_flags style_;
-    char symbol_;
+    std::string symbol_;
 };
 
 checkbox_list_block make_checkbox_list(style_flags style, char symbol = 'x');
+checkbox_list_block make_checkbox_list(style_flags style, std::string symbol = u8"x");
 
 }
 

@@ -5,17 +5,30 @@
 
 #include <carrot/glyph.hpp>
 
+#include <utility>
+
 namespace carrot
 {
-glyph::glyph() : content(' ')
+glyph::glyph() : content{' '}
 {
 }
 
-glyph::glyph(char content) : content(content), style()
+glyph::glyph(char content) : content{content}, style()
 {
 }
 
-glyph::glyph(char content, style_flags style) : content(content), style(style)
+glyph::glyph(std::string content)
+: content(std::move(content))
 {
 }
+
+glyph::glyph(char content, style_flags style) : content{content}, style(style)
+{
+}
+
+glyph::glyph(std::string content, style_flags style)
+: content(std::move(content)), style(style)
+{
+}
+
 }

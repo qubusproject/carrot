@@ -93,7 +93,7 @@ std::string plain_form::to_string(const target_info& target) const
                 }
             }
 
-            result += data_[row][column].content;
+            result += std::string(data_[row][column].content.begin(), data_[row][column].content.end());
         }
         result += '\n';
     }

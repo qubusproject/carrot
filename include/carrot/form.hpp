@@ -21,15 +21,14 @@ public:
     form() = default;
     virtual ~form() = default;
 
-    form(const form &) = delete;
-    form & operator=(const form &) = delete;
+    form(const form&) = delete;
+    form& operator=(const form&) = delete;
 
-    form(form &&) = delete;
-    form & operator=(form &&) = delete;
+    form(form&&) = delete;
+    form& operator=(form&&) = delete;
 
     virtual void set(long int row, long int column, glyph value) = 0;
 };
-
 }
 
 #endif
