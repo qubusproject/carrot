@@ -64,6 +64,7 @@ include(enableLTO)
 
 add_subdirectory(src)
 add_subdirectory(tests)
+add_subdirectory(examples)
 
 # add a target to generate API documentation with Doxygen
 find_package(Doxygen)
