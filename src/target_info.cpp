@@ -5,6 +5,9 @@
 
 #include <carrot/target_info.hpp>
 
+#include <boost/locale/generator.hpp>
+#include <boost/locale/info.hpp>
+
 #ifdef __unix__
 
 #include <unistd.h>
@@ -62,6 +65,11 @@ bool has_color_support(int fd)
 }
 }
 
+invalid_target_error::invalid_target_error(const std::string& reason_)
+: std::logic_error("Invalid target: " + reason_)
+{
+}
+
 target_info::target_info(bool supports_colorized_output_, long int tab_width_)
 : supports_colorized_output_(supports_colorized_output_), tab_width_(tab_width_)
 {
@@ -90,5 +98,25 @@ target_info get_stdout_target(long int tab_width)
 target_info get_file_target(long int tab_width)
 {
     return target_info(false, tab_width);
+}
+
+const std::locale& get_locale()
+{
+    using namespace boost::locale;
+
+    static const std::locale loc = [] {
+        generator gen;
+
+        auto loc = gen("");
+
+        const auto& info = std::use_facet<boost::locale::info>(loc);
+
+        if (!info.utf8())
+            throw invalid_target_error("The target's encoding is not UTF-8.");
+
+        return loc;
+    }();
+
+    return loc;
 }
 }

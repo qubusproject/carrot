@@ -5,14 +5,14 @@
 
 option(BUILD_SHARED_LIBS "Build the library as a shared library." OFF)
 
-find_package(Boost 1.58.0 REQUIRED)
+find_package(Boost 1.58.0 COMPONENTS locale REQUIRED)
 
 find_package(Curses)
 
 set(INCLUDE_FILES irregular_grid_block.hpp form.hpp plain_form.hpp frame_block.hpp form_view.hpp text_block.hpp grid_block.hpp
         underline_block.hpp caret_underline_block.hpp block.hpp carrot.hpp empty_block.hpp target_info.hpp
         style_flags.hpp glyph.hpp indent_block.hpp line_block.hpp list_block.hpp progress_bar_block.hpp checkbox_list_block.hpp
-        caret_block.hpp)
+        caret_block.hpp exception.hpp)
 
 foreach(file IN LISTS INCLUDE_FILES)
     list(APPEND FULL_INCLUDE_FILES ${CMAKE_SOURCE_DIR}/include/carrot/${file})
