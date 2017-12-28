@@ -15,6 +15,7 @@ test:arch:clang:release:
   - make
   - cd tests
   - ctest  --output-on-failure
+  stage: test
   tags:
   - docker
 test:arch:gcc:release:
@@ -30,6 +31,7 @@ test:arch:gcc:release:
   - make
   - cd tests
   - ctest --output-on-failure
+  stage: test
   tags:
   - docker
 test:arch:clang:debug:
@@ -45,6 +47,7 @@ test:arch:clang:debug:
   - make
   - cd tests
   - ctest  --output-on-failure
+  stage: test
   tags:
   - docker
 test:arch:gcc:debug:
@@ -60,6 +63,7 @@ test:arch:gcc:debug:
   - make
   - cd tests
   - ctest --output-on-failure
+  stage: test
   tags:
   - docker
 test:ubuntu:clang:release:
@@ -75,6 +79,7 @@ test:ubuntu:clang:release:
   - make
   - cd tests
   - ctest  --output-on-failure
+  stage: test
   image: localhost:5000/td-quantum/ubuntu-ci
   tags:
   - docker
@@ -91,6 +96,7 @@ test:ubuntu:gcc:release:
   - make
   - cd tests
   - ctest --output-on-failure
+  stage: test
   image: localhost:5000/td-quantum/ubuntu-ci
   tags:
   - docker
@@ -107,6 +113,7 @@ test:ubuntu:clang:debug:
   - make
   - cd tests
   - ctest  --output-on-failure
+  stage: test
   image: localhost:5000/td-quantum/ubuntu-ci
   tags:
   - docker
@@ -123,6 +130,7 @@ test:ubuntu:gcc:debug:
   - make
   - cd tests
   - ctest --output-on-failure
+  stage: test
   image: localhost:5000/td-quantum/ubuntu-ci
   tags:
   - docker
@@ -139,5 +147,6 @@ analyze:coverage:
   - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON ../
   - make
   - make coverage
+  stage: analyze
   tags:
   - docker
