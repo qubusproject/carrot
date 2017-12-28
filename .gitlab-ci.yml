@@ -9,6 +9,7 @@ Clang (Release):
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
   - make
+  - cd tests
   - ctest
   tags:
   - docker
@@ -23,6 +24,7 @@ GCC (Release):
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
   - make
+  - cd tests
   - ctest
   tags:
   - docker
