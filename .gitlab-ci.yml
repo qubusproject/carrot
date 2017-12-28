@@ -144,7 +144,7 @@ analyze:coverage:
   - export CXX=g++
   - mkdir build
   - cd build
-  - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON ../
+  - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON -DCARROT_ANALYSE_COVERAGE=ON ../
   - make
   - make coverage
   stage: analyze
