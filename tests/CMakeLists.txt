@@ -27,4 +27,13 @@ else()
     gtest_discover_tests(default_style)
 endif()
 
+add_executable(rendering rendering.cpp)
+target_link_libraries(rendering PRIVATE carrot GTest::GTest GTest::Main)
+
+if (CMAKE_VERSION VERSION_LESS 3.10)
+    gtest_add_tests(TARGET rendering)
+else()
+    gtest_discover_tests(rendering)
+endif()
+
 endif()
