@@ -17,6 +17,18 @@ TEST(color, rgb)
     EXPECT_EQ(color1.red(), 255);
     EXPECT_EQ(color1.green(), 127);
     EXPECT_EQ(color1.blue(), 42);
+
+    auto color2 = rgb(color1);
+
+    EXPECT_EQ(color1.red(), color2.red());
+    EXPECT_EQ(color1.green(), color2.green());
+    EXPECT_EQ(color1.blue(), color2.blue());
+
+    auto color3 = rgb(carrot::color(color1));
+
+    EXPECT_EQ(color1.red(), color3.red());
+    EXPECT_EQ(color1.green(), color3.green());
+    EXPECT_EQ(color1.blue(), color3.blue());
 }
 
 TEST(color, hsl)
@@ -26,6 +38,18 @@ TEST(color, hsl)
     EXPECT_EQ(color1.hue(), 255);
     EXPECT_EQ(color1.saturation(), 0.5f);
     EXPECT_EQ(color1.lightness(), 0.42f);
+
+    auto color2 = hsl(color1);
+
+    EXPECT_EQ(color1.hue(), color2.hue());
+    EXPECT_EQ(color1.saturation(), color2.saturation());
+    EXPECT_EQ(color1.lightness(), color2.lightness());
+
+    auto color3 = hsl(carrot::color(color1));
+
+    EXPECT_EQ(color1.hue(), color3.hue());
+    EXPECT_EQ(color1.saturation(), color3.saturation());
+    EXPECT_EQ(color1.lightness(), color3.lightness());
 }
 
 TEST(color, rgb2hsl)
@@ -114,4 +138,54 @@ TEST(color, xterm_cmap)
     EXPECT_EQ(cmap.map_color(rgb_color(8, 8, 8)), 232);
     EXPECT_EQ(cmap.map_color(rgb_color(18, 18, 18)), 233);
     EXPECT_EQ(cmap.map_color(rgb_color(28, 28, 28)), 234);
+}
+
+TEST(color, named_colors)
+{
+    using namespace carrot;
+
+    EXPECT_THROW(rgb(named_color("red")), invalid_color_error);
+    EXPECT_THROW(hsl(named_color("red")), invalid_color_error);
+
+    color_table ctable;
+
+    EXPECT_THROW(rgb(named_color("red"), ctable), invalid_color_error);
+
+    ctable = get_default_color_table();
+
+    ctable.add_color("mycolor", rgb_color(42, 128, 70));
+
+    auto mycolor = rgb(named_color("mycolor"), ctable);
+
+    EXPECT_EQ(mycolor.red(), 42);
+    EXPECT_EQ(mycolor.green(), 128);
+    EXPECT_EQ(mycolor.blue(), 70);
+
+    auto mycolor_hsl = hsl(named_color("mycolor"), ctable);
+
+    EXPECT_NEAR(mycolor_hsl.hue(), 139.5, 1e-1);
+    EXPECT_NEAR(mycolor_hsl.saturation(), 0.5059, 1e-3);
+    EXPECT_NEAR(mycolor_hsl.lightness(), 0.3333, 1e-3);
+
+    auto mycolor2 = rgb(canonicalize(named_color("mycolor"), ctable));
+
+    EXPECT_EQ(mycolor2.red(), 42);
+    EXPECT_EQ(mycolor2.green(), 128);
+    EXPECT_EQ(mycolor2.blue(), 70);
+}
+
+TEST(color, default_color)
+{
+    using namespace carrot;
+
+    auto ctable = get_default_color_table();
+
+    EXPECT_THROW(rgb(get_default_color()), invalid_color_error);
+    EXPECT_THROW(rgb(get_default_color(), ctable), invalid_color_error);
+    EXPECT_THROW(hsl(get_default_color()), invalid_color_error);
+    EXPECT_THROW(hsl(get_default_color(), ctable), invalid_color_error);
+
+    EXPECT_THROW(canonicalize(get_default_color(), ctable), invalid_color_error);
+
+    EXPECT_TRUE(is_default_color(get_default_color()));
 }
