@@ -6,6 +6,8 @@
 cmake_minimum_required(VERSION 3.8)
 project(carrot)
 
+enable_testing()
+
 set(CARROT_VERSION 0.2.0)
 
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "An expressive diagnostic rendering library.")

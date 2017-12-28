@@ -13,7 +13,6 @@ test:arch:clang:release:
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
   - make
-  - cd tests
   - ctest  --output-on-failure
   stage: test
   tags:
@@ -29,7 +28,6 @@ test:arch:gcc:release:
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
   - make
-  - cd tests
   - ctest --output-on-failure
   stage: test
   tags:
@@ -45,7 +43,6 @@ test:arch:clang:debug:
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON ../
   - make
-  - cd tests
   - ctest  --output-on-failure
   stage: test
   tags:
@@ -61,7 +58,6 @@ test:arch:gcc:debug:
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON ../
   - make
-  - cd tests
   - ctest --output-on-failure
   stage: test
   tags:
@@ -77,7 +73,6 @@ test:arch:gcc:debug:
 #  - cd build
 #  - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
 #  - make
-#  - cd tests
 #  - ctest  --output-on-failure
 #  stage: test
 #  image: localhost:5000/td-quantum/ubuntu-ci
@@ -94,7 +89,6 @@ test:ubuntu:gcc:release:
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
   - make
-  - cd tests
   - ctest --output-on-failure
   stage: test
   image: localhost:5000/td-quantum/ubuntu-ci
@@ -111,7 +105,6 @@ test:ubuntu:gcc:release:
 #  - cd build
 #  - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON ../
 #  - make
-#  - cd tests
 #  - ctest  --output-on-failure
 #  stage: test
 #  image: localhost:5000/td-quantum/ubuntu-ci
@@ -128,7 +121,6 @@ test:ubuntu:gcc:debug:
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON ../
   - make
-  - cd tests
   - ctest --output-on-failure
   stage: test
   image: localhost:5000/td-quantum/ubuntu-ci

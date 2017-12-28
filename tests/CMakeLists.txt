@@ -7,8 +7,6 @@ option(CARROT_BUILD_TESTS "build the carrot test suite" OFF)
 
 if (CARROT_BUILD_TESTS)
 
-enable_testing()
-
 find_package(GTest REQUIRED)
 
 add_executable(color color.cpp)
