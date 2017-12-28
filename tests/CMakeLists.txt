@@ -15,4 +15,8 @@ add_executable(color color.cpp)
 target_link_libraries(color PRIVATE carrot GTest::GTest GTest::Main)
 gtest_discover_tests(color)
 
+add_executable(default_style default_style.cpp)
+target_link_libraries(default_style PRIVATE carrot GTest::GTest GTest::Main)
+gtest_discover_tests(default_style)
+
 endif()

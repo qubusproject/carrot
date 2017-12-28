@@ -19,13 +19,12 @@ caret_underline_block::caret_underline_block(block underlined_element_, long int
 
 void caret_underline_block::render(form& output_form, const style& s) const
 {
-    auto line_foreground_color = s.get_attribute<color>("text", id(), tags(), "color");
-    auto line_background_color = s.get_attribute<color>("text", id(), tags(), "background-color");
-    auto line_is_bold = s.get_attribute<bool>("text", id(), tags(), "bold");
+    auto foreground_color = s.get_attribute<color>("caret-underline", id(), tags(), "color");
+    auto background_color = s.get_attribute<color>("caret-underline", id(), tags(), "background-color");
+    auto line_is_bold = s.get_attribute<bool>("caret-underline", id(), tags(), "bold");
 
-    auto caret_foreground_color = s.get_attribute<color>("text", id(), tags(), "caret.foreground_color");
-    auto caret_background_color = s.get_attribute<color>("text", id(), tags(), "caret.background_color");
-    auto caret_is_bold = s.get_attribute<bool>("text", id(), tags(), "caret.bold");
+    auto caret_color = s.get_attribute<color>("caret-underline", id(), tags(), "caret.color");
+    auto caret_is_bold = s.get_attribute<bool>("caret-underline", id(), tags(), "caret.bold");
 
     auto extent = underlined_element_.extent(s);
 
@@ -37,12 +36,12 @@ void caret_underline_block::render(form& output_form, const style& s) const
         {
             output_form.set(
                     extent[0], i,
-                    glyph('^', caret_foreground_color, caret_background_color, caret_is_bold));
+                    glyph('^', caret_color, background_color, caret_is_bold));
         }
         else
         {
             output_form.set(extent[0], i,
-                            glyph('~', line_foreground_color, line_background_color, line_is_bold));
+                            glyph('~', foreground_color, background_color, line_is_bold));
         }
     }
 }

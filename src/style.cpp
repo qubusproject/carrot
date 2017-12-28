@@ -172,11 +172,16 @@ std::unique_ptr<style> get_default_style()
         .add_attribute("color", default_color())
         .add_attribute("background-color", default_color())
         .add_attribute("bold", false)
-        .add_attribute("indent", 4);
+        .add_attribute("indent", 4)
+        .add_attribute("content", u8"");
 
     s->add_rule("checkbox-list")
         .add_attribute("symbol-color", rgb_color(0, 255, 0))
         .add_attribute("symbol", u8"x");
+
+    s->add_rule("caret-underline")
+            .add_attribute("caret.color", rgb_color(0, 255, 0))
+            .add_attribute("caret.bold", false);
 
     return s;
 }
