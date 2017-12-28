@@ -10,7 +10,7 @@ Clang (Release):
   - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
   - make
   - cd tests
-  - ctest
+  - ctest  --output-on-failure
   tags:
   - docker
 GCC (Release):
@@ -25,6 +25,6 @@ GCC (Release):
   - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
   - make
   - cd tests
-  - ctest
+  - ctest --output-on-failure
   tags:
   - docker
