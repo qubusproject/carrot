@@ -1,30 +1,28 @@
-//  Copyright (c) 2015-2017 Christopher Hinz
+//  Copyright (c) 2017 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CARROT_UNDERLINE_BLOCK_HPP
-#define CARROT_UNDERLINE_BLOCK_HPP
+#ifndef CARROT_PLACEHOLDER_BLOCK_HPP
+#define CARROT_PLACEHOLDER_BLOCK_HPP
 
 #include <carrot/block.hpp>
 
 namespace carrot
 {
 
-class underline_block final : public block_base<underline_block>
+class placeholder_block final : public block_base<placeholder_block>
 {
 public:
-    explicit underline_block(block underlined_element_);
+    explicit placeholder_block(std::vector<std::string> flags_);
 
     void render(form& output_form, const style& s) const;
 
     std::array<long int, 2> extent(const style& s) const;
-
-private:
-    block underlined_element_;
 };
 
-underline_block underline(block underlined_element);
+placeholder_block placeholder(std::vector<std::string> flags);
+
 }
 
 #endif

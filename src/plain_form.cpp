@@ -1,9 +1,13 @@
-//  Copyright (c) 2015-2016 Christopher Hinz
+//  Copyright (c) 2015-2017 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <carrot/plain_form.hpp>
+
+#include <carrot/color_map.hpp>
+
+#include <boost/range/adaptor/sliced.hpp>
 
 namespace carrot
 {
@@ -11,59 +15,79 @@ namespace carrot
 namespace
 {
 
-std::string get_escape_sequence_for_color(color_flag color)
+std::string get_escape_sequence_for_color(const color& foreground_color,
+                                          const color& background_color, const color_map& cmap)
 {
-    switch (color)
+    std::string result;
+
+    if (is_default_color(foreground_color))
     {
-        case color_flag::default_:
-        default:
-            return "39";
-        case color_flag::black:
-            return  "30";
-        case color_flag::red:
-            return "31";
-        case color_flag::green:
-            return "32";
-        case color_flag::yellow:
-            return "33";
-        case color_flag::blue:
-            return "34";
-        case color_flag::magenta:
-            return "35";
-        case color_flag::cyan:
-            return "36";
-        case color_flag::white:
-            return "37";
+        result += "39";
     }
+    else
+    {
+        auto foreground_index = cmap.map_color(foreground_color);
+
+        if (foreground_index < 8)
+        {
+            result += std::to_string(30 + foreground_index);
+        }
+        else
+        {
+            result += std::to_string(90 + foreground_index - 8);
+        }
+    }
+
+    result += ';';
+
+    if (is_default_color(background_color))
+    {
+        result += "49";
+    }
+    else
+    {
+        auto background_index = cmap.map_color(background_color);
+
+        if (background_index < 8)
+        {
+            result += std::to_string(40 + background_index);
+        }
+        else
+        {
+            result += std::to_string(100 + background_index - 8);
+        }
+    }
+
+    return result;
 }
 
-std::string get_escape_sequence_for_formatting(formatting_flag formatting)
+std::string get_escape_sequence_for_formatting(bool bold)
 {
-    switch (formatting)
-    {
-        case formatting_flag::plain:
-        default:
-            return "22";
-        case formatting_flag::bold:
-            return "1";
-    }
+    if (bold)
+        return "1";
+
+    return "22";
 }
 
-std::string get_escape_sequences_for_style(style_flags style)
+std::string get_escape_sequences_for_style(const color& foreground_color,
+                                           const color& background_color, bool bold,
+                                           const color_map& cmap)
 {
     static const std::string CSI = "\33[";
 
-    return CSI + get_escape_sequence_for_color(style.color) + ";" +
-           get_escape_sequence_for_formatting(style.formatting) + "m";
-
+    return CSI + get_escape_sequence_for_color(foreground_color, background_color, cmap) + "m" +
+           CSI + get_escape_sequence_for_formatting(bold) + "m";
 }
 
+std::string get_default_escape_sequence()
+{
+    return "\33[0m";
+}
 }
 
 plain_form::plain_form(long int rows_, long int columns_)
-: data_(boost::extents[rows_][columns_])
+: data_(boost::extents[rows_][columns_]), clear_glyph_(' ')
 {
-    clear();
 }
 
 void plain_form::set(long int row, long int column, glyph value)
@@ -78,7 +102,9 @@ std::string plain_form::to_string(const target_info& target) const
     std::string result;
     result.reserve(data_.size());
 
-    style_flags current_style;
+    color_map cmap(get_xterm_color_table() | boost::adaptors::sliced(0, 16));
+
+    std::string current_escape_seq;
 
     for (long int row = 0; row < data_.shape()[0]; ++row)
     {
@@ -86,16 +112,34 @@ std::string plain_form::to_string(const target_info& target) const
         {
             if (target.supports_colorized_output())
             {
-                if (current_style != data_[row][column].style)
+                const glyph& g = data_[row][column];
+
+                auto escape_seq = get_escape_sequences_for_style(g.foreground_color,
+                                                                 g.background_color, g.bold, cmap);
+
+                if (escape_seq != current_escape_seq)
                 {
-                    result += get_escape_sequences_for_style(data_[row][column].style);
-                    current_style = data_[row][column].style;
+                    result += escape_seq;
                 }
             }
 
-            result += std::string(data_[row][column].content.begin(), data_[row][column].content.end());
+            result +=
+                std::string(data_[row][column].content.begin(), data_[row][column].content.end());
         }
+
+        if (target.supports_colorized_output())
+        {
+            current_escape_seq = get_default_escape_sequence();
+
+            result += current_escape_seq;
+        }
+
         result += '\n';
+    }
+
+    if (target.supports_colorized_output())
+    {
+        result += get_default_escape_sequence();
     }
 
     return result;
@@ -107,9 +151,16 @@ void plain_form::clear()
     {
         for (long int column = 0; column < data_.shape()[1]; ++column)
         {
-            data_[row][column] = ' ';
+            data_[row][column] = clear_glyph_;
         }
     }
+}
+
+void plain_form::clear(glyph value)
+{
+    clear_glyph_ = value;
+
+    clear();
 }
 
 void plain_form::resize_if_outside_matrix(long int row, long int column)

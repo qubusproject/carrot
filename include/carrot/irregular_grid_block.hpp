@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2016 Christopher Hinz
+//  Copyright (c) 2015-2017 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -19,9 +19,9 @@ public:
     class row
     {
     public:
-        void render(form & output_form) const;
+        void render(form & output_form, const style& s) const;
 
-        std::array<long int, 2> extent() const;
+        std::array<long int, 2> extent(const style& s) const;
 
         void append(block element);
 
@@ -31,9 +31,9 @@ public:
 
     void add_to_row(long int row, block element);
 
-    void render(form & mat) const;
+    void render(form & mat, const style& s) const;
 
-    std::array<long int, 2> extent() const;
+    std::array<long int, 2> extent(const style& s) const;
 
 private:
     std::vector<row> rows_;

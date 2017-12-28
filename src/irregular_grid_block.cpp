@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2016 Christopher Hinz
+//  Copyright (c) 2015-2017 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,29 +10,29 @@
 namespace carrot
 {
 
-void irregular_grid_block::row::render(form & mat) const
+void irregular_grid_block::row::render(form & mat, const style& s) const
 {
     long int column_offset = 0;
 
     for (const auto& element : elements_)
     {
-        auto element_extent = element.extent();
+        auto element_extent = element.extent(s);
 
         form_view view(mat, 0, column_offset);
 
-        element.render(view);
+        element.render(view, s);
 
         column_offset += element_extent[1];
     }
 }
 
-std::array<long int, 2> irregular_grid_block::row::extent() const
+std::array<long int, 2> irregular_grid_block::row::extent(const style& s) const
 {
     std::array<long int, 2> result{0, 0};
 
     for (const auto& element : elements_)
     {
-        auto element_extent = element.extent();
+        auto element_extent = element.extent(s);
 
         result[0] = std::max(result[0], element_extent[0]);
         result[1] += element_extent[1];
@@ -53,7 +53,7 @@ void irregular_grid_block::add_to_row(long int row, block element)
     rows_.at(row).append(element);
 }
 
-void irregular_grid_block::render(form& output_form) const
+void irregular_grid_block::render(form& output_form, const style& s) const
 {
     long int row_offset = 0;
 
@@ -61,21 +61,21 @@ void irregular_grid_block::render(form& output_form) const
     {
         form_view view(output_form, row_offset, 0);
 
-        row.render(view);
+        row.render(view, s);
 
-        auto row_extent = row.extent();
+        auto row_extent = row.extent(s);
 
         row_offset += row_extent[0];
     }
 }
 
-std::array<long int, 2> irregular_grid_block::extent() const
+std::array<long int, 2> irregular_grid_block::extent(const style& s) const
 {
     std::array<long int, 2> result{0, 0};
 
     for (const auto& row : rows_)
     {
-        auto row_extent = row.extent();
+        auto row_extent = row.extent(s);
 
         result[0] += row_extent[0];
         result[1] = std::max(result[1], row_extent[1]);

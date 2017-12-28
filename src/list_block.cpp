@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2016 Christopher Hinz
+//  Copyright (c) 2015-2017 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -24,14 +24,14 @@ list_block& list_block::add(block b)
     return *this;
 }
 
-void list_block::render(form& output_form) const
+void list_block::render(form& output_form, const style& s) const
 {
-    grid_.render(output_form);
+    grid_.render(output_form, s);
 }
 
-std::array<long int, 2> list_block::extent() const
+std::array<long int, 2> list_block::extent(const style& s) const
 {
-    return grid_.extent();
+    return grid_.extent(s);
 }
 
 list_block make_list()

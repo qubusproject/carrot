@@ -1,4 +1,8 @@
-Clang (Release):
+stages:
+- test
+- analyze
+
+test:arch:clang:release:
   script:
   - "sudo chown -R `whoami`: ."
   - git submodule update --init
@@ -9,10 +13,11 @@ Clang (Release):
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
   - make
-  - ctest
+  - ctest  --output-on-failure
+  stage: test
   tags:
   - docker
-GCC (Release):
+test:arch:gcc:release:
   script:
   - "sudo chown -R `whoami`: ."
   - git submodule update --init
@@ -23,6 +28,117 @@ GCC (Release):
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
   - make
-  - ctest
+  - ctest --output-on-failure
+  stage: test
+  tags:
+  - docker
+test:arch:clang:debug:
+  script:
+  - "sudo chown -R `whoami`: ."
+  - git submodule update --init
+  - ls -la
+  - export CC=clang
+  - export CXX=clang++
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON ../
+  - make
+  - ctest  --output-on-failure
+  stage: test
+  tags:
+  - docker
+test:arch:gcc:debug:
+  script:
+  - "sudo chown -R `whoami`: ."
+  - git submodule update --init
+  - ls -la
+  - export CC=gcc
+  - export CXX=g++
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON ../
+  - make
+  - ctest --output-on-failure
+  stage: test
+  tags:
+  - docker
+#test:ubuntu:clang:release:
+#  script:
+#  - "sudo chown -R `whoami`: ."
+#  - git submodule update --init
+#  - ls -la
+#  - export CC=clang
+#  - export CXX=clang++
+#  - mkdir build
+#  - cd build
+#  - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
+#  - make
+#  - ctest  --output-on-failure
+#  stage: test
+#  image: localhost:5000/td-quantum/ubuntu-ci
+#  tags:
+#  - docker
+test:ubuntu:gcc:release:
+  script:
+  - "sudo chown -R `whoami`: ."
+  - git submodule update --init
+  - ls -la
+  - export CC=gcc
+  - export CXX=g++
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
+  - make
+  - ctest --output-on-failure
+  stage: test
+  image: localhost:5000/td-quantum/ubuntu-ci
+  tags:
+  - docker
+#test:ubuntu:clang:debug:
+#  script:
+#  - "sudo chown -R `whoami`: ."
+#  - git submodule update --init
+#  - ls -la
+#  - export CC=clang
+#  - export CXX=clang++
+#  - mkdir build
+#  - cd build
+#  - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON ../
+#  - make
+#  - ctest  --output-on-failure
+#  stage: test
+#  image: localhost:5000/td-quantum/ubuntu-ci
+#  tags:
+#  - docker
+test:ubuntu:gcc:debug:
+  script:
+  - "sudo chown -R `whoami`: ."
+  - git submodule update --init
+  - ls -la
+  - export CC=gcc
+  - export CXX=g++
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON ../
+  - make
+  - ctest --output-on-failure
+  stage: test
+  image: localhost:5000/td-quantum/ubuntu-ci
+  tags:
+  - docker
+
+analyze:coverage:
+  script:
+  - "sudo chown -R `whoami`: ."
+  - git submodule update --init
+  - ls -la
+  - export CC=gcc
+  - export CXX=g++
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON -DCARROT_ANALYSE_COVERAGE=ON ../
+  - make
+  - make coverage
+  stage: analyze
   tags:
   - docker

@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2016 Christopher Hinz
+//  Copyright (c) 2015-2017 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -32,12 +32,12 @@ public:
     long int rows() const;
     long int cols() const;
 
-    void render(form & output_form) const;
+    void render(form & output_form, const style& s) const;
 
-    std::array<long int, 2> extent() const;
+    std::array<long int, 2> extent(const style& s) const;
 
 private:
-    std::tuple<std::vector<long int>, std::vector<long int>> compute_layout() const;
+    std::tuple<std::vector<long int>, std::vector<long int>> compute_layout(const style& s) const;
 
     boost::multi_array<block, 2> blocks_;
 };

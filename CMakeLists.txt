@@ -1,20 +1,21 @@
-#  Copyright (c) 2015-2016 Christopher Hinz
+#  Copyright (c) 2015-2017 Christopher Hinz
 #
 #  Distributed under the Boost Software License, Version 1.0. (See accompanying
 #  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-cmake_minimum_required(VERSION 3.4)
-enable_testing()
+cmake_minimum_required(VERSION 3.8)
 project(carrot)
 
-set(CARROT_VERSION 0.1.0)
+enable_testing()
+
+set(CARROT_VERSION 0.2.0)
 
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "An expressive diagnostic rendering library.")
 SET(CPACK_PACKAGE_VENDOR "Christopher Hinz")
 SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
 SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
-set(CPACK_PACKAGE_VERSION_MINOR "1")
+set(CPACK_PACKAGE_VERSION_MINOR "2")
 set(CPACK_PACKAGE_VERSION_PATCH "0")
 
 set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}-src")
@@ -55,6 +56,20 @@ option(CARROT_ENABLE_ADDRESS_SANITIZER "Enable the address sanitizer" OFF)
 
 if(CARROT_ENABLE_ADDRESS_SANITIZER)
     add_compile_options(-fsanitize=address)
+endif()
+
+option(CARROT_ANALYSE_COVERAGE "Enable code coverage analysis support." OFF)
+
+if (CARROT_ANALYSE_COVERAGE)
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        include(CodeCoverage)
+        add_custom_target(ctest COMMAND ${CMAKE_CTEST_COMMAND})
+        setup_target_for_coverage(coverage ctest coverage)
+        add_compile_options(--coverage)
+        link_libraries(--coverage)
+    else()
+        message(WARNING "Code coverage analysis is only supported with GCC.")
+    endif()
 endif()
 
 include(GenerateExportHeader)
