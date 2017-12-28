@@ -66,23 +66,23 @@ test:arch:gcc:debug:
   stage: test
   tags:
   - docker
-test:ubuntu:clang:release:
-  script:
-  - "sudo chown -R `whoami`: ."
-  - git submodule update --init
-  - ls -la
-  - export CC=clang
-  - export CXX=clang++
-  - mkdir build
-  - cd build
-  - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
-  - make
-  - cd tests
-  - ctest  --output-on-failure
-  stage: test
-  image: localhost:5000/td-quantum/ubuntu-ci
-  tags:
-  - docker
+#test:ubuntu:clang:release:
+#  script:
+#  - "sudo chown -R `whoami`: ."
+#  - git submodule update --init
+#  - ls -la
+#  - export CC=clang
+#  - export CXX=clang++
+#  - mkdir build
+#  - cd build
+#  - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
+#  - make
+#  - cd tests
+#  - ctest  --output-on-failure
+#  stage: test
+#  image: localhost:5000/td-quantum/ubuntu-ci
+#  tags:
+#  - docker
 test:ubuntu:gcc:release:
   script:
   - "sudo chown -R `whoami`: ."
@@ -100,23 +100,23 @@ test:ubuntu:gcc:release:
   image: localhost:5000/td-quantum/ubuntu-ci
   tags:
   - docker
-test:ubuntu:clang:debug:
-  script:
-  - "sudo chown -R `whoami`: ."
-  - git submodule update --init
-  - ls -la
-  - export CC=clang
-  - export CXX=clang++
-  - mkdir build
-  - cd build
-  - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON ../
-  - make
-  - cd tests
-  - ctest  --output-on-failure
-  stage: test
-  image: localhost:5000/td-quantum/ubuntu-ci
-  tags:
-  - docker
+#test:ubuntu:clang:debug:
+#  script:
+#  - "sudo chown -R `whoami`: ."
+#  - git submodule update --init
+#  - ls -la
+#  - export CC=clang
+#  - export CXX=clang++
+#  - mkdir build
+#  - cd build
+#  - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON ../
+#  - make
+#  - cd tests
+#  - ctest  --output-on-failure
+#  stage: test
+#  image: localhost:5000/td-quantum/ubuntu-ci
+#  tags:
+#  - docker
 test:ubuntu:gcc:debug:
   script:
   - "sudo chown -R `whoami`: ."
