@@ -56,6 +56,20 @@ if(CARROT_ENABLE_ADDRESS_SANITIZER)
     add_compile_options(-fsanitize=address)
 endif()
 
+option(CARROT_ANALYSE_COVERAGE "Enable code coverage analysis support." OFF)
+
+if (CARROT_ANALYSE_COVERAGE)
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        include(CodeCoverage)
+        add_custom_target(ctest COMMAND ${CMAKE_CTEST_COMMAND})
+        setup_target_for_coverage(coverage ctest coverage)
+        add_compile_options(--coverage)
+        link_libraries(--coverage)
+    else()
+        message(WARNING "Code coverage analysis is only supported with GCC.")
+    endif()
+endif()
+
 include(GenerateExportHeader)
 include(FeatureSummary)
 
