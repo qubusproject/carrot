@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2016 Christopher Hinz
+//  Copyright (c) 2015-2017 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -15,11 +15,11 @@ underline_block::underline_block(block underlined_element_)
 {
 }
 
-void underline_block::render(form& output_form) const
+void underline_block::render(form& output_form, const style& s) const
 {
-    auto extent = underlined_element_.extent();
+    auto extent = underlined_element_.extent(s);
 
-    underlined_element_.render(output_form);
+    underlined_element_.render(output_form, s);
 
     for (long int i = 0; i < extent[1]; ++i)
     {
@@ -27,9 +27,9 @@ void underline_block::render(form& output_form) const
     }
 }
 
-std::array<long int, 2> underline_block::extent() const
+std::array<long int, 2> underline_block::extent(const style& s) const
 {
-    auto extent = underlined_element_.extent();
+    auto extent = underlined_element_.extent(s);
 
     return std::array<long int, 2>{extent[0] + 1, extent[1]};
 }

@@ -1,9 +1,11 @@
-//  Copyright (c) 2015-2016 Christopher Hinz
+//  Copyright (c) 2015-2017 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <carrot/caret_underline_block.hpp>
+
+#include <carrot/style.hpp>
 
 #include <utility>
 
@@ -11,40 +13,43 @@ namespace carrot
 {
 
 caret_underline_block::caret_underline_block(block underlined_element_, long int pos_)
-: underlined_element_(underlined_element_),
-  pos_(pos_),
-  caret_style_(make_style(color_flag::default_, formatting_flag::plain))
+: underlined_element_(underlined_element_), pos_(pos_)
 {
 }
 
-caret_underline_block::caret_underline_block(block underlined_element_, long int pos_,
-                                             style_flags caret_style_)
-: underlined_element_(underlined_element_), pos_(pos_), caret_style_(std::move(caret_style_))
+void caret_underline_block::render(form& output_form, const style& s) const
 {
-}
+    auto line_foreground_color = s.get_attribute<color>("text", id(), tags(), "color");
+    auto line_background_color = s.get_attribute<color>("text", id(), tags(), "background-color");
+    auto line_is_bold = s.get_attribute<bool>("text", id(), tags(), "bold");
 
-void caret_underline_block::render(form& output_form) const
-{
-    auto extent = underlined_element_.extent();
+    auto caret_foreground_color = s.get_attribute<color>("text", id(), tags(), "caret.foreground_color");
+    auto caret_background_color = s.get_attribute<color>("text", id(), tags(), "caret.background_color");
+    auto caret_is_bold = s.get_attribute<bool>("text", id(), tags(), "caret.bold");
 
-    underlined_element_.render(output_form);
+    auto extent = underlined_element_.extent(s);
+
+    underlined_element_.render(output_form, s);
 
     for (long int i = 0; i < extent[1]; ++i)
     {
         if (i == pos_)
         {
-            output_form.set(extent[0], i, glyph('^', caret_style_));
+            output_form.set(
+                    extent[0], i,
+                    glyph('^', caret_foreground_color, caret_background_color, caret_is_bold));
         }
         else
         {
-            output_form.set(extent[0], i, '~');
+            output_form.set(extent[0], i,
+                            glyph('~', line_foreground_color, line_background_color, line_is_bold));
         }
     }
 }
 
-std::array<long int, 2> caret_underline_block::extent() const
+std::array<long int, 2> caret_underline_block::extent(const style& s) const
 {
-    auto extent = underlined_element_.extent();
+    auto extent = underlined_element_.extent(s);
 
     return std::array<long int, 2>{extent[0] + 1, extent[1]};
 }
@@ -52,12 +57,5 @@ std::array<long int, 2> caret_underline_block::extent() const
 caret_underline_block underline_with_caret(block underlined_block, long int caret_position)
 {
     return caret_underline_block(std::move(underlined_block), caret_position);
-}
-
-caret_underline_block underline_with_caret(block underlined_block, long int caret_position,
-                                           style_flags caret_style)
-{
-    return caret_underline_block(std::move(underlined_block), caret_position,
-                                 std::move(caret_style));
 }
 }

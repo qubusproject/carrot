@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2016 Christopher Hinz
+//  Copyright (c) 2015-2017 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,15 +12,46 @@
 #include <type_traits>
 #include <memory>
 #include <utility>
+#include <string>
+#include <string_view>
+#include <vector>
+#include <utility>
 
 namespace carrot
 {
 
+class style;
+
 template <typename T>
 class block_base
 {
+public:
+    block_base() = default;
+
+    explicit block_base(std::vector<std::string> tags_)
+    : block_base("", std::move(tags_))
+    {
+    }
+
+    block_base(std::string id_, std::vector<std::string> tags_)
+    : id_(std::move(id_)), tags_(std::move(tags_))
+    {
+    }
+
+    std::string_view id() const
+    {
+        return id_;
+    }
+
+    const std::vector<std::string>& tags() const
+    {
+        return tags_;
+    }
 protected:
     ~block_base() = default;
+private:
+    std::string id_;
+    std::vector<std::string> tags_;
 };
 
 template <typename T>
@@ -63,14 +94,14 @@ public:
         return *this;
     }
 
-    void render(form& output_form) const
+    void render(form& output_form, const style& s) const
     {
-        self_->render(output_form);
+        self_->render(output_form, s);
     }
 
-    std::array<long int, 2> extent() const
+    std::array<long int, 2> extent(const style& s) const
     {
-        return self_->extent();
+        return self_->extent(s);
     }
 
     void swap(block& other) noexcept
@@ -95,9 +126,9 @@ private:
 
         virtual std::unique_ptr<block_interface> clone() const = 0;
 
-        virtual void render(form& mat) const = 0;
+        virtual void render(form& mat, const style& s) const = 0;
 
-        virtual std::array<long int, 2> extent() const = 0;
+        virtual std::array<long int, 2> extent(const style& s) const = 0;
     };
 
     template<typename Block>
@@ -114,14 +145,14 @@ private:
             return std::make_unique<block_wrapper<Block>>(value_);
         }
 
-        void render(form& output_form) const override
+        void render(form& output_form, const style& s) const override
         {
-            value_.render(output_form);
+            value_.render(output_form, s);
         }
 
-        std::array<long int, 2> extent() const override
+        std::array<long int, 2> extent(const style& s) const override
         {
-            return value_.extent();
+            return value_.extent(s);
         };
     private:
         Block value_;
@@ -131,6 +162,11 @@ private:
 };
 
 block operator<<(block lhs, block rhs);
+
+class plain_form;
+
+void render(const block& root, plain_form& output_form);
+void render(const block& root, plain_form& output_form, const style& s);
 }
 
 #endif

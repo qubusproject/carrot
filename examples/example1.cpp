@@ -11,7 +11,7 @@ carrot::block generate_partial_message()
 {
     using namespace carrot;
 
-    auto list = make_checkbox_list(make_style(color_flag::green, formatting_flag::plain), u8"\u2714");
+    auto list = make_checkbox_list();
 
     list.add(true, text("Start App"));
     list.add(true, text("Init logging"));
@@ -30,9 +30,9 @@ carrot::block generate_full_message()
 
     column.add(text("/home/christopher/git/work/carrot/examples/example1.cpp:31:"));
     column.add(text(""));
-    column.add(indent(partial_message, 4));
+    column.add(indent(partial_message));
 
-    return indent(column, 4);
+    return indent(column);
 }
 
 int main()
@@ -45,7 +45,12 @@ int main()
 
     auto message = generate_full_message();
 
-    message.render(form);
+    user_defined_style style(get_default_style());
+
+    style.add_rule("checkbox-list")
+            .add_attribute("symbol", u8"\u2714");
+
+    render(message, form, style);
 
     std::cout << form.to_string(target) << std::endl;
 }

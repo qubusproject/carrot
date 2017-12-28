@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2016 Christopher Hinz
+//  Copyright (c) 2015-2017 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -24,20 +24,20 @@ line_block& line_block::add(block b)
     return *this;
 }
 
-void line_block::render(form& output_form) const
+void line_block::render(form& output_form, const style& s) const
 {
     long int offset = 0;
 
     for (const auto& block : blocks_)
     {
-        auto extent = block.extent();
+        auto extent = block.extent(s);
 
         switch (direction_)
         {
             case growth_direction::right:
             {
                 form_view view(output_form, 0, offset);
-                block.render(view);
+                block.render(view, s);
 
                 offset += extent[1];
                 break;
@@ -45,7 +45,7 @@ void line_block::render(form& output_form) const
             case growth_direction::down:
             {
                 form_view view(output_form, offset, 0);
-                block.render(view);
+                block.render(view, s);
 
                 offset += extent[0];
                 break;
@@ -54,13 +54,13 @@ void line_block::render(form& output_form) const
     }
 }
 
-std::array<long int, 2> line_block::extent() const
+std::array<long int, 2> line_block::extent(const style& s) const
 {
     std::array<long int, 2> result{0, 0};
 
     for (const auto& block : blocks_)
     {
-        auto extent = block.extent();
+        auto extent = block.extent(s);
 
         switch (direction_)
         {
