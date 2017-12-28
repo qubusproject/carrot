@@ -11,10 +11,29 @@ find_package(GTest REQUIRED)
 
 add_executable(color color.cpp)
 target_link_libraries(color PRIVATE carrot GTest::GTest GTest::Main)
-gtest_add_tests(TARGET color)
+
+if (CMAKE_VERSION VERSION_LESS 3.10)
+    gtest_add_tests(TARGET color)
+else()
+    gtest_discover_tests(color)
+endif()
 
 add_executable(default_style default_style.cpp)
 target_link_libraries(default_style PRIVATE carrot GTest::GTest GTest::Main)
-gtest_add_tests(TARGET default_style)
+
+if (CMAKE_VERSION VERSION_LESS 3.10)
+    gtest_add_tests(TARGET default_style)
+else()
+    gtest_discover_tests(default_style)
+endif()
+
+add_executable(rendering rendering.cpp)
+target_link_libraries(rendering PRIVATE carrot GTest::GTest GTest::Main)
+
+if (CMAKE_VERSION VERSION_LESS 3.10)
+    gtest_add_tests(TARGET rendering)
+else()
+    gtest_discover_tests(rendering)
+endif()
 
 endif()

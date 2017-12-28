@@ -58,7 +58,10 @@ bool terminal_has_colors(int fd)
 bool has_color_support(int fd)
 {
 #ifdef __unix__
-    return isatty(fd) && terminal_has_colors(fd);
+    bool is_a_tty = isatty(fd) > 0;
+    bool has_colors = terminal_has_colors(fd);
+
+    return is_a_tty && has_colors;
 #else
     return false;
 #endif
@@ -98,6 +101,11 @@ target_info get_stdout_target(long int tab_width)
 target_info get_file_target(long int tab_width)
 {
     return target_info(false, tab_width);
+}
+
+target_info get_colorized_target(long int tab_width)
+{
+    return target_info(true, tab_width);
 }
 
 const std::locale& get_locale()

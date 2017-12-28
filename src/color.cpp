@@ -23,6 +23,9 @@ const color& color_table::lookup_color(const std::string& name) const
 {
     auto search_result = color_map_.find(name);
 
+    if (search_result == color_map_.end())
+        throw invalid_color_error("Unknown named color.");
+
     return search_result->second;
 }
 

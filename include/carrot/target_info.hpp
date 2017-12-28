@@ -35,6 +35,7 @@ private:
 
 target_info get_stdout_target(long int tab_width = 4);
 target_info get_file_target(long int tab_width = 4);
+target_info get_colorized_target(long int tab_width = 4);
 
 const std::locale& get_locale();
 }
