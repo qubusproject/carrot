@@ -148,7 +148,7 @@ rgb_color rgb(const color& c, const color_table& ctable)
         const color_table* ctable;
     };
 
-    return std::visit(rgb_converter(ctable), c);
+    return boost::apply_visitor(rgb_converter(ctable), c);
 }
 
 rgb_color rgb(const color& c)
@@ -176,7 +176,7 @@ rgb_color rgb(const color& c)
         }
     };
 
-    return std::visit(rgb_converter(), c);
+    return boost::apply_visitor(rgb_converter(), c);
 }
 
 rgb_color rgb(rgb_color c)
@@ -215,7 +215,7 @@ hsl_color hsl(const color& c, const color_table& ctable)
         const color_table* ctable;
     };
 
-    return std::visit(hsl_converter(ctable), c);
+    return boost::apply_visitor(hsl_converter(ctable), c);
 }
 
 hsl_color hsl(const color& c)
@@ -243,7 +243,7 @@ hsl_color hsl(const color& c)
         }
     };
 
-    return std::visit(hsl_converter(), c);
+    return boost::apply_visitor(hsl_converter(), c);
 }
 
 hsl_color hsl(hsl_color c)
@@ -282,7 +282,7 @@ color canonicalize(const color& c, const color_table& ctable)
         const color_table* ctable;
     };
 
-    return std::visit(canonicalizer(ctable), c);
+    return boost::apply_visitor(canonicalizer(ctable), c);
 }
 
 float distance(const color& color1, const color& color2)
@@ -304,30 +304,7 @@ color get_default_color()
 
 bool is_default_color(const color& c)
 {
-    struct is_df_color
-    {
-        bool operator()(const default_color&) const
-        {
-            return true;
-        }
-
-        bool operator()(const rgb_color&) const
-        {
-            return false;
-        }
-
-        bool operator()(const hsl_color&) const
-        {
-            return false;
-        }
-
-        bool operator()(const named_color&) const
-        {
-            return false;
-        }
-    };
-
-    return std::holds_alternative<default_color>(c);
+    return boost::get<default_color>(&c) != nullptr;
 }
 
 namespace

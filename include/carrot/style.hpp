@@ -9,12 +9,13 @@
 #include <carrot/color.hpp>
 #include <carrot/exception.hpp>
 
+#include <boost/variant.hpp>
+
 #include <memory>
 #include <optional>
 #include <stdexcept>
 #include <string>
 #include <string_view>
-#include <variant>
 #include <vector>
 
 namespace carrot
@@ -55,7 +56,7 @@ public:
         {
         }
 
-        std::variant<bool, std::string, color, integer> value;
+        boost::variant<bool, std::string, color, integer> value;
     };
 
     using integer = attribute::integer;
@@ -123,9 +124,9 @@ public:
     {
         try
         {
-            return std::get<T>(get_attribute(element_id, id, tags, attribute_id).value);
+            return boost::get<T>(get_attribute(element_id, id, tags, attribute_id).value);
         }
-        catch (const std::bad_variant_access&)
+        catch (const boost::bad_get&)
         {
             throw mismatched_attribute_type_error(std::string(attribute_id));
         }

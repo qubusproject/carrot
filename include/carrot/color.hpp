@@ -8,11 +8,12 @@
 
 #include <carrot/exception.hpp>
 
+#include <boost/variant.hpp>
+
 #include <array>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
-#include <variant>
 
 namespace carrot
 {
@@ -103,7 +104,7 @@ private:
     std::string name_;
 };
 
-using color = std::variant<default_color, rgb_color, hsl_color, named_color>;
+using color = boost::variant<default_color, rgb_color, hsl_color, named_color>;
 
 class color_table
 {
