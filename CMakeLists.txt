@@ -52,10 +52,11 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 message(STATUS "The cmake module path is: ${CMAKE_MODULE_PATH}")
 
-option(CARROT_ENABLE_ADDRESS_SANITIZER "Enable the address sanitizer" OFF)
+option(CARROT_ENABLE_SANITIZERS "Enable the address and undefined behaviour sanitizer" OFF)
 
-if(CARROT_ENABLE_ADDRESS_SANITIZER)
-    add_compile_options(-fsanitize=address)
+if(CARROT_ENABLE_SANITIZERS)
+    add_compile_options(-fsanitize=address,undefined)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address,undefined")
 endif()
 
 option(CARROT_ANALYSE_COVERAGE "Enable code coverage analysis support." OFF)
