@@ -1,0 +1,3 @@
+Checks: "-*,modernize-*,performance-*,readability-*,-readability-braces-around-statements,clang-analyzer-*,-clang-analyzer-alpha*,
+         cppcoreguidelines-*,misc-*,-clang-analyzer-alpha.core.CastToStruct,bugprone-*,-bugprone-bool-pointer-implicit-conversion"
+CheckOptions: [{key: AllowPointerConditions, value: 1}]}
