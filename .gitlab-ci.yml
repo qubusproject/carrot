@@ -11,7 +11,7 @@ test:arch:clang:release:
   - export CXX=clang++
   - mkdir build
   - cd build
-  - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
+  - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON -DCARROT_ENABLE_SANITIZERS=ON  ../
   - make
   - ctest  --output-on-failure
   stage: test
@@ -26,7 +26,7 @@ test:arch:gcc:release:
   - export CXX=g++
   - mkdir build
   - cd build
-  - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON ../
+  - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON -DCARROT_ENABLE_SANITIZERS=ON ../
   - make
   - ctest --output-on-failure
   stage: test
@@ -41,7 +41,7 @@ test:arch:clang:debug:
   - export CXX=clang++
   - mkdir build
   - cd build
-  - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON ../
+  - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON -DCARROT_ENABLE_SANITIZERS=ON ../
   - make
   - ctest  --output-on-failure
   stage: test
@@ -56,7 +56,7 @@ test:arch:gcc:debug:
   - export CXX=g++
   - mkdir build
   - cd build
-  - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON ../
+  - cmake -DCMAKE_BUILD_TYPE=Debug -DCARROT_BUILD_TESTS=ON -DCARROT_ENABLE_SANITIZERS=ON ../
   - make
   - ctest --output-on-failure
   stage: test
