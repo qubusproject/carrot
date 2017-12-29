@@ -31,7 +31,7 @@ private:
 };
 
 text_block text(const std::string& content);
-text_block text(const std::string& content_, std::vector<std::string> flags_);
+text_block text(const std::string& content, std::vector<std::string> flags);
 
 }
 

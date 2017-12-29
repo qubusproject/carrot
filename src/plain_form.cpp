@@ -9,6 +9,8 @@
 
 #include <boost/range/adaptor/sliced.hpp>
 
+#include <utility>
+
 namespace carrot
 {
 
@@ -158,7 +160,7 @@ void plain_form::clear()
 
 void plain_form::clear(glyph value)
 {
-    clear_glyph_ = value;
+    clear_glyph_ = std::move(value);
 
     clear();
 }

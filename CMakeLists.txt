@@ -72,6 +72,20 @@ if (CARROT_ANALYSE_COVERAGE)
     endif()
 endif()
 
+find_program(CARROT_CLANG_TIDY clang-tidy)
+
+if (CARROT_CLANG_TIDY)
+    set(CARROT_HAS_CLANG_TIDY TRUE)
+else()
+    set(CARROT_HAS_CLANG_TIDY FALSE)
+endif()
+
+option(CARROT_RUN_CLANG_TIDY "Toggle if CMake should run clang-tidy during compilation." ${CARROT_HAS_CLANG_TIDY})
+
+if (CARROT_RUN_CLANG_TIDY)
+    set(CMAKE_CXX_CLANG_TIDY clang-tidy;-p;${CMAKE_BINARY_DIR})
+endif()
+
 include(GenerateExportHeader)
 include(FeatureSummary)
 

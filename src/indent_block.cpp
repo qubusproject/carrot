@@ -14,15 +14,13 @@ namespace carrot
 {
 
 indent_block::indent_block(block indented_block_, long int indent_levels_)
-: indented_block_(indented_block_), indent_levels_(indent_levels_)
+: indented_block_(std::move(indented_block_)), indent_levels_(indent_levels_)
 {
 }
 
 void indent_block::render(form& output_form, const style& s) const
 {
     auto indent = s.get_attribute<style::integer>("indent", id(), tags(), "indent");
-
-    auto extent = indented_block_.extent(s);
 
     form_view view(output_form, 0, indent * indent_levels_);
 

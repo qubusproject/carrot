@@ -10,17 +10,18 @@
 #include <carrot/form_view.hpp>
 
 #include <algorithm>
+#include <utility>
 
 namespace carrot
 {
 
-grid_block::grid_block(long int rows, long int columns) : blocks_(boost::extents[rows][columns])
+grid_block::grid_block(long int rows_, long int columns_) : blocks_(boost::extents[rows_][columns_])
 {
 }
 
 void grid_block::set(long int row, long int column, block b)
 {
-    blocks_[row][column] = b;
+    blocks_[row][column] = std::move(b);
 }
 
 void grid_block::append_rows(long int n)
@@ -87,9 +88,9 @@ std::array<long int, 2> grid_block::extent(const style& s) const
     std::tie(row_heights, column_widths) = compute_layout(s);
 
     long int height =
-        std::accumulate(row_heights.begin(), row_heights.end(), 0, std::plus<long int>());
+        std::accumulate(row_heights.begin(), row_heights.end(), 0, std::plus<>());
     long int width =
-        std::accumulate(column_widths.begin(), column_widths.end(), 0, std::plus<long int>());
+        std::accumulate(column_widths.begin(), column_widths.end(), 0, std::plus<>());
 
     return std::array<long int, 2>{height, width};
 }
