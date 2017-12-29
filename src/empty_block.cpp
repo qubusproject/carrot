@@ -8,11 +8,11 @@
 namespace carrot
 {
 
-void empty_block::render(form& output_form, const style& s) const
+void empty_block::render(form& output_form [[maybe_unused]], const style& s [[maybe_unused]]) const
 {
 }
 
-std::array<long int, 2> empty_block::extent(const style&) const
+std::array<long int, 2> empty_block::extent(const style& s [[maybe_unused]]) const
 {
     return std::array<long int, 2>{0, 0};
 }

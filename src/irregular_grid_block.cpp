@@ -7,10 +7,12 @@
 
 #include <carrot/form_view.hpp>
 
+#include <utility>
+
 namespace carrot
 {
 
-void irregular_grid_block::row::render(form & mat, const style& s) const
+void irregular_grid_block::row::render(form & output_form, const style& s) const
 {
     long int column_offset = 0;
 
@@ -18,7 +20,7 @@ void irregular_grid_block::row::render(form & mat, const style& s) const
     {
         auto element_extent = element.extent(s);
 
-        form_view view(mat, 0, column_offset);
+        form_view view(output_form, 0, column_offset);
 
         element.render(view, s);
 
@@ -43,14 +45,14 @@ std::array<long int, 2> irregular_grid_block::row::extent(const style& s) const
 
 void irregular_grid_block::row::append(block element)
 {
-    elements_.push_back(element);
+    elements_.push_back(std::move(element));
 }
 
 void irregular_grid_block::add_to_row(long int row, block element)
 {
     rows_.resize(std::max(static_cast<std::size_t>(row + 1), rows_.size()));
 
-    rows_.at(row).append(element);
+    rows_.at(row).append(std::move(element));
 }
 
 void irregular_grid_block::render(form& output_form, const style& s) const

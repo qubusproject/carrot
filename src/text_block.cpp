@@ -53,7 +53,7 @@ void text_block::render(form& output_form, const style& s) const
     }
 }
 
-std::array<long int, 2> text_block::extent(const style&) const
+std::array<long int, 2> text_block::extent(const style& s [[maybe_unused]]) const
 {
     long int rows = rows_.size();
 

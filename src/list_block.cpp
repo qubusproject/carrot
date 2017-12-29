@@ -7,6 +7,8 @@
 
 #include <carrot/text_block.hpp>
 
+#include <utility>
+
 namespace carrot
 {
 list_block::list_block()
@@ -19,7 +21,7 @@ list_block& list_block::add(block b)
     grid_.append_row();
 
     grid_.set(grid_.rows() - 1, 0, text("* "));
-    grid_.set(grid_.rows() - 1, 1, b);
+    grid_.set(grid_.rows() - 1, 1, std::move(b));
 
     return *this;
 }

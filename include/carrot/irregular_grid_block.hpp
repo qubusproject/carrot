@@ -31,7 +31,7 @@ public:
 
     void add_to_row(long int row, block element);
 
-    void render(form & mat, const style& s) const;
+    void render(form & output_form, const style& s) const;
 
     std::array<long int, 2> extent(const style& s) const;
 

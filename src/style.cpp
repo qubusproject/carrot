@@ -94,13 +94,9 @@ style::attribute user_defined_style::get_attribute(std::string_view element_id, 
     }
 
     if (base_style_)
-    {
         return base_style_->get_attribute(element_id, id, tags, attribute_id);
-    }
-    else
-    {
-        throw missing_style_info_error();
-    }
+
+    throw missing_style_info_error();
 }
 
 style_rule& user_defined_style::add_rule(std::string element_id)
@@ -138,13 +134,9 @@ style::attribute augmented_style::get_attribute(std::string_view element_id, std
     }
 
     if (base_style_)
-    {
         return base_style_->get_attribute(element_id, id, tags, attribute_id);
-    }
-    else
-    {
-        throw missing_style_info_error();
-    }
+
+    throw missing_style_info_error();
 }
 
 style_rule& augmented_style::add_rule(std::string element_id)
