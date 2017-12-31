@@ -120,8 +120,6 @@ TEST(color, xterm_cmap)
 
     color_map cmap(carrot::get_xterm_color_table());
 
-    auto c = hsl(rgb_color(135, 135, 0));
-
     EXPECT_EQ(cmap.map_color(rgb_color(0, 150, 0)), 28);
     EXPECT_EQ(cmap.map_color(rgb_color(0, 200, 0)), 40);
     EXPECT_EQ(cmap.map_color(rgb_color(0, 215, 135)), 42);
