@@ -148,3 +148,16 @@ TEST(default_style, underline_block)
 
     EXPECT_NO_THROW(render(msg, form));
 }
+
+TEST(default_style, table_block)
+{
+    auto msg = make_table(4);
+
+    std::vector<block> columns(4, make_empty());
+
+    msg.add_row(std::move(columns));
+
+    plain_form form;
+
+    EXPECT_NO_THROW(render(msg, form));
+}
