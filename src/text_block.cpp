@@ -28,8 +28,8 @@ text_block::text_block(const std::string& content_)
 {
 }
 
-text_block::text_block(const std::string& content_, std::vector<std::string> flags_)
-: block_base<text_block>(std::move(flags_))
+text_block::text_block(const std::string& content_, std::vector<std::string> tags_)
+: block_base<text_block>(std::move(tags_))
 {
     boost::split(rows_, content_, boost::is_any_of("\n"));
 }

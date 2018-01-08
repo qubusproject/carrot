@@ -11,7 +11,12 @@ namespace carrot
 {
 
 underline_block::underline_block(block underlined_element_)
-: underlined_element_(underlined_element_)
+: underline_block(std::move(underlined_element_), {})
+{
+}
+
+underline_block::underline_block(block underlined_element_, std::vector<std::string> tags_)
+: block_base<underline_block>(std::move(tags_)), underlined_element_(underlined_element_)
 {
 }
 
@@ -37,5 +42,10 @@ std::array<long int, 2> underline_block::extent(const style& s) const
 underline_block underline(block underlined_element)
 {
     return underline_block(std::move(underlined_element));
+}
+
+underline_block underline(block underlined_element, std::vector<std::string> tags)
+{
+    return underline_block(std::move(underlined_element), std::move(tags));
 }
 }

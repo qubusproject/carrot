@@ -18,6 +18,7 @@ class caret_block final : public block_base<caret_block>
 {
 public:
     caret_block(block marked_block_, long int pos_);
+    caret_block(block marked_block_, long int pos_, std::vector<std::string> tags_);
 
     void render(form& output_form, const style& s) const;
 
@@ -29,6 +30,7 @@ private:
 };
 
 caret_block mark_with_caret(block marked_block, long int caret_position);
+caret_block mark_with_caret(block marked_block, long int caret_position, std::vector<std::string> tags);
 }
 
 #endif

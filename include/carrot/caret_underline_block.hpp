@@ -16,6 +16,7 @@ class caret_underline_block final : public block_base<caret_underline_block>
 {
 public:
     caret_underline_block(block underlined_element_, long int pos_);
+    caret_underline_block(block underlined_element_, long int pos_, std::vector<std::string> tags_);
 
     void render(form& output_form, const style& s) const;
 
@@ -27,6 +28,8 @@ private:
 };
 
 caret_underline_block underline_with_caret(block underlined_block, long int caret_position);
+caret_underline_block underline_with_caret(block underlined_block, long int caret_position,
+                                           std::vector<std::string> tags);
 }
 
 #endif

@@ -20,7 +20,7 @@ class text_block final : public block_base<text_block>
 {
 public:
     explicit text_block(const std::string& content_);
-    text_block(const std::string& content_, std::vector<std::string> flags_);
+    text_block(const std::string& content_, std::vector<std::string> tags_);
 
     void render(form& output_form, const style& s) const;
 
@@ -31,7 +31,7 @@ private:
 };
 
 text_block text(const std::string& content);
-text_block text(const std::string& content, std::vector<std::string> flags);
+text_block text(const std::string& content, std::vector<std::string> tags);
 
 }
 
