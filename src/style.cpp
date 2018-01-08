@@ -58,9 +58,9 @@ style_rule::style_rule(std::string element_id_, std::string id_, std::string tag
 
 std::optional<style_rule::attribute> style_rule::get_attribute(std::string_view attribute_id) const
 {
-    auto search_result = std::find_if(attributes_.begin(), attributes_.end(), [&](const auto& value) {
-        return value.first == attribute_id;
-    });
+    auto search_result =
+        std::find_if(attributes_.begin(), attributes_.end(),
+                     [&](const auto& value) { return value.first == attribute_id; });
 
     if (search_result == attributes_.end())
         return {};
@@ -172,8 +172,10 @@ std::unique_ptr<style> get_default_style()
         .add_attribute("symbol", u8"x");
 
     s->add_rule("caret-underline")
-            .add_attribute("caret.color", rgb_color(0, 255, 0))
-            .add_attribute("caret.bold", false);
+        .add_attribute("caret.color", rgb_color(0, 255, 0))
+        .add_attribute("caret.bold", false);
+
+    s->add_rule("*", "bold").add_attribute("bold", true);
 
     return s;
 }
