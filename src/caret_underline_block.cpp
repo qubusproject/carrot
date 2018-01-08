@@ -13,14 +13,23 @@ namespace carrot
 {
 
 caret_underline_block::caret_underline_block(block underlined_element_, long int pos_)
-: underlined_element_(underlined_element_), pos_(pos_)
+: caret_underline_block(std::move(underlined_element_), pos_, {})
+{
+}
+
+caret_underline_block::caret_underline_block(block underlined_element_, long int pos_,
+                                             std::vector<std::string> tags_)
+: block_base<caret_underline_block>(std::move(tags_)),
+  underlined_element_(std::move(underlined_element_)),
+  pos_(pos_)
 {
 }
 
 void caret_underline_block::render(form& output_form, const style& s) const
 {
     auto foreground_color = s.get_attribute<color>("caret-underline", id(), tags(), "color");
-    auto background_color = s.get_attribute<color>("caret-underline", id(), tags(), "background-color");
+    auto background_color =
+        s.get_attribute<color>("caret-underline", id(), tags(), "background-color");
     auto line_is_bold = s.get_attribute<bool>("caret-underline", id(), tags(), "bold");
 
     auto caret_color = s.get_attribute<color>("caret-underline", id(), tags(), "caret.color");
@@ -34,9 +43,7 @@ void caret_underline_block::render(form& output_form, const style& s) const
     {
         if (i == pos_)
         {
-            output_form.set(
-                    extent[0], i,
-                    glyph('^', caret_color, background_color, caret_is_bold));
+            output_form.set(extent[0], i, glyph('^', caret_color, background_color, caret_is_bold));
         }
         else
         {
@@ -56,5 +63,11 @@ std::array<long int, 2> caret_underline_block::extent(const style& s) const
 caret_underline_block underline_with_caret(block underlined_block, long int caret_position)
 {
     return caret_underline_block(std::move(underlined_block), caret_position);
+}
+
+caret_underline_block underline_with_caret(block underlined_block, long int caret_position,
+                                           std::vector<std::string> tags)
+{
+    return caret_underline_block(std::move(underlined_block), caret_position, std::move(tags));
 }
 }

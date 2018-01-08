@@ -15,6 +15,7 @@ class underline_block final : public block_base<underline_block>
 {
 public:
     explicit underline_block(block underlined_element_);
+    underline_block(block underlined_element_, std::vector<std::string> tags_);
 
     void render(form& output_form, const style& s) const;
 
@@ -25,6 +26,7 @@ private:
 };
 
 underline_block underline(block underlined_element);
+underline_block underline(block underlined_element, std::vector<std::string> tags);
 }
 
 #endif

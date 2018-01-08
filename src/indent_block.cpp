@@ -14,7 +14,15 @@ namespace carrot
 {
 
 indent_block::indent_block(block indented_block_, long int indent_levels_)
-: indented_block_(std::move(indented_block_)), indent_levels_(indent_levels_)
+: indent_block(std::move(indented_block_), indent_levels_, {})
+{
+}
+
+indent_block::indent_block(block indented_block_, long int indent_levels_,
+                           std::vector<std::string> tags_)
+: block_base<indent_block>(std::move(tags_)),
+  indented_block_(std::move(indented_block_)),
+  indent_levels_(indent_levels_)
 {
 }
 
@@ -39,5 +47,15 @@ std::array<long int, 2> indent_block::extent(const style& s) const
 indent_block indent(block indented_block, long int indent_levels)
 {
     return indent_block(std::move(indented_block), indent_levels);
+}
+
+indent_block indent(block indented_block, std::vector<std::string> tags)
+{
+    return indent(std::move(indented_block), 1, std::move(tags));
+}
+
+indent_block indent(block indented_block, long int indent_levels, std::vector<std::string> tags)
+{
+    return indent_block(std::move(indented_block), indent_levels, std::move(tags));
 }
 }

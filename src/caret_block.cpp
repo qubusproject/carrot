@@ -13,14 +13,19 @@ namespace carrot
 {
 
 caret_block::caret_block(block marked_block_, long int pos_)
-: marked_block_(std::move(marked_block_)), pos_(pos_)
+: caret_block(std::move(marked_block_), pos_, {})
+{
+}
+
+caret_block::caret_block(block marked_block_, long int pos_, std::vector<std::string> tags_)
+: block_base<caret_block>(std::move(tags_)), marked_block_(std::move(marked_block_)), pos_(pos_)
 {
 }
 
 void caret_block::render(form& output_form, const style& s) const
 {
     auto foreground_color = s.get_attribute<color>("caret", id(), tags(), "color");
-    auto background_color = s.get_attribute<color>("caret", id(), tags(),  "background-color");
+    auto background_color = s.get_attribute<color>("caret", id(), tags(), "background-color");
     auto bold = s.get_attribute<bool>("caret", id(), tags(), "bold");
 
     auto extent = marked_block_.extent(s);
@@ -41,5 +46,10 @@ std::array<long int, 2> caret_block::extent(const style& s) const
 caret_block mark_with_caret(block marked_block, long int caret_position)
 {
     return caret_block(std::move(marked_block), caret_position);
+}
+
+caret_block mark_with_caret(block marked_block, long int caret_position, std::vector<std::string> tags)
+{
+    return caret_block(std::move(marked_block), caret_position, std::move(tags));
 }
 }
