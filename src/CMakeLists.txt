@@ -27,6 +27,7 @@ target_include_directories(carrot PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/i
 target_link_libraries(carrot PUBLIC ${Boost_LIBRARIES})
 target_compile_options(carrot PRIVATE ${LTO_CXX_OPTIONS})
 set_target_properties(carrot PROPERTIES LINK_FLAGS "${LTO_CXX_OPTIONS}")
+set_target_properties(carrot PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 if (CURSES_FOUND)
     target_include_directories(carrot PRIVATE ${CURSES_INCLUDE_DIR})
