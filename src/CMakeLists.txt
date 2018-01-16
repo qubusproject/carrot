@@ -37,10 +37,10 @@ endif()
 
 generate_export_header(carrot)
 
-set_property(TARGET carrot PROPERTY VERSION 0.1.0)
+set_property(TARGET carrot PROPERTY VERSION 0.2.0)
 set_property(TARGET carrot PROPERTY SOVERSION 0)
 set_property(TARGET carrot PROPERTY INTERFACE_carrot_MAJOR_VERSION 0)
-set_property(TARGET carrot PROPERTY INTERFACE_carrot_MINOR_VERSION 1)
+set_property(TARGET carrot PROPERTY INTERFACE_carrot_MINOR_VERSION 2)
 set_property(TARGET carrot APPEND PROPERTY COMPATIBLE_INTERFACE_STRING carrot_MAJOR_VERSION)
 set_property(TARGET carrot APPEND PROPERTY COMPATIBLE_INTERFACE_STRING carrot_MINOR_VERSION)
 
@@ -57,7 +57,7 @@ include(CMakePackageConfigHelpers)
 
 write_basic_package_version_file(
         "${CMAKE_CURRENT_BINARY_DIR}/carrot/carrot-config-version.cmake"
-        VERSION 0.1.0
+        VERSION 0.2.0
         COMPATIBILITY AnyNewerVersion
 )
 
