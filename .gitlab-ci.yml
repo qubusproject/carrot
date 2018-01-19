@@ -215,7 +215,7 @@ deploy:source_code:
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_VERSION_AFFIX=-dev ../
   - make package_source
-  - rsync -az --delete *-src.tar.7z *-src.tar.bz2 *-src.tar.gz *-src.tar.xz *-src.zip ssh-523024-chinz@qubusproject.org:webseiten/carrot/downloads/src
+  - rsync -az --delete *-src.7z *-src.tar.bz2 *-src.tar.gz *-src.tar.xz *-src.zip ssh-523024-chinz@qubusproject.org:webseiten/carrot/downloads/src
   stage: deploy
   tags:
   - docker
@@ -223,7 +223,7 @@ deploy:source_code:
   - master
   artifacts:
     paths:
-    - build/*-src.tar.7z
+    - build/*-src.7z
     - build/*-src.tar.bz2
     - build/*-src.tar.gz
     - build/*-src.tar.xz
@@ -238,7 +238,7 @@ deploy:ubuntu:binary:
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Release -DCPACK_SYSTEM_NAME=ubuntu -DCARROT_VERSION_AFFIX=-dev ../
   - make package
-  - rsync -az --delete *.tar.7z *.tar.bz2 *.tar.gz *.tar.xz *.zip ssh-523024-chinz@qubusproject.org:webseiten/carrot/downloads/bin
+  - rsync -az --delete *.7z *.tar.bz2 *.tar.gz *.tar.xz *.zip ssh-523024-chinz@qubusproject.org:webseiten/carrot/downloads/bin
   stage: deploy
   image: localhost:5000/td-quantum/ubuntu-ci
   tags:
@@ -247,7 +247,7 @@ deploy:ubuntu:binary:
   - master
   artifacts:
     paths:
-    - build/*.tar.7z
+    - build/*.7z
     - build/*.tar.bz2
     - build/*.tar.gz
     - build/*.tar.xz
@@ -262,7 +262,7 @@ deploy:ubuntu-lts:binary:
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Release -DCPACK_SYSTEM_NAME=ubuntu-lts -DCARROT_VERSION_AFFIX=-dev ../
   - make package
-  - rsync -az --delete *.tar.7z *.tar.bz2 *.tar.gz *.tar.xz *.zip ssh-523024-chinz@qubusproject.org:webseiten/carrot/downloads/bin
+  - rsync -az --delete *.7z *.tar.bz2 *.tar.gz *.tar.xz *.zip ssh-523024-chinz@qubusproject.org:webseiten/carrot/downloads/bin
   stage: deploy
   image: localhost:5000/td-quantum/ubuntu-lts-ci
   tags:
@@ -271,7 +271,7 @@ deploy:ubuntu-lts:binary:
   - master
   artifacts:
     paths:
-    - build/*.tar.7z
+    - build/*.7z
     - build/*.tar.bz2
     - build/*.tar.gz
     - build/*.tar.xz
