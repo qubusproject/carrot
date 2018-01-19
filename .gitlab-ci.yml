@@ -1,6 +1,7 @@
 stages:
 - test
 - analyze
+- deploy
 
 test:arch:clang:release:
   script:
@@ -206,3 +207,69 @@ analyze:coverage:
   stage: analyze
   tags:
   - docker
+
+deploy:source_code:
+  script:
+  - "sudo chown -R `whoami`: ."
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_VERSION_AFFIX=-dev ../
+  - make package_source
+  - rsync -az --delete *-src.tar.bz2 *-src.tar.gz *-src.tar.xz *-src.tar.Z ssh-523024-chinz@qubusproject.org:webseiten/carrot/downloads/src
+  stage: deploy
+  tags:
+  - docker
+  only:
+  - master
+  artifacts:
+    paths:
+    - build/*-src.tar.bz2
+    - build/*-src.tar.gz
+    - build/*-src.tar.xz
+    - build/*-src.tar.Z
+    expire_in: 1 day
+  dependencies: []
+
+deploy:ubuntu:binary:
+  script:
+  - "sudo chown -R `whoami`: ."
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Release -DCPACK_SYSTEM_NAME=ubuntu -DCARROT_VERSION_AFFIX=-dev ../
+  - make package
+  - rsync -az --delete *.sh *.tar.gz *.tar.Z ssh-523024-chinz@qubusproject.org:webseiten/carrot/downloads/bin
+  stage: deploy
+  image: localhost:5000/td-quantum/ubuntu-ci
+  tags:
+  - docker
+  only:
+  - master
+  artifacts:
+    paths:
+    - build/*.sh
+    - build/*.tar.gz
+    - build/*.tar.Z
+    expire_in: 1 day
+  dependencies: []
+
+deploy:ubuntu-lts:binary:
+  script:
+  - "sudo chown -R `whoami`: ."
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Release -DCPACK_SYSTEM_NAME=ubuntu-lts -DCARROT_VERSION_AFFIX=-dev ../
+  - make package
+  - rsync -az --delete *.sh *.tar.gz *.tar.Z ssh-523024-chinz@qubusproject.org:webseiten/carrot/downloads/bin
+  stage: deploy
+  image: localhost:5000/td-quantum/ubuntu-lts-ci
+  tags:
+  - docker
+  only:
+  - master
+  artifacts:
+    paths:
+    - build/*.sh
+    - build/*.tar.gz
+    - build/*.tar.Z
+    expire_in: 1 day
+  dependencies: []
