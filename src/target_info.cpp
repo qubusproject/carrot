@@ -5,6 +5,7 @@
 
 #include <carrot/target_info.hpp>
 
+#include <boost/locale/boundary/facets.hpp>
 #include <boost/locale/generator.hpp>
 #include <boost/locale/info.hpp>
 
@@ -21,6 +22,7 @@ extern "C" struct term* set_curterm(struct term* termp);
 extern "C" int del_curterm(struct term* termp);
 extern "C" int tigetnum(char* capname);
 
+#include <locale>
 #include <mutex>
 
 #endif
@@ -124,11 +126,19 @@ const std::locale& get_locale()
             if (!info.utf8())
                 throw invalid_target_error("The target's encoding is not UTF-8.");
 
+            bool supports_boundary_indexing =
+                std::has_facet<boost::locale::boundary::boundary_indexing<char>>(loc);
+
+            if (!supports_boundary_indexing)
+                throw invalid_target_error("Boundary indexing is not supported by the native "
+                                           "locale. Maybe ICU is not detected correctly.");
+
             return loc;
         }
         catch (const std::bad_cast&)
         {
-            throw invalid_target_error("Invalid locale '" + loc.name() + "': Locale info is unavailable.");
+            throw invalid_target_error("Invalid locale '" + loc.name() +
+                                       "': Locale info is unavailable.");
         }
     }();
 
