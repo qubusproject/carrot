@@ -117,12 +117,19 @@ const std::locale& get_locale()
 
         auto loc = gen("");
 
-        const auto& info = std::use_facet<boost::locale::info>(loc);
+        try
+        {
+            const auto& info = std::use_facet<boost::locale::info>(loc);
 
-        if (!info.utf8())
-            throw invalid_target_error("The target's encoding is not UTF-8.");
+            if (!info.utf8())
+                throw invalid_target_error("The target's encoding is not UTF-8.");
 
-        return loc;
+            return loc;
+        }
+        catch (const std::bad_cast&)
+        {
+            throw invalid_target_error("Invalid locale '" + loc.name() + "': Locale info is unavailable.");
+        }
     }();
 
     return loc;
