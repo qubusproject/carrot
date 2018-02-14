@@ -23,8 +23,7 @@
 namespace carrot
 {
 
-text_block::text_block(const std::string& content_)
-: text_block(content_, {})
+text_block::text_block(const std::string& content_) : text_block(content_, {})
 {
 }
 
@@ -42,18 +41,26 @@ void text_block::render(form& output_form, const style& s) const
 
     for (long int row = 0; row < rows_.size(); ++row)
     {
+#ifdef CARROT_WITH_UTF8_SUPPORT
         boost::locale::boundary::ssegment_index index(
-                boost::locale::boundary::character, rows_[row].begin(), rows_[row].end(), get_locale());
+            boost::locale::boundary::character, rows_[row].begin(), rows_[row].end(), get_locale());
+
+        auto first = index.begin();
+        auto last = index.end();
+#else
+        auto first = rows_[row].begin();
+        auto last = rows_[row].end();
+#endif
 
         long int column = 0;
-        for (auto iter = index.begin(); iter != index.end(); ++iter, ++column)
+        for (auto iter = first; iter != last; ++iter, ++column)
         {
             output_form.set(row, column, glyph(*iter, foreground_color, background_color, bold));
         }
     }
 }
 
-std::array<long int, 2> text_block::extent(const style& s [[maybe_unused]]) const
+std::array<long int, 2> text_block::extent(const style& s[[maybe_unused]]) const
 {
     long int rows = rows_.size();
 

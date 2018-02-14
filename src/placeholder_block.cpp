@@ -27,11 +27,19 @@ void placeholder_block::render(form& output_form, const style& s) const
     auto bold = s.get_attribute<bool>("placeholder", id(), tags(), "bold");
     auto content = s.get_attribute<std::string>("placeholder", id(), tags(), "content");
 
-    boost::locale::boundary::ssegment_index index(boost::locale::boundary::character,
-                                                  content.begin(), content.end(), get_locale());
+#ifdef CARROT_WITH_UTF8_SUPPORT
+    boost::locale::boundary::ssegment_index index(
+        boost::locale::boundary::character, content.begin(), content.end(), get_locale());
+
+    auto first = index.begin();
+    auto last = index.end();
+#else
+    auto first = content.begin();
+    auto last = content.end();
+#endif
 
     long int column = 0;
-    for (auto iter = index.begin(); iter != index.end(); ++iter, ++column)
+    for (auto iter = first; iter != last; ++iter, ++column)
     {
         output_form.set(0, column, glyph(*iter, foreground_color, background_color, bold));
     }

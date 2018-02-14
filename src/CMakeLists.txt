@@ -1,11 +1,19 @@
-#  Copyright (c) 2015-2017 Christopher Hinz
+#  Copyright (c) 2015-2018 Christopher Hinz
 #
 #  Distributed under the Boost Software License, Version 1.0. (See accompanying
 #  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 option(BUILD_SHARED_LIBS "Build the library as a shared library." OFF)
 
-find_package(Boost 1.58.0 COMPONENTS locale REQUIRED)
+option(CARROT_WITH_UTF8_SUPPORT "Enable support for UTF-8." ON)
+
+if (CARROT_WITH_UTF8_SUPPORT)
+    set(REQUIRED_BOOST_COMPONENTS locale)
+else()
+    set(REQUIRED_BOOST_COMPONENTS)
+endif()
+
+find_package(Boost 1.58.0 COMPONENTS ${REQUIRED_BOOST_COMPONENTS} REQUIRED)
 
 find_package(Curses)
 
@@ -33,6 +41,10 @@ if (CURSES_FOUND)
     target_include_directories(carrot PRIVATE ${CURSES_INCLUDE_DIR})
     target_link_libraries(carrot PRIVATE ${CURSES_LIBRARIES})
     target_compile_definitions(carrot PRIVATE -DHAVE_TERMINFO)
+endif()
+
+if (CARROT_WITH_UTF8_SUPPORT)
+    target_compile_definitions(carrot PRIVATE -DCARROT_WITH_UTF8_SUPPORT)
 endif()
 
 generate_export_header(carrot)

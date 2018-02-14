@@ -119,6 +119,7 @@ const std::locale& get_locale()
 
         auto loc = gen("");
 
+#ifdef CARROT_WITH_UTF8_SUPPORT
         try
         {
             const auto& info = std::use_facet<boost::locale::info>(loc);
@@ -140,6 +141,9 @@ const std::locale& get_locale()
             throw invalid_target_error("Invalid locale '" + loc.name() +
                                        "': Locale info is unavailable.");
         }
+#else
+        return loc;
+#endif
     }();
 
     return loc;
