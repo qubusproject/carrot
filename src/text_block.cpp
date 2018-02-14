@@ -67,10 +67,18 @@ std::array<long int, 2> text_block::extent(const style& s[[maybe_unused]]) const
     long int rows = rows_.size();
 
     std::function<long int(const std::string&)> get_row_lenght = [](const std::string& value) {
+#ifdef CARROT_WITH_UTF8_SUPPORT
         boost::locale::boundary::ssegment_index index(boost::locale::boundary::character,
                                                       value.begin(), value.end(), get_locale());
 
-        return std::distance(index.begin(), index.end());
+        auto first = index.begin();
+        auto last = index.end();
+#else
+        auto first = value.begin();
+        auto last = value.end();
+#endif
+
+        return std::distance(first, last);
     };
 
     auto row_lenghts = rows_ | boost::adaptors::transformed(get_row_lenght);
