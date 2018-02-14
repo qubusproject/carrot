@@ -5,9 +5,11 @@
 
 #include <carrot/target_info.hpp>
 
-#include <boost/locale/boundary/facets.hpp>
 #include <boost/locale/generator.hpp>
+#ifdef CARROT_WITH_UTF8_SUPPORT
+#include <boost/locale/boundary/facets.hpp>
 #include <boost/locale/info.hpp>
+#endif
 
 #ifdef __unix__
 

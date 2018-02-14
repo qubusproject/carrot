@@ -8,7 +8,9 @@
 #include <carrot/style.hpp>
 #include <carrot/target_info.hpp>
 
+#ifdef CARROT_WITH_UTF8_SUPPORT
 #include <boost/locale/boundary.hpp>
+#endif
 
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>

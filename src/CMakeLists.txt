@@ -7,13 +7,7 @@ option(BUILD_SHARED_LIBS "Build the library as a shared library." OFF)
 
 option(CARROT_WITH_UTF8_SUPPORT "Enable support for UTF-8." ON)
 
-if (CARROT_WITH_UTF8_SUPPORT)
-    set(REQUIRED_BOOST_COMPONENTS locale)
-else()
-    set(REQUIRED_BOOST_COMPONENTS)
-endif()
-
-find_package(Boost 1.58.0 COMPONENTS ${REQUIRED_BOOST_COMPONENTS} REQUIRED)
+find_package(Boost 1.58.0 COMPONENTS locale REQUIRED)
 
 find_package(Curses)
 

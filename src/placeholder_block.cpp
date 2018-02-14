@@ -7,7 +7,9 @@
 
 #include <carrot/style.hpp>
 
+#ifdef CARROT_WITH_UTF8_SUPPORT
 #include <boost/locale/boundary.hpp>
+#endif
 
 #include <iterator>
 #include <utility>
