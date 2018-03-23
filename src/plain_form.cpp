@@ -85,7 +85,7 @@ std::string get_default_escape_sequence()
 {
     return "\33[0m";
 }
-}
+} // namespace
 
 plain_form::plain_form(long int rows_, long int columns_)
 : data_(boost::extents[rows_][columns_]), clear_glyph_(' ')
@@ -110,12 +110,39 @@ std::string plain_form::to_string(const target_info& target) const
 
     for (long int row = 0; row < data_.shape()[0]; ++row)
     {
-        for (long int column = 0; column < data_.shape()[1]; ++column)
+        long int last_significant_column = [&]
         {
-            if (target.supports_colorized_output())
+            long int column = data_.shape()[1];
+
+            for (; column-- > 0;)
             {
                 const glyph& g = data_[row][column];
 
+                if (target.supports_colorized_output())
+                {
+                    if (!is_default_color(g.foreground_color))
+                        return column;
+
+                    if (!is_default_color(g.background_color))
+                        return column;
+
+                    if (g.bold)
+                        return column;
+                }
+
+                if (g.content != " ")
+                    return column;
+            }
+
+            return column;
+        }();
+
+        for (long int column = 0; column <= last_significant_column; ++column)
+        {
+            const glyph& g = data_[row][column];
+
+            if (target.supports_colorized_output())
+            {
                 auto escape_seq = get_escape_sequences_for_style(g.foreground_color,
                                                                  g.background_color, g.bold, cmap);
 
@@ -126,7 +153,7 @@ std::string plain_form::to_string(const target_info& target) const
             }
 
             result +=
-                std::string(data_[row][column].content.begin(), data_[row][column].content.end());
+                std::string(g.content.begin(), g.content.end());
         }
 
         if (target.supports_colorized_output())
@@ -195,4 +222,4 @@ void plain_form::resize_if_outside_matrix(long int row, long int column)
         }
     }
 }
-}
+} // namespace carrot
