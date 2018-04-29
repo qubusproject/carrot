@@ -86,6 +86,7 @@ option(CARROT_RUN_CLANG_TIDY "Toggle if CMake should run clang-tidy during compi
 
 if (CARROT_RUN_CLANG_TIDY)
     set(CMAKE_CXX_CLANG_TIDY clang-tidy;-p;${CMAKE_BINARY_DIR})
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 endif()
 
 include(GenerateExportHeader)
