@@ -7,7 +7,7 @@ option(BUILD_SHARED_LIBS "Build the library as a shared library." OFF)
 
 option(CARROT_WITH_UTF8_SUPPORT "Enable support for UTF-8." ON)
 
-find_package(Boost 1.58.0 COMPONENTS locale REQUIRED)
+find_package(Boost 1.58.0 COMPONENTS locale system exception thread exception chrono REQUIRED)
 
 find_package(Curses)
 
@@ -39,6 +39,10 @@ endif()
 
 if (CARROT_WITH_UTF8_SUPPORT)
     target_compile_definitions(carrot PRIVATE -DCARROT_WITH_UTF8_SUPPORT)
+endif()
+
+if (MSVC)
+    target_compile_options(carrot PUBLIC -EHsc)
 endif()
 
 generate_export_header(carrot)

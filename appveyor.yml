@@ -1,0 +1,47 @@
+version: '{branch}-{build}'
+
+environment:
+  PYTHON: "C:\\Python36-x64"
+
+  CONAN_USERNAME: "qubusproject"
+  CONAN_CHANNEL: "testing"
+  CONAN_UPLOAD: "https://api.bintray.com/conan/qubusproject/ci-cache"
+  CONAN_USER_HOME: "C:\\projects\\conan\\"
+
+  CONAN_LOGIN_USERNAME:
+    secure: GxHa8NfVU03o0B2OWcFEzg==
+  CONAN_LOGIN_PASSWD:
+    secure: rqy1axsQrrS15a2HzxJlzzCYvG+PmQN2b9os4CM8j7Q=
+
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      MSVC_GENERATOR: Visual Studio 15 2017
+
+configuration:
+  - Debug
+  - Release
+
+platform:
+  - x64
+
+shallow_clone: true
+
+install:
+  - set PATH=%PYTHON%;%PATH%;%PYTHON%/Scripts/
+  - python --version
+  - pip3.exe install conan --upgrade
+  - conan user
+  - conan remote add ci-cache https://api.bintray.com/conan/qubusproject/ci-cache
+  - conan remote add qubusproject https://api.bintray.com/conan/qubusproject/conan
+  - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+  - "conan install --build outdated -s build_type=%CONFIGURATION% -s gtest:build_type=Release -if build/ conan/"
+
+before_build:
+  - cmd: cmake -H. -Bbuild -G"%MSVC_GENERATOR%" -A%PLATFORM% -DCMAKE_BUILD_TYPE=%CONFIGURATION% -DCMAKE_TOOLCHAIN_FILE=build/conan_paths.cmake -DCARROT_BUILD_TESTS=ON -DCMAKE_CXX_FLAGS="-DBOOST_ALL_NO_LIB"
+
+build_script:
+  - cmd: cmake --build build --config %CONFIGURATION% -- /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /verbosity:minimal /nologo
+
+test_script:
+  - cmd: cd build
+  - cmd: ctest --output-on-failure
