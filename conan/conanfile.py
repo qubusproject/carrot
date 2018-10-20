@@ -11,6 +11,7 @@ class CarrotConan(ConanFile):
     generators = "cmake_paths"
     build_requires = "gtest/1.9.0@qubusproject/dev"
     requires = "boost/1.67.0@qubusproject/stable"
+    exports_sources = "../*"
 
     def configure(self):
         if self.settings.compiler != "Visual Studio" and not self.options["boost"].shared:
@@ -20,9 +21,12 @@ class CarrotConan(ConanFile):
         cmake = CMake(self)
 
         cmake.definitions["CMAKE_TOOLCHAIN_FILE"] = "conan_paths.cmake"
+        cmake.definitions["CARROT_BUILD_TESTS"] = "True"
 
-        cmake.configure(source_folder=".")
+        cmake.configure(build_folder="./build")
         cmake.build()
+
+        cmake.test()
 
         cmake.install()
 
