@@ -3,11 +3,11 @@
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gtest/gtest.h>
+#include "catch.hpp"
 
 #include <carrot/carrot.hpp>
 
-TEST(rendering, basic)
+TEST_CASE("Basic rendering", "[rendering]")
 {
     using namespace carrot;
 
@@ -29,7 +29,7 @@ TEST(rendering, basic)
     form.to_string(target);
 }
 
-TEST(rendering, colorized)
+TEST_CASE("Colorized rendering", "[rendering]")
 {
     using namespace carrot;
 
@@ -51,11 +51,11 @@ TEST(rendering, colorized)
     form.to_string(target);
 }
 
-TEST(rendering, tab_width)
+TEST_CASE("Changing the tabulator width", "[rendering]")
 {
     using namespace carrot;
 
     auto target = get_colorized_target(6);
 
-    EXPECT_EQ(target.tab_width(), 6);
+    REQUIRE(target.tab_width() == 6);
 }

@@ -7,33 +7,27 @@ option(CARROT_BUILD_TESTS "build the carrot test suite" OFF)
 
 if (CARROT_BUILD_TESTS)
 
-find_package(GTest REQUIRED)
+add_library(test_runner OBJECT runner.cpp)
+target_include_directories(test_runner PRIVATE SYSTEM ${PROJECT_SOURCE_DIR}/external/catch/)
 
-add_executable(color color.cpp)
-target_link_libraries(color PRIVATE carrot GTest::GTest GTest::Main)
+include(Catch)
 
-if (CMAKE_VERSION VERSION_LESS 3.10)
-    gtest_add_tests(TARGET color)
-else()
-    gtest_discover_tests(color)
-endif()
+add_executable(color color.cpp $<TARGET_OBJECTS:test_runner>)
+target_include_directories(color PRIVATE SYSTEM ${PROJECT_SOURCE_DIR}/external/catch/)
+target_link_libraries(color PRIVATE carrot)
 
-add_executable(default_style default_style.cpp)
-target_link_libraries(default_style PRIVATE carrot GTest::GTest GTest::Main)
+catch_discover_tests(color)
 
-if (CMAKE_VERSION VERSION_LESS 3.10)
-    gtest_add_tests(TARGET default_style)
-else()
-    gtest_discover_tests(default_style)
-endif()
+add_executable(default_style default_style.cpp $<TARGET_OBJECTS:test_runner>)
+target_include_directories(default_style PRIVATE SYSTEM ${PROJECT_SOURCE_DIR}/external/catch/)
+target_link_libraries(default_style PRIVATE carrot)
 
-add_executable(rendering rendering.cpp)
-target_link_libraries(rendering PRIVATE carrot GTest::GTest GTest::Main)
+catch_discover_tests(default_style)
 
-if (CMAKE_VERSION VERSION_LESS 3.10)
-    gtest_add_tests(TARGET rendering)
-else()
-    gtest_discover_tests(rendering)
-endif()
+add_executable(rendering rendering.cpp $<TARGET_OBJECTS:test_runner>)
+target_include_directories(rendering PRIVATE SYSTEM ${PROJECT_SOURCE_DIR}/external/catch/)
+target_link_libraries(rendering PRIVATE carrot)
+
+catch_discover_tests(default_style)
 
 endif()
