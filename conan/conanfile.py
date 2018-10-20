@@ -9,7 +9,6 @@ class CarrotConan(ConanFile):
     description = "A C++ library for rendering expressive diagnostic messages"
     settings = "os", "compiler", "build_type", "arch", "cppstd"
     generators = "cmake_paths"
-    build_requires = "gtest/1.9.0@qubusproject/dev"
     requires = "boost/1.67.0@qubusproject/stable"
     exports_sources = "../*"
 
