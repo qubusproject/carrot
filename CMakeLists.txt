@@ -49,7 +49,7 @@ message(STATUS "The install prefix is: ${CMAKE_INSTALL_PREFIX}")
 
 set(CARROT_CMAKE_MODULE_PATH ${CMAKE_INSTALL_PREFIX}/lib/cmake/carrot)
 
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${PROJECT_SOURCE_DIR}/external/catch/cmake)
 
 message(STATUS "The cmake module path is: ${CMAKE_MODULE_PATH}")
 

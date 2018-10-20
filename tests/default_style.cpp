@@ -3,31 +3,31 @@
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gtest/gtest.h>
+#include "catch.hpp"
 
 #include <carrot/carrot.hpp>
 
 using namespace carrot;
 
-TEST(default_style, caret_block)
+TEST_CASE("Rendering a caret block", "[default_style]")
 {
     auto msg = mark_with_caret(make_empty(), 2);
 
     plain_form form;
 
-    EXPECT_NO_THROW(render(msg, form));
+    REQUIRE_NOTHROW(render(msg, form));
 }
 
-TEST(default_style, caret_underline_block)
+TEST_CASE("Rendering a caret underline block", "[default_style]")
 {
     auto msg = underline_with_caret(text("Test"), 2);
 
     plain_form form;
 
-    EXPECT_NO_THROW(render(msg, form));
+    REQUIRE_NOTHROW(render(msg, form));
 }
 
-TEST(default_style, checkbox_list_block)
+TEST_CASE("Rendering a check list block", "[default_style]")
 {
     auto msg = make_checkbox_list();
 
@@ -36,46 +36,46 @@ TEST(default_style, checkbox_list_block)
 
     plain_form form;
 
-    EXPECT_NO_THROW(render(msg, form));
+    REQUIRE_NOTHROW(render(msg, form));
 }
 
-TEST(default_style, empty_block)
+TEST_CASE("Rendering an empty block", "[default_style]")
 {
     auto msg = make_empty();
 
     plain_form form;
 
-    EXPECT_NO_THROW(render(msg, form));
+    REQUIRE_NOTHROW(render(msg, form));
 }
 
-TEST(default_style, frame_block)
+TEST_CASE("Rendering a frame block", "[default_style]")
 {
     auto msg = frame(make_empty());
 
     plain_form form;
 
-    EXPECT_NO_THROW(render(msg, form));
+    REQUIRE_NOTHROW(render(msg, form));
 }
 
-TEST(default_style, grid_block)
+TEST_CASE("Rendering a grid block", "[default_style]")
 {
     auto msg = make_grid(2, 2);
 
     plain_form form;
 
-    EXPECT_NO_THROW(render(msg, form));
+    REQUIRE_NOTHROW(render(msg, form));
 }
 
-TEST(default_style, indent_block)
+TEST_CASE("Rendering an indent block", "[default_style]")
 {
     auto msg = indent(make_empty());
 
     plain_form form;
 
-    EXPECT_NO_THROW(render(msg, form));
+    REQUIRE_NOTHROW(render(msg, form));
 }
 
-TEST(default_style, irregular_grid_block)
+TEST_CASE("Rendering an irregular grid block", "[default_style]")
 {
     auto msg = make_irregular_grid();
 
@@ -83,10 +83,10 @@ TEST(default_style, irregular_grid_block)
 
     plain_form form;
 
-    EXPECT_NO_THROW(render(msg, form));
+    REQUIRE_NOTHROW(render(msg, form));
 }
 
-TEST(default_style, line_block)
+TEST_CASE("Rendering a line block", "[default_style]")
 {
     auto msg = make_line(growth_direction::right);
 
@@ -98,11 +98,11 @@ TEST(default_style, line_block)
 
     plain_form form;
 
-    EXPECT_NO_THROW(render(msg, form));
-    EXPECT_NO_THROW(render(msg2, form));
+    REQUIRE_NOTHROW(render(msg, form));
+    REQUIRE_NOTHROW(render(msg2, form));
 }
 
-TEST(default_style, list_block)
+TEST_CASE("Rendering a list block", "[default_style]")
 {
     auto msg = make_list();
 
@@ -110,46 +110,46 @@ TEST(default_style, list_block)
 
     plain_form form;
 
-    EXPECT_NO_THROW(render(msg, form));
+    REQUIRE_NOTHROW(render(msg, form));
 }
 
-TEST(default_style, placeholder_block)
+TEST_CASE("Rendering a placeholder block", "[default_style]")
 {
     auto msg = placeholder({"test"});
 
     plain_form form;
 
-    EXPECT_NO_THROW(render(msg, form));
+    REQUIRE_NOTHROW(render(msg, form));
 }
 
-TEST(default_style, progress_bar_block)
+TEST_CASE("Rendering a progress bar block", "[default_style]")
 {
     auto msg = progress_bar(10);
 
     plain_form form;
 
-    EXPECT_NO_THROW(render(msg, form));
+    REQUIRE_NOTHROW(render(msg, form));
 }
 
-TEST(default_style, text_block)
+TEST_CASE("Rendering a test block", "[default_style]")
 {
     auto msg = text("Test");
 
     plain_form form;
 
-    EXPECT_NO_THROW(render(msg, form));
+    REQUIRE_NOTHROW(render(msg, form));
 }
 
-TEST(default_style, underline_block)
+TEST_CASE("Rendering an underline block", "[default_style]")
 {
     auto msg = underline(text("Test"));
 
     plain_form form;
 
-    EXPECT_NO_THROW(render(msg, form));
+    REQUIRE_NOTHROW(render(msg, form));
 }
 
-TEST(default_style, table_block)
+TEST_CASE("Rendering a table block", "[default_style]")
 {
     auto msg = make_table(4);
 
@@ -159,5 +159,5 @@ TEST(default_style, table_block)
 
     plain_form form;
 
-    EXPECT_NO_THROW(render(msg, form));
+    REQUIRE_NOTHROW(render(msg, form));
 }
