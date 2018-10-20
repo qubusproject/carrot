@@ -26,7 +26,7 @@ set(SOURCE_FILES irregular_grid_block.cpp plain_form.cpp frame_block.cpp form_vi
 add_library(carrot ${SOURCE_FILES} ${FULL_INCLUDE_FILES})
 target_compile_features(carrot PUBLIC cxx_std_17)
 target_include_directories(carrot PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include> ${Boost_INCLUDE_DIRS})
-target_link_libraries(carrot PUBLIC ${Boost_LIBRARIES})
+target_link_libraries(carrot PUBLIC ${Boost_LIBRARIES} PRIVATE Boost::disable_autolinking)
 target_compile_options(carrot PRIVATE ${LTO_CXX_OPTIONS})
 set_target_properties(carrot PROPERTIES LINK_FLAGS "${LTO_CXX_OPTIONS}")
 set_target_properties(carrot PROPERTIES POSITION_INDEPENDENT_CODE ON)
