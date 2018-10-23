@@ -9,7 +9,7 @@
 #include <carrot/target_info.hpp>
 
 #ifdef CARROT_WITH_UNICODE_SUPPORT
-#include <carrot/grapheme_cluster_view.hpp>
+#include "grapheme_cluster_view.hpp"
 #endif
 
 #include <boost/algorithm/string/classification.hpp>

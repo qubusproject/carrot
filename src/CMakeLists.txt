@@ -22,7 +22,8 @@ endforeach()
 
 set(SOURCE_FILES irregular_grid_block.cpp plain_form.cpp frame_block.cpp form_view.cpp text_block.cpp grid_block.cpp
         underline_block.cpp caret_underline_block.cpp empty_block.cpp target_info.cpp glyph.cpp indent_block.cpp line_block.cpp
-        list_block.cpp progress_bar_block.cpp checkbox_list_block.cpp block.cpp caret_block.cpp style.cpp color.cpp color_map.cpp placeholder_block.cpp table_block.cpp)
+        list_block.cpp progress_bar_block.cpp checkbox_list_block.cpp block.cpp caret_block.cpp style.cpp color.cpp color_map.cpp
+        placeholder_block.cpp table_block.cpp grapheme_cluster_view.hpp)
 add_library(carrot ${SOURCE_FILES} ${FULL_INCLUDE_FILES})
 target_compile_features(carrot PUBLIC cxx_std_17)
 target_include_directories(carrot PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include> ${Boost_INCLUDE_DIRS})
