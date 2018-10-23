@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2017 Christopher Hinz
+//  Copyright (c) 2015-2018 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -19,7 +19,7 @@ frame_block::frame_block(block framed_block_, long int margin_)
 
 void frame_block::render(form & output_form, const style& s) const
 {
-    auto extent = framed_block_.extent(s);
+    auto extent = framed_block_.extent(output_form.target(), s);
 
     for (long int i = 0; i < extent[1] + 2 * margin_ + 2; ++i)
     {
@@ -38,9 +38,9 @@ void frame_block::render(form & output_form, const style& s) const
     framed_block_.render(view, s);
 }
 
-std::array<long int, 2> frame_block::extent(const style& s) const
+std::array<long int, 2> frame_block::extent(const target_info& output_target, const style& s) const
 {
-    auto extent = framed_block_.extent(s);
+    auto extent = framed_block_.extent(output_target, s);
 
     return std::array<long int, 2>{extent[0] + 2 * margin_ + 2, extent[1] + 2 * margin_ + 2};
 }

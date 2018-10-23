@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2017 Christopher Hinz
+//  Copyright (c) 2015-2018 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -87,8 +87,8 @@ std::string get_default_escape_sequence()
 }
 } // namespace
 
-plain_form::plain_form(long int rows_, long int columns_)
-: data_(boost::extents[rows_][columns_]), clear_glyph_(' ')
+plain_form::plain_form(target_info target_, long int rows_, long int columns_)
+: target_(std::move(target_)), data_(boost::extents[rows_][columns_]), clear_glyph_(' ')
 {
 }
 
@@ -99,7 +99,12 @@ void plain_form::set(long int row, long int column, glyph value)
     data_[row][column] = value;
 }
 
-std::string plain_form::to_string(const target_info& target) const
+const target_info& plain_form::target() const
+{
+    return target_;
+}
+
+std::string plain_form::to_string() const
 {
     std::string result;
     result.reserve(data_.size());
@@ -118,7 +123,7 @@ std::string plain_form::to_string(const target_info& target) const
             {
                 const glyph& g = data_[row][column];
 
-                if (target.supports_colorized_output())
+                if (target_.supports_colorized_output())
                 {
                     if (!is_default_color(g.foreground_color))
                         return column;
@@ -141,7 +146,7 @@ std::string plain_form::to_string(const target_info& target) const
         {
             const glyph& g = data_[row][column];
 
-            if (target.supports_colorized_output())
+            if (target_.supports_colorized_output())
             {
                 auto escape_seq = get_escape_sequences_for_style(g.foreground_color,
                                                                  g.background_color, g.bold, cmap);
@@ -156,7 +161,7 @@ std::string plain_form::to_string(const target_info& target) const
                 std::string(g.content.begin(), g.content.end());
         }
 
-        if (target.supports_colorized_output())
+        if (target_.supports_colorized_output())
         {
             current_escape_seq = get_default_escape_sequence();
 
@@ -166,7 +171,7 @@ std::string plain_form::to_string(const target_info& target) const
         result += '\n';
     }
 
-    if (target.supports_colorized_output())
+    if (target_.supports_colorized_output())
     {
         result += get_default_escape_sequence();
     }

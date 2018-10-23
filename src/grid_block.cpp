@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2017 Christopher Hinz
+//  Copyright (c) 2015-2018 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -54,12 +54,12 @@ long int grid_block::cols() const
     return blocks_.shape()[1];
 }
 
-void grid_block::render(form & output_form, const style& s) const
+void grid_block::render(form& output_form, const style& s) const
 {
     std::vector<long int> row_heights;
     std::vector<long int> column_widths;
 
-    std::tie(row_heights, column_widths) = compute_layout(s);
+    std::tie(row_heights, column_widths) = compute_layout(output_form.target(), s);
 
     long int row_offset = 0;
 
@@ -80,22 +80,21 @@ void grid_block::render(form & output_form, const style& s) const
     }
 }
 
-std::array<long int, 2> grid_block::extent(const style& s) const
+std::array<long int, 2> grid_block::extent(const target_info& output_target, const style& s) const
 {
     std::vector<long int> row_heights;
     std::vector<long int> column_widths;
 
-    std::tie(row_heights, column_widths) = compute_layout(s);
+    std::tie(row_heights, column_widths) = compute_layout(output_target, s);
 
-    long int height =
-        std::accumulate(row_heights.begin(), row_heights.end(), 0, std::plus<>());
-    long int width =
-        std::accumulate(column_widths.begin(), column_widths.end(), 0, std::plus<>());
+    long int height = std::accumulate(row_heights.begin(), row_heights.end(), 0, std::plus<>());
+    long int width = std::accumulate(column_widths.begin(), column_widths.end(), 0, std::plus<>());
 
     return std::array<long int, 2>{height, width};
 }
 
-std::tuple<std::vector<long int>, std::vector<long int>> grid_block::compute_layout(const style& s) const
+std::tuple<std::vector<long int>, std::vector<long int>>
+grid_block::compute_layout(const target_info& output_target, const style& s) const
 {
     std::vector<long int> row_heights(blocks_.shape()[0]);
     std::vector<long int> column_widths(blocks_.shape()[1]);
@@ -104,7 +103,7 @@ std::tuple<std::vector<long int>, std::vector<long int>> grid_block::compute_lay
     {
         for (long int column = 0; column < blocks_.shape()[1]; ++column)
         {
-            auto extent = blocks_[row][column].extent(s);
+            auto extent = blocks_[row][column].extent(output_target, s);
 
             row_heights[row] = std::max(row_heights[row], extent[0]);
             column_widths[column] = std::max(column_widths[column], extent[1]);
@@ -118,4 +117,4 @@ grid_block make_grid(long int rows, long int columns)
 {
     return grid_block(rows, columns);
 }
-}
+} // namespace carrot

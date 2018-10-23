@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2017 Christopher Hinz
+//  Copyright (c) 2015-2018 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -35,11 +35,11 @@ void indent_block::render(form& output_form, const style& s) const
     indented_block_.render(view, s);
 }
 
-std::array<long int, 2> indent_block::extent(const style& s) const
+std::array<long int, 2> indent_block::extent(const target_info& output_target, const style& s) const
 {
     auto indent = s.get_attribute<style::integer>("indent", id(), tags(), "indent");
 
-    auto extent = indented_block_.extent(s);
+    auto extent = indented_block_.extent(output_target, s);
 
     return std::array<long int, 2>{extent[0], extent[1] + indent * indent_levels_};
 }

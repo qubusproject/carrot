@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2017 Christopher Hinz
+//  Copyright (c) 2015-2018 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -63,11 +63,11 @@ void checkbox_list_block::render(form& output_form, const style& s) const
     grid_.render(output_form, *ts);
 }
 
-std::array<long int, 2> checkbox_list_block::extent(const style& s) const
+std::array<long int, 2> checkbox_list_block::extent(const target_info& output_target, const style& s) const
 {
     auto ts = augment_style(s, id(), tags());
 
-    return grid_.extent(*ts);
+    return grid_.extent(output_target, *ts);
 }
 
 checkbox_list_block make_checkbox_list()

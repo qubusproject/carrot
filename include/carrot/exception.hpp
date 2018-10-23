@@ -7,12 +7,18 @@
 #define CARROT_EXCEPTION_HPP
 
 #include <exception>
+#include <stdexcept>
 
 namespace carrot
 {
 
 class exception : public std::exception
 {
+};
+
+class runtime_error : public virtual exception, public virtual std::runtime_error
+{
+    using std::runtime_error::runtime_error;
 };
 
 }
