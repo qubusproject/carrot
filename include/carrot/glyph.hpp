@@ -9,6 +9,7 @@
 #include <carrot/color.hpp>
 
 #include <string>
+#include <string_view>
 
 namespace carrot
 {
@@ -24,6 +25,8 @@ struct glyph
     glyph(char content, color foreground_color, color background_color, bool bold);
 
     glyph(std::string content, color foreground_color, color background_color, bool bold);
+
+    glyph(std::string_view content, color foreground_color, color background_color, bool bold);
 
     std::string content;
     color foreground_color;

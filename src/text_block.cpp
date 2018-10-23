@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2017 Christopher Hinz
+//  Copyright (c) 2015-2018 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,8 +8,8 @@
 #include <carrot/style.hpp>
 #include <carrot/target_info.hpp>
 
-#ifdef CARROT_WITH_UTF8_SUPPORT
-#include <boost/locale/boundary.hpp>
+#ifdef CARROT_WITH_UNICODE_SUPPORT
+#include "grapheme_cluster_view.hpp"
 #endif
 
 #include <boost/algorithm/string/classification.hpp>
@@ -43,12 +43,11 @@ void text_block::render(form& output_form, const style& s) const
 
     for (long int row = 0; row < rows_.size(); ++row)
     {
-#ifdef CARROT_WITH_UTF8_SUPPORT
-        boost::locale::boundary::ssegment_index index(
-            boost::locale::boundary::character, rows_[row].begin(), rows_[row].end(), get_locale());
+#ifdef CARROT_WITH_UNICODE_SUPPORT
+        grapheme_cluster_view gc_view(rows_[row], output_form.target().locale());
 
-        auto first = index.begin();
-        auto last = index.end();
+        auto first = gc_view.begin();
+        auto last = gc_view.end();
 #else
         auto first = rows_[row].begin();
         auto last = rows_[row].end();
@@ -62,23 +61,22 @@ void text_block::render(form& output_form, const style& s) const
     }
 }
 
-std::array<long int, 2> text_block::extent(const style& s[[maybe_unused]]) const
+std::array<long int, 2> text_block::extent(const target_info& output_target, const style& s [[maybe_unused]]) const
 {
     long int rows = rows_.size();
 
-    std::function<long int(const std::string&)> get_row_lenght = [](const std::string& value) {
-#ifdef CARROT_WITH_UTF8_SUPPORT
-        boost::locale::boundary::ssegment_index index(boost::locale::boundary::character,
-                                                      value.begin(), value.end(), get_locale());
+    std::function<long int(const std::string&)> get_row_lenght = [&output_target](const std::string& value) {
+#ifdef CARROT_WITH_UNICODE_SUPPORT
+        grapheme_cluster_view gc_view(value, output_target.locale());
 
-        auto first = index.begin();
-        auto last = index.end();
+        auto first = gc_view.begin();
+        auto last = gc_view.end();
 #else
         auto first = value.begin();
         auto last = value.end();
 #endif
 
-        return std::distance(first, last);
+        return distance(first, last);
     };
 
     auto row_lenghts = rows_ | boost::adaptors::transformed(get_row_lenght);
@@ -99,4 +97,4 @@ text_block text(const std::string& content, std::vector<std::string> flags)
 {
     return text_block(content, std::move(flags));
 }
-}
+} // namespace carrot

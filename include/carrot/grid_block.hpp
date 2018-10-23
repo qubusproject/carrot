@@ -4,6 +4,11 @@
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #ifndef CARROT_GRID_BLOCK_HPP
+//  Copyright (c) 2015-2018 Christopher Hinz
+//
+//  Distributed under the Boost Software License, Version 1.0. (See accompanying
+//  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
 #define CARROT_GRID_BLOCK_HPP
 
 #include <carrot/block.hpp>
@@ -32,17 +37,18 @@ public:
     long int rows() const;
     long int cols() const;
 
-    void render(form & output_form, const style& s) const;
+    void render(form& output_form, const style& s) const;
 
-    std::array<long int, 2> extent(const style& s) const;
+    std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
 
 private:
-    std::tuple<std::vector<long int>, std::vector<long int>> compute_layout(const style& s) const;
+    std::tuple<std::vector<long int>, std::vector<long int>>
+    compute_layout(const target_info& output_target, const style& s) const;
 
     boost::multi_array<block, 2> blocks_;
 };
 
 grid_block make_grid(long int rows, long int columns);
-}
+} // namespace carrot
 
 #endif

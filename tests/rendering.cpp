@@ -13,7 +13,7 @@ TEST_CASE("Basic rendering", "[rendering]")
 
     auto target = get_stdout_target();
 
-    plain_form form;
+    plain_form form(target);
 
     auto grid = make_grid(2, 2);
 
@@ -26,7 +26,7 @@ TEST_CASE("Basic rendering", "[rendering]")
 
     render(message, form);
 
-    form.to_string(target);
+    form.to_string();
 }
 
 TEST_CASE("Colorized rendering", "[rendering]")
@@ -35,7 +35,7 @@ TEST_CASE("Colorized rendering", "[rendering]")
 
     auto target = get_colorized_target();
 
-    plain_form form;
+    plain_form form(target);
 
     auto grid = make_grid(2, 2);
 
@@ -48,7 +48,7 @@ TEST_CASE("Colorized rendering", "[rendering]")
 
     render(message, form);
 
-    form.to_string(target);
+    form.to_string();
 }
 
 TEST_CASE("Changing the tabulator width", "[rendering]")

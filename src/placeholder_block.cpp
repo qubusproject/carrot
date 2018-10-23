@@ -1,4 +1,4 @@
-//  Copyright (c) 2017 Christopher Hinz
+//  Copyright (c) 2017-2018 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,8 +7,8 @@
 
 #include <carrot/style.hpp>
 
-#ifdef CARROT_WITH_UTF8_SUPPORT
-#include <boost/locale/boundary.hpp>
+#ifdef CARROT_WITH_UNICODE_SUPPORT
+#include "grapheme_cluster_view.hpp"
 #endif
 
 #include <iterator>
@@ -29,12 +29,11 @@ void placeholder_block::render(form& output_form, const style& s) const
     auto bold = s.get_attribute<bool>("placeholder", id(), tags(), "bold");
     auto content = s.get_attribute<std::string>("placeholder", id(), tags(), "content");
 
-#ifdef CARROT_WITH_UTF8_SUPPORT
-    boost::locale::boundary::ssegment_index index(boost::locale::boundary::character,
-                                                  content.begin(), content.end(), get_locale());
+#ifdef CARROT_WITH_UNICODE_SUPPORT
+    grapheme_cluster_view gc_view(content, output_form.target().locale());
 
-    auto first = index.begin();
-    auto last = index.end();
+    auto first = gc_view.begin();
+    auto last = gc_view.end();
 #else
     auto first = content.begin();
     auto last = content.end();
@@ -47,22 +46,22 @@ void placeholder_block::render(form& output_form, const style& s) const
     }
 }
 
-std::array<long int, 2> placeholder_block::extent(const style& s) const
+std::array<long int, 2> placeholder_block::extent(const target_info& output_target,
+                                                  const style& s) const
 {
     auto content = s.get_attribute<std::string>("placeholder", id(), tags(), "content");
 
-#ifdef CARROT_WITH_UTF8_SUPPORT
-    boost::locale::boundary::ssegment_index index(boost::locale::boundary::character,
-                                                  content.begin(), content.end(), get_locale());
+#ifdef CARROT_WITH_UNICODE_SUPPORT
+    grapheme_cluster_view gc_view(content, output_target.locale());
 
-    auto first = index.begin();
-    auto last = index.end();
+    auto first = gc_view.begin();
+    auto last = gc_view.end();
 #else
     auto first = content.begin();
     auto last = content.end();
 #endif
 
-    long int width = std::distance(first, last);
+    long int width = distance(first, last);
 
     return std::array<long int, 2>{1, width};
 }
@@ -71,4 +70,4 @@ placeholder_block placeholder(std::vector<std::string> flags)
 {
     return placeholder_block(std::move(flags));
 }
-}
+} // namespace carrot

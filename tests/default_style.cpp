@@ -1,4 +1,4 @@
-//  Copyright (c) 2017 Christopher Hinz
+//  Copyright (c) 2017-2018 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -9,155 +9,130 @@
 
 using namespace carrot;
 
-TEST_CASE("Rendering a caret block", "[default_style]")
+TEST_CASE("Rendering", "[default_style]")
 {
-    auto msg = mark_with_caret(make_empty(), 2);
+    plain_form form(get_stdout_target());
 
-    plain_form form;
+    SECTION(" a caret block")
+    {
+        auto msg = mark_with_caret(make_empty(), 2);
 
-    REQUIRE_NOTHROW(render(msg, form));
-}
+        REQUIRE_NOTHROW(render(msg, form));
+    }
 
-TEST_CASE("Rendering a caret underline block", "[default_style]")
-{
-    auto msg = underline_with_caret(text("Test"), 2);
+    SECTION(" a caret underline block", "[default_style]")
+    {
+        auto msg = underline_with_caret(text("Test"), 2);
 
-    plain_form form;
+        REQUIRE_NOTHROW(render(msg, form));
+    }
 
-    REQUIRE_NOTHROW(render(msg, form));
-}
+    SECTION(" a check list block", "[default_style]")
+    {
+        auto msg = make_checkbox_list();
 
-TEST_CASE("Rendering a check list block", "[default_style]")
-{
-    auto msg = make_checkbox_list();
+        msg.add(true, make_empty());
+        msg.add(false, make_empty());
 
-    msg.add(true, make_empty());
-    msg.add(false, make_empty());
+        REQUIRE_NOTHROW(render(msg, form));
+    }
 
-    plain_form form;
+    SECTION(" an empty block", "[default_style]")
+    {
+        auto msg = make_empty();
 
-    REQUIRE_NOTHROW(render(msg, form));
-}
+        REQUIRE_NOTHROW(render(msg, form));
+    }
 
-TEST_CASE("Rendering an empty block", "[default_style]")
-{
-    auto msg = make_empty();
+    SECTION(" a frame block", "[default_style]")
+    {
+        auto msg = frame(make_empty());
 
-    plain_form form;
+        REQUIRE_NOTHROW(render(msg, form));
+    }
 
-    REQUIRE_NOTHROW(render(msg, form));
-}
+    SECTION(" a grid block", "[default_style]")
+    {
+        auto msg = make_grid(2, 2);
 
-TEST_CASE("Rendering a frame block", "[default_style]")
-{
-    auto msg = frame(make_empty());
+        REQUIRE_NOTHROW(render(msg, form));
+    }
 
-    plain_form form;
+    SECTION(" an indent block", "[default_style]")
+    {
+        auto msg = indent(make_empty());
 
-    REQUIRE_NOTHROW(render(msg, form));
-}
+        REQUIRE_NOTHROW(render(msg, form));
+    }
 
-TEST_CASE("Rendering a grid block", "[default_style]")
-{
-    auto msg = make_grid(2, 2);
+    SECTION(" an irregular grid block", "[default_style]")
+    {
+        auto msg = make_irregular_grid();
 
-    plain_form form;
+        msg.add_to_row(0, make_empty());
 
-    REQUIRE_NOTHROW(render(msg, form));
-}
+        REQUIRE_NOTHROW(render(msg, form));
+    }
 
-TEST_CASE("Rendering an indent block", "[default_style]")
-{
-    auto msg = indent(make_empty());
+    SECTION(" a line block", "[default_style]")
+    {
+        auto msg = make_line(growth_direction::right);
 
-    plain_form form;
+        msg.add(make_empty());
 
-    REQUIRE_NOTHROW(render(msg, form));
-}
+        auto msg2 = make_line(growth_direction::down);
 
-TEST_CASE("Rendering an irregular grid block", "[default_style]")
-{
-    auto msg = make_irregular_grid();
+        msg2.add(make_empty());
 
-    msg.add_to_row(0, make_empty());
+        REQUIRE_NOTHROW(render(msg, form));
+        REQUIRE_NOTHROW(render(msg2, form));
+    }
 
-    plain_form form;
+    SECTION(" a list block", "[default_style]")
+    {
+        auto msg = make_list();
 
-    REQUIRE_NOTHROW(render(msg, form));
-}
+        msg.add(make_empty());
 
-TEST_CASE("Rendering a line block", "[default_style]")
-{
-    auto msg = make_line(growth_direction::right);
+        REQUIRE_NOTHROW(render(msg, form));
+    }
 
-    msg.add(make_empty());
+    SECTION(" a placeholder block", "[default_style]")
+    {
+        auto msg = placeholder({"test"});
 
-    auto msg2 = make_line(growth_direction::down);
+        REQUIRE_NOTHROW(render(msg, form));
+    }
 
-    msg2.add(make_empty());
+    SECTION(" a progress bar block", "[default_style]")
+    {
+        auto msg = progress_bar(10);
 
-    plain_form form;
+        REQUIRE_NOTHROW(render(msg, form));
+    }
 
-    REQUIRE_NOTHROW(render(msg, form));
-    REQUIRE_NOTHROW(render(msg2, form));
-}
+    SECTION(" a test block", "[default_style]")
+    {
+        auto msg = text("Test");
 
-TEST_CASE("Rendering a list block", "[default_style]")
-{
-    auto msg = make_list();
+        REQUIRE_NOTHROW(render(msg, form));
+    }
 
-    msg.add(make_empty());
+    SECTION(" an underline block", "[default_style]")
+    {
+        auto msg = underline(text("Test"));
 
-    plain_form form;
+        REQUIRE_NOTHROW(render(msg, form));
+    }
 
-    REQUIRE_NOTHROW(render(msg, form));
-}
+    SECTION(" a table block", "[default_style]")
+    {
+        auto msg = make_table(4);
 
-TEST_CASE("Rendering a placeholder block", "[default_style]")
-{
-    auto msg = placeholder({"test"});
+        std::vector<block> columns(4, make_empty());
 
-    plain_form form;
+        msg.add_row(std::move(columns));
 
-    REQUIRE_NOTHROW(render(msg, form));
-}
-
-TEST_CASE("Rendering a progress bar block", "[default_style]")
-{
-    auto msg = progress_bar(10);
-
-    plain_form form;
-
-    REQUIRE_NOTHROW(render(msg, form));
-}
-
-TEST_CASE("Rendering a test block", "[default_style]")
-{
-    auto msg = text("Test");
-
-    plain_form form;
-
-    REQUIRE_NOTHROW(render(msg, form));
-}
-
-TEST_CASE("Rendering an underline block", "[default_style]")
-{
-    auto msg = underline(text("Test"));
-
-    plain_form form;
-
-    REQUIRE_NOTHROW(render(msg, form));
-}
-
-TEST_CASE("Rendering a table block", "[default_style]")
-{
-    auto msg = make_table(4);
-
-    std::vector<block> columns(4, make_empty());
-
-    msg.add_row(std::move(columns));
-
-    plain_form form;
-
-    REQUIRE_NOTHROW(render(msg, form));
+        REQUIRE_NOTHROW(render(msg, form));
+    }
 }

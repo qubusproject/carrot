@@ -5,9 +5,9 @@
 
 option(BUILD_SHARED_LIBS "Build the library as a shared library." OFF)
 
-option(CARROT_WITH_UTF8_SUPPORT "Enable support for UTF-8." ON)
+option(CARROT_WITH_UNICODE_SUPPORT "Enable support for Unicode." ON)
 
-find_package(Boost 1.58.0 COMPONENTS locale system exception thread exception chrono REQUIRED)
+find_package(Boost 1.58.0 REQUIRED)
 
 find_package(Curses)
 
@@ -22,7 +22,8 @@ endforeach()
 
 set(SOURCE_FILES irregular_grid_block.cpp plain_form.cpp frame_block.cpp form_view.cpp text_block.cpp grid_block.cpp
         underline_block.cpp caret_underline_block.cpp empty_block.cpp target_info.cpp glyph.cpp indent_block.cpp line_block.cpp
-        list_block.cpp progress_bar_block.cpp checkbox_list_block.cpp block.cpp caret_block.cpp style.cpp color.cpp color_map.cpp placeholder_block.cpp table_block.cpp)
+        list_block.cpp progress_bar_block.cpp checkbox_list_block.cpp block.cpp caret_block.cpp style.cpp color.cpp color_map.cpp
+        placeholder_block.cpp table_block.cpp grapheme_cluster_view.hpp)
 add_library(carrot ${SOURCE_FILES} ${FULL_INCLUDE_FILES})
 target_compile_features(carrot PUBLIC cxx_std_17)
 target_include_directories(carrot PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include> ${Boost_INCLUDE_DIRS})
@@ -37,8 +38,12 @@ if (CURSES_FOUND)
     target_compile_definitions(carrot PRIVATE -DHAVE_TERMINFO)
 endif()
 
-if (CARROT_WITH_UTF8_SUPPORT)
-    target_compile_definitions(carrot PRIVATE -DCARROT_WITH_UTF8_SUPPORT)
+if (CARROT_WITH_UNICODE_SUPPORT)
+    find_package(ICU COMPONENTS uc REQUIRED)
+
+    target_sources(carrot PRIVATE grapheme_cluster_view.cpp)
+    target_link_libraries(carrot PRIVATE ICU::uc)
+    target_compile_definitions(carrot PRIVATE -DCARROT_WITH_UNICODE_SUPPORT)
 endif()
 
 if (MSVC)

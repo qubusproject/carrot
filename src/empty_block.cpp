@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2017 Christopher Hinz
+//  Copyright (c) 2015-2018 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,7 +12,8 @@ void empty_block::render(form& output_form [[maybe_unused]], const style& s [[ma
 {
 }
 
-std::array<long int, 2> empty_block::extent(const style& s [[maybe_unused]]) const
+std::array<long int, 2> empty_block::extent(const target_info& output_target [[maybe_unused]],
+                                            const style& s [[maybe_unused]]) const
 {
     return std::array<long int, 2>{0, 0};
 }
@@ -21,4 +22,4 @@ block make_empty()
 {
     return empty_block();
 }
-}
+} // namespace carrot
