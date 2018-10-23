@@ -5,7 +5,7 @@
 
 option(BUILD_SHARED_LIBS "Build the library as a shared library." OFF)
 
-option(CARROT_WITH_UTF8_SUPPORT "Enable support for UTF-8." ON)
+option(CARROT_WITH_UNICODE_SUPPORT "Enable support for Unicode." ON)
 
 find_package(Boost 1.58.0 REQUIRED)
 
@@ -37,12 +37,12 @@ if (CURSES_FOUND)
     target_compile_definitions(carrot PRIVATE -DHAVE_TERMINFO)
 endif()
 
-if (CARROT_WITH_UTF8_SUPPORT)
+if (CARROT_WITH_UNICODE_SUPPORT)
     find_package(ICU COMPONENTS uc REQUIRED)
 
     target_sources(carrot PRIVATE grapheme_cluster_view.cpp)
     target_link_libraries(carrot PRIVATE ICU::uc)
-    target_compile_definitions(carrot PRIVATE -DCARROT_WITH_UTF8_SUPPORT)
+    target_compile_definitions(carrot PRIVATE -DCARROT_WITH_UNICODE_SUPPORT)
 endif()
 
 generate_export_header(carrot)

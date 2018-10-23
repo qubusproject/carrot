@@ -7,7 +7,7 @@
 
 #include <carrot/style.hpp>
 
-#ifdef CARROT_WITH_UTF8_SUPPORT
+#ifdef CARROT_WITH_UNICODE_SUPPORT
 #include <carrot/grapheme_cluster_view.hpp>
 #endif
 
@@ -29,7 +29,7 @@ void placeholder_block::render(form& output_form, const style& s) const
     auto bold = s.get_attribute<bool>("placeholder", id(), tags(), "bold");
     auto content = s.get_attribute<std::string>("placeholder", id(), tags(), "content");
 
-#ifdef CARROT_WITH_UTF8_SUPPORT
+#ifdef CARROT_WITH_UNICODE_SUPPORT
     grapheme_cluster_view gc_view(content, output_form.target().locale());
 
     auto first = gc_view.begin();
@@ -51,7 +51,7 @@ std::array<long int, 2> placeholder_block::extent(const target_info& output_targ
 {
     auto content = s.get_attribute<std::string>("placeholder", id(), tags(), "content");
 
-#ifdef CARROT_WITH_UTF8_SUPPORT
+#ifdef CARROT_WITH_UNICODE_SUPPORT
     grapheme_cluster_view gc_view(content, output_target.locale());
 
     auto first = gc_view.begin();

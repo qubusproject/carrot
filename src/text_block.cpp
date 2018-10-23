@@ -8,7 +8,7 @@
 #include <carrot/style.hpp>
 #include <carrot/target_info.hpp>
 
-#ifdef CARROT_WITH_UTF8_SUPPORT
+#ifdef CARROT_WITH_UNICODE_SUPPORT
 #include <carrot/grapheme_cluster_view.hpp>
 #endif
 
@@ -43,7 +43,7 @@ void text_block::render(form& output_form, const style& s) const
 
     for (long int row = 0; row < rows_.size(); ++row)
     {
-#ifdef CARROT_WITH_UTF8_SUPPORT
+#ifdef CARROT_WITH_UNICODE_SUPPORT
         grapheme_cluster_view gc_view(rows_[row], output_form.target().locale());
 
         auto first = gc_view.begin();
@@ -66,7 +66,7 @@ std::array<long int, 2> text_block::extent(const target_info& output_target, con
     long int rows = rows_.size();
 
     std::function<long int(const std::string&)> get_row_lenght = [&output_target](const std::string& value) {
-#ifdef CARROT_WITH_UTF8_SUPPORT
+#ifdef CARROT_WITH_UNICODE_SUPPORT
         grapheme_cluster_view gc_view(value, output_target.locale());
 
         auto first = gc_view.begin();
