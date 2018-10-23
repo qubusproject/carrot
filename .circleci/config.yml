@@ -1,17 +1,79 @@
 version: 2
+
+test_steps: &test_steps
+  steps:
+    - checkout
+    - run:
+        name: Configure
+        command: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON -DCARROT_ENABLE_SANITIZERS=ON  ../
+    - run:
+        name: Build
+        command: |
+          cd build
+          make
+    - run:
+        name: Test
+        command: |
+          cd build
+          ctest  --output-on-failure
+
+gcc_env: &gcc_env
+  environment:
+    CC: gcc
+    CXX: g++
+
+clang_env: &clang_env
+  environment:
+    CC: clang
+    CXX: clang++
+
 jobs:
-  test:
+  archlinux-gcc:
+    docker:
+      - image: qbbproject/archlinux-ci
+    <<: *gcc_env
+    <<: *test_steps
+
+  ubuntu-lts-gcc:
+    docker:
+      - image: qubusproject/ubuntu-lts-ci
+    <<: *gcc_env
+    <<: *test_steps
+
+  ubuntu-gcc:
+    docker:
+    - image: qubusproject/ubuntu-ci
+    <<: *gcc_env
+    <<: *test_steps
+
+  archlinux-clang:
     docker:
     - image: qbbproject/archlinux-ci
-    steps:
-    - checkout
-    - run: mkdir build
-    - run: cd build
-    - run: cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON -DCARROT_ENABLE_SANITIZERS=ON  ../
-    - run: make
-    - run: ctest  --output-on-failure
+    <<: *clang_env
+    <<: *test_steps
+
+  ubuntu-lts-clang:
+    docker:
+    - image: qubusproject/ubuntu-lts-ci
+    <<: *clang_env
+    <<: *test_steps
+
+  ubuntu-clang:
+    docker:
+    - image: qubusproject/ubuntu-ci
+    <<: *clang_env
+    <<: *test_steps
+
 workflows:
   version: 2
   build_and_test:
     jobs:
-    - test
+      - archlinux-gcc
+      - ubuntu-lts-gcc
+      - ubuntu-gcc
+      - archlinux-clang
+      - ubuntu-lts-clang
+      - ubuntu-clang
