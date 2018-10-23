@@ -70,15 +70,15 @@ bool has_color_support(int fd)
     return false;
 #endif
 }
-}
+} // namespace
 
 invalid_target_error::invalid_target_error(const std::string& reason_)
 : std::logic_error("Invalid target: " + reason_)
 {
 }
 
-target_info::target_info(bool supports_colorized_output_, long int tab_width_)
-: supports_colorized_output_(supports_colorized_output_), tab_width_(tab_width_)
+target_info::target_info(std::locale locale_, bool supports_colorized_output_, long int tab_width_)
+: locale_(locale_), supports_colorized_output_(supports_colorized_output_), tab_width_(tab_width_)
 {
 }
 
@@ -94,61 +94,80 @@ long int target_info::tab_width() const
 
 const std::locale& target_info::locale() const
 {
-    using namespace boost::locale;
-
-    static const std::locale loc = [] {
-        generator gen;
-
-        auto loc = gen("");
-
-#ifdef CARROT_WITH_UTF8_SUPPORT
-        try
-        {
-            const auto& info = std::use_facet<boost::locale::info>(loc);
-
-            if (!info.utf8())
-                throw invalid_target_error("The target's encoding is not UTF-8.");
-
-            bool supports_boundary_indexing =
-                std::has_facet<boost::locale::boundary::boundary_indexing<char>>(loc);
-
-            if (!supports_boundary_indexing)
-                throw invalid_target_error("Boundary indexing is not supported by the native "
-                                           "locale. Maybe ICU is not detected correctly.");
-
-            return loc;
-        }
-        catch (const std::bad_cast&)
-        {
-            throw invalid_target_error("Invalid locale '" + loc.name() +
-                                       "': Locale info is unavailable.");
-        }
-#else
-        return loc;
-#endif
-    }();
-
-    return loc;
+    return locale_;
 }
 
+namespace
+{
+std::locale get_default_locale()
+{
+    using namespace boost::locale;
+
+    generator gen;
+
+    auto loc = gen("");
+
+#ifdef CARROT_WITH_UTF8_SUPPORT
+    try
+    {
+        const auto& info = std::use_facet<boost::locale::info>(loc);
+
+        if (!info.utf8())
+            throw invalid_target_error("The target's encoding is not UTF-8.");
+
+        bool supports_boundary_indexing =
+            std::has_facet<boost::locale::boundary::boundary_indexing<char>>(loc);
+
+        if (!supports_boundary_indexing)
+            throw invalid_target_error("Boundary indexing is not supported by the native "
+                                       "locale. Maybe ICU is not detected correctly.");
+
+        return loc;
+    }
+    catch (const std::bad_cast&)
+    {
+        throw invalid_target_error("Invalid locale '" + loc.name() +
+                                   "': Locale info is unavailable.");
+    }
+#else
+    return loc;
+#endif
+}
+} // namespace
+
 target_info get_stdout_target(long int tab_width)
+{
+    return get_stdout_target(get_default_locale(), tab_width);
+}
+
+target_info get_stdout_target(std::locale locale, long int tab_width)
 {
 #ifdef __unix__
     bool colorize_output = has_color_support(STDOUT_FILENO);
 #else
     bool colorize_output = false;
 #endif
-    return target_info(colorize_output, tab_width);
+    return target_info(locale, colorize_output, tab_width);
 }
 
 target_info get_file_target(long int tab_width)
 {
-    return target_info(false, tab_width);
+    return get_file_target(get_default_locale(), tab_width);
+}
+
+target_info get_file_target(std::locale locale, long int tab_width)
+{
+    return target_info(locale, false, tab_width);
 }
 
 target_info get_colorized_target(long int tab_width)
 {
-    return target_info(true, tab_width);
+    return get_colorized_target(get_default_locale(), tab_width);
 }
 
+target_info get_colorized_target(std::locale locale, long int tab_width)
+{
+    return target_info(locale, true, tab_width);
 }
+
+} // namespace carrot
