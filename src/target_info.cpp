@@ -6,10 +6,6 @@
 #include <carrot/target_info.hpp>
 
 #include <boost/locale/generator.hpp>
-#ifdef CARROT_WITH_UTF8_SUPPORT
-#include <boost/locale/boundary/facets.hpp>
-#include <boost/locale/info.hpp>
-#endif
 
 #ifdef __unix__
 
@@ -101,37 +97,7 @@ namespace
 {
 std::locale get_default_locale()
 {
-    using namespace boost::locale;
-
-    generator gen;
-
-    auto loc = gen("");
-
-#ifdef CARROT_WITH_UTF8_SUPPORT
-    try
-    {
-        const auto& info = std::use_facet<boost::locale::info>(loc);
-
-        if (!info.utf8())
-            throw invalid_target_error("The target's encoding is not UTF-8.");
-
-        bool supports_boundary_indexing =
-            std::has_facet<boost::locale::boundary::boundary_indexing<char>>(loc);
-
-        if (!supports_boundary_indexing)
-            throw invalid_target_error("Boundary indexing is not supported by the native "
-                                       "locale. Maybe ICU is not detected correctly.");
-
-        return loc;
-    }
-    catch (const std::bad_cast&)
-    {
-        throw invalid_target_error("Invalid locale '" + loc.name() +
-                                   "': Locale info is unavailable.");
-    }
-#else
-    return loc;
-#endif
+    return std::locale("");
 }
 } // namespace
 

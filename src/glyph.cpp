@@ -48,4 +48,12 @@ glyph::glyph(std::string content, color foreground_color, color background_color
   bold(bold)
 {
 }
+
+glyph::glyph(std::string_view content, color foreground_color, color background_color, bool bold)
+: content(content),
+  foreground_color(std::move(foreground_color)),
+  background_color(std::move(background_color)),
+  bold(bold)
+{
 }
+} // namespace carrot
