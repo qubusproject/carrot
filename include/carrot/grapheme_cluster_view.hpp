@@ -8,6 +8,10 @@
 #include <string>
 #include <string_view>
 
+#ifndef CARROT_WITH_UNICODE_SUPPORT
+#   error "grapheme_cluster_view.hpp should not be included if the Unicode support has been disabled."
+#endif
+
 namespace carrot
 {
 

@@ -8,6 +8,10 @@
 #include <cassert>
 #include <memory>
 
+#ifndef CARROT_WITH_UNICODE_SUPPORT
+#   error "grapheme_cluster_view.cpp should not be compiled if the Unicode support has been disabled."
+#endif
+
 namespace carrot
 {
 
@@ -103,7 +107,7 @@ public:
         else
         {
             current_cluster_ = utf8_string_.substr(first);
-            done_= true;
+            done_ = true;
         }
     }
 
@@ -124,7 +128,8 @@ private:
     bool done_;
 };
 
-grapheme_cluster_iterator::grapheme_cluster_iterator(std::string_view utf8_string_, std::locale locale_)
+grapheme_cluster_iterator::grapheme_cluster_iterator(std::string_view utf8_string_,
+                                                     std::locale locale_)
 : state_(std::make_shared<grapheme_cluster_iterator_state>(utf8_string_, locale_))
 {
 }
