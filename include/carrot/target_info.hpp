@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2017 Christopher Hinz
+//  Copyright (c) 2015-2018 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -27,6 +27,7 @@ public:
 
     bool supports_colorized_output() const;
     long int tab_width() const;
+    const std::locale& locale() const;
 
 private:
     bool supports_colorized_output_;
@@ -37,7 +38,6 @@ target_info get_stdout_target(long int tab_width = 4);
 target_info get_file_target(long int tab_width = 4);
 target_info get_colorized_target(long int tab_width = 4);
 
-const std::locale& get_locale();
 }
 
 #endif

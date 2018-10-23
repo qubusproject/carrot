@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2017 Christopher Hinz
+//  Copyright (c) 2015-2018 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,15 +7,16 @@
 #define CARROT_BLOCK_HPP
 
 #include <carrot/form.hpp>
+#include <carrot/style.hpp>
+#include <carrot/target_info.hpp>
 
 #include <array>
-#include <type_traits>
 #include <memory>
-#include <utility>
 #include <string>
 #include <string_view>
-#include <vector>
+#include <type_traits>
 #include <utility>
+#include <vector>
 
 namespace carrot
 {
@@ -28,8 +29,7 @@ class block_base
 public:
     block_base() = default;
 
-    explicit block_base(std::vector<std::string> tags_)
-    : block_base("", std::move(tags_))
+    explicit block_base(std::vector<std::string> tags_) : block_base("", std::move(tags_))
     {
     }
 
@@ -47,8 +47,10 @@ public:
     {
         return tags_;
     }
+
 protected:
     ~block_base() = default;
+
 private:
     std::string id_;
     std::vector<std::string> tags_;
@@ -64,9 +66,9 @@ class block
 public:
     block();
 
-    template<typename Block, typename Enabler = typename std::enable_if<is_block<Block>::value>::type>
-    block(Block self_)
-    : self_(std::make_unique<block_wrapper<Block>>(std::move(self_)))
+    template <typename Block,
+              typename Enabler = typename std::enable_if<is_block<Block>::value>::type>
+    block(Block self_) : self_(std::make_unique<block_wrapper<Block>>(std::move(self_)))
     {
     }
 
@@ -99,15 +101,16 @@ public:
         self_->render(output_form, s);
     }
 
-    std::array<long int, 2> extent(const style& s) const
+    std::array<long int, 2> extent(const target_info& output_target, const style& s) const
     {
-        return self_->extent(s);
+        return self_->extent(output_target, s);
     }
 
     void swap(block& other) noexcept
     {
         std::swap(self_, other.self_);
     }
+
 private:
     class block_interface
     {
@@ -128,15 +131,14 @@ private:
 
         virtual void render(form& mat, const style& s) const = 0;
 
-        virtual std::array<long int, 2> extent(const style& s) const = 0;
+        virtual std::array<long int, 2> extent(const target_info& output_target, const style& s) const = 0;
     };
 
-    template<typename Block>
+    template <typename Block>
     class block_wrapper final : public block_interface
     {
     public:
-        explicit block_wrapper(Block value_)
-        : value_(std::move(value_))
+        explicit block_wrapper(Block value_) : value_(std::move(value_))
         {
         }
 
@@ -150,10 +152,11 @@ private:
             value_.render(output_form, s);
         }
 
-        std::array<long int, 2> extent(const style& s) const override
+        std::array<long int, 2> extent(const target_info& output_target, const style& s) const override
         {
-            return value_.extent(s);
+            return value_.extent(output_target, s);
         };
+
     private:
         Block value_;
     };
@@ -167,6 +170,6 @@ class plain_form;
 
 void render(const block& root, plain_form& output_form);
 void render(const block& root, plain_form& output_form, const style& s);
-}
+} // namespace carrot
 
 #endif

@@ -41,7 +41,7 @@ int main()
 
     auto target = get_stdout_target();
 
-    plain_form form;
+    plain_form form(target);
 
     auto message = generate_full_message();
 
@@ -52,5 +52,5 @@ int main()
 
     render(message, form, style);
 
-    std::cout << form.to_string(target) << std::endl;
+    std::cout << form.to_string() << std::endl;
 }

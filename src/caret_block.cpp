@@ -1,4 +1,4 @@
-//  Copyright (c) 2017 Christopher Hinz
+//  Copyright (c) 2017-2018 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -28,7 +28,7 @@ void caret_block::render(form& output_form, const style& s) const
     auto background_color = s.get_attribute<color>("caret", id(), tags(), "background-color");
     auto bold = s.get_attribute<bool>("caret", id(), tags(), "bold");
 
-    auto extent = marked_block_.extent(s);
+    auto extent = marked_block_.extent(output_form.target(), s);
 
     marked_block_.render(output_form, s);
 
@@ -36,9 +36,9 @@ void caret_block::render(form& output_form, const style& s) const
                     glyph('^', std::move(foreground_color), std::move(background_color), bold));
 }
 
-std::array<long int, 2> caret_block::extent(const style& s) const
+std::array<long int, 2> caret_block::extent(const target_info& output_target, const style& s) const
 {
-    auto extent = marked_block_.extent(s);
+    auto extent = marked_block_.extent(output_target, s);
 
     return std::array<long int, 2>{extent[0] + 1, extent[1]};
 }

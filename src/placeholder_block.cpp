@@ -1,4 +1,4 @@
-//  Copyright (c) 2017 Christopher Hinz
+//  Copyright (c) 2017-2018 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -31,7 +31,8 @@ void placeholder_block::render(form& output_form, const style& s) const
 
 #ifdef CARROT_WITH_UTF8_SUPPORT
     boost::locale::boundary::ssegment_index index(boost::locale::boundary::character,
-                                                  content.begin(), content.end(), get_locale());
+                                                  content.begin(), content.end(),
+                                                  output_form.target().locale());
 
     auto first = index.begin();
     auto last = index.end();
@@ -47,13 +48,14 @@ void placeholder_block::render(form& output_form, const style& s) const
     }
 }
 
-std::array<long int, 2> placeholder_block::extent(const style& s) const
+std::array<long int, 2> placeholder_block::extent(const target_info& output_target,
+                                                  const style& s) const
 {
     auto content = s.get_attribute<std::string>("placeholder", id(), tags(), "content");
 
 #ifdef CARROT_WITH_UTF8_SUPPORT
-    boost::locale::boundary::ssegment_index index(boost::locale::boundary::character,
-                                                  content.begin(), content.end(), get_locale());
+    boost::locale::boundary::ssegment_index index(
+        boost::locale::boundary::character, content.begin(), content.end(), output_target.locale());
 
     auto first = index.begin();
     auto last = index.end();
@@ -71,4 +73,4 @@ placeholder_block placeholder(std::vector<std::string> flags)
 {
     return placeholder_block(std::move(flags));
 }
-}
+} // namespace carrot

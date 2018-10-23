@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2017 Christopher Hinz
+//  Copyright (c) 2015-2018 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -44,8 +44,9 @@ void text_block::render(form& output_form, const style& s) const
     for (long int row = 0; row < rows_.size(); ++row)
     {
 #ifdef CARROT_WITH_UTF8_SUPPORT
-        boost::locale::boundary::ssegment_index index(
-            boost::locale::boundary::character, rows_[row].begin(), rows_[row].end(), get_locale());
+        boost::locale::boundary::ssegment_index index(boost::locale::boundary::character,
+                                                      rows_[row].begin(), rows_[row].end(),
+                                                      output_form.target().locale());
 
         auto first = index.begin();
         auto last = index.end();
@@ -62,14 +63,15 @@ void text_block::render(form& output_form, const style& s) const
     }
 }
 
-std::array<long int, 2> text_block::extent(const style& s[[maybe_unused]]) const
+std::array<long int, 2> text_block::extent(const target_info& output_target, const style& s [[maybe_unused]]) const
 {
     long int rows = rows_.size();
 
-    std::function<long int(const std::string&)> get_row_lenght = [](const std::string& value) {
+    std::function<long int(const std::string&)> get_row_lenght = [&output_target](const std::string& value) {
 #ifdef CARROT_WITH_UTF8_SUPPORT
         boost::locale::boundary::ssegment_index index(boost::locale::boundary::character,
-                                                      value.begin(), value.end(), get_locale());
+                                                      value.begin(), value.end(),
+                                                      output_target.locale());
 
         auto first = index.begin();
         auto last = index.end();
@@ -99,4 +101,4 @@ text_block text(const std::string& content, std::vector<std::string> flags)
 {
     return text_block(content, std::move(flags));
 }
-}
+} // namespace carrot

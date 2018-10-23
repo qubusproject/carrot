@@ -1,4 +1,4 @@
-//  Copyright (c) 2015-2017 Christopher Hinz
+//  Copyright (c) 2015-2018 Christopher Hinz
 //
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -92,27 +92,7 @@ long int target_info::tab_width() const
     return tab_width_;
 }
 
-target_info get_stdout_target(long int tab_width)
-{
-#ifdef __unix__
-    bool colorize_output = has_color_support(STDOUT_FILENO);
-#else
-    bool colorize_output = false;
-#endif
-    return target_info(colorize_output, tab_width);
-}
-
-target_info get_file_target(long int tab_width)
-{
-    return target_info(false, tab_width);
-}
-
-target_info get_colorized_target(long int tab_width)
-{
-    return target_info(true, tab_width);
-}
-
-const std::locale& get_locale()
+const std::locale& target_info::locale() const
 {
     using namespace boost::locale;
 
@@ -150,4 +130,25 @@ const std::locale& get_locale()
 
     return loc;
 }
+
+target_info get_stdout_target(long int tab_width)
+{
+#ifdef __unix__
+    bool colorize_output = has_color_support(STDOUT_FILENO);
+#else
+    bool colorize_output = false;
+#endif
+    return target_info(colorize_output, tab_width);
+}
+
+target_info get_file_target(long int tab_width)
+{
+    return target_info(false, tab_width);
+}
+
+target_info get_colorized_target(long int tab_width)
+{
+    return target_info(true, tab_width);
+}
+
 }
