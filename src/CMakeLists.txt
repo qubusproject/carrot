@@ -54,8 +54,6 @@ if (MSVC)
     target_compile_options(carrot PUBLIC -EHsc)
 endif()
 
-generate_export_header(carrot)
-
 set_property(TARGET carrot PROPERTY VERSION 0.2.0)
 set_property(TARGET carrot PROPERTY SOVERSION 0)
 set_property(TARGET carrot PROPERTY INTERFACE_carrot_MAJOR_VERSION 0)
