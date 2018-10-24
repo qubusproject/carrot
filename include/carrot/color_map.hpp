@@ -9,6 +9,8 @@
 #include <carrot/color.hpp>
 #include <carrot/exception.hpp>
 
+#include "carrot_export.hpp"
+
 #include <boost/range/any_range.hpp>
 
 #include <vector>
@@ -17,7 +19,7 @@
 namespace carrot
 {
 
-class invalid_color_map_error : public virtual exception, public virtual std::runtime_error
+class CARROT_EXPORT invalid_color_map_error : public virtual exception, public virtual std::runtime_error
 {
 public:
     explicit invalid_color_map_error(std::string message_)
@@ -26,7 +28,7 @@ public:
     }
 };
 
-class color_map
+class CARROT_EXPORT color_map
 {
 public:
     template<typename Colors>

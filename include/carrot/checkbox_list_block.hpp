@@ -7,15 +7,16 @@
 #define CARROT_CHECKBOX_BLOCK_HPP
 
 #include <carrot/grid_block.hpp>
-
 #include <carrot/block.hpp>
+
+#include "carrot_export.hpp"
 
 #include <string>
 
 namespace carrot
 {
 
-class checkbox_list_block final : public block_base<checkbox_list_block>
+class CARROT_EXPORT checkbox_list_block final : public block_base<checkbox_list_block>
 {
 public:
     checkbox_list_block();
@@ -28,7 +29,7 @@ private:
     grid_block grid_;
 };
 
-checkbox_list_block make_checkbox_list();
+CARROT_EXPORT checkbox_list_block make_checkbox_list();
 
 }
 

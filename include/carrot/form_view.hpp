@@ -8,10 +8,12 @@
 
 #include <carrot/form.hpp>
 
+#include "carrot_export.hpp"
+
 namespace carrot
 {
 
-class form_view final : public form
+class CARROT_EXPORT form_view final : public form
 {
 public:
     form_view(form & base_form_, long int row_offset_, long int column_offset_);

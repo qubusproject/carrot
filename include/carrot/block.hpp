@@ -10,6 +10,8 @@
 #include <carrot/style.hpp>
 #include <carrot/target_info.hpp>
 
+#include "carrot_export.hpp"
+
 #include <array>
 #include <memory>
 #include <string>
@@ -24,7 +26,7 @@ namespace carrot
 class style;
 
 template <typename T>
-class block_base
+class CARROT_EXPORT block_base
 {
 public:
     block_base() = default;
@@ -57,11 +59,11 @@ private:
 };
 
 template <typename T>
-struct is_block : std::is_base_of<block_base<T>, T>
+struct CARROT_EXPORT is_block : std::is_base_of<block_base<T>, T>
 {
 };
 
-class block
+class CARROT_EXPORT block
 {
 public:
     block();
@@ -164,12 +166,12 @@ private:
     std::unique_ptr<block_interface> self_;
 };
 
-block operator<<(block lhs, block rhs);
+CARROT_EXPORT block operator<<(block lhs, block rhs);
 
 class plain_form;
 
-void render(const block& root, plain_form& output_form);
-void render(const block& root, plain_form& output_form, const style& s);
+CARROT_EXPORT void render(const block& root, plain_form& output_form);
+CARROT_EXPORT void render(const block& root, plain_form& output_form, const style& s);
 } // namespace carrot
 
 #endif

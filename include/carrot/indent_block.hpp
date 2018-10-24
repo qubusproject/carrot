@@ -8,10 +8,12 @@
 
 #include <carrot/block.hpp>
 
+#include "carrot_export.hpp"
+
 namespace carrot
 {
 
-class indent_block final : public block_base<indent_block>
+class CARROT_EXPORT indent_block final : public block_base<indent_block>
 {
 public:
     indent_block(block indented_block_, long int indent_levels_);
@@ -25,10 +27,10 @@ private:
     long int indent_levels_;
 };
 
-indent_block indent(block indented_block, long int indent_levels = 1);
+CARROT_EXPORT indent_block indent(block indented_block, long int indent_levels = 1);
 
-indent_block indent(block indented_block, std::vector<std::string> tags);
-indent_block indent(block indented_block, long int indent_levels, std::vector<std::string> tags);
+CARROT_EXPORT indent_block indent(block indented_block, std::vector<std::string> tags);
+CARROT_EXPORT indent_block indent(block indented_block, long int indent_levels, std::vector<std::string> tags);
 
 }
 

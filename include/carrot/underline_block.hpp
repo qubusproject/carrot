@@ -8,10 +8,12 @@
 
 #include <carrot/block.hpp>
 
+#include "carrot_export.hpp"
+
 namespace carrot
 {
 
-class underline_block final : public block_base<underline_block>
+class CARROT_EXPORT underline_block final : public block_base<underline_block>
 {
 public:
     explicit underline_block(block underlined_element_);
@@ -25,8 +27,8 @@ private:
     block underlined_element_;
 };
 
-underline_block underline(block underlined_element);
-underline_block underline(block underlined_element, std::vector<std::string> tags);
+CARROT_EXPORT underline_block underline(block underlined_element);
+CARROT_EXPORT underline_block underline(block underlined_element, std::vector<std::string> tags);
 }
 
 #endif

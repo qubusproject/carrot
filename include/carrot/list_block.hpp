@@ -7,13 +7,14 @@
 #define CARROT_LIST_BLOCK_HPP
 
 #include <carrot/grid_block.hpp>
-
 #include <carrot/block.hpp>
+
+#include "carrot_export.hpp"
 
 namespace carrot
 {
 
-class list_block final : public block_base<list_block>
+class CARROT_EXPORT list_block final : public block_base<list_block>
 {
 public:
     list_block();
@@ -27,7 +28,7 @@ private:
     grid_block grid_;
 };
 
-list_block make_list();
+CARROT_EXPORT list_block make_list();
 
 }
 

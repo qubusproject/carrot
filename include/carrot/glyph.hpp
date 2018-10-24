@@ -8,13 +8,15 @@
 
 #include <carrot/color.hpp>
 
+#include "carrot_export.hpp"
+
 #include <string>
 #include <string_view>
 
 namespace carrot
 {
 
-struct glyph
+struct CARROT_EXPORT glyph
 {
     glyph();
 
