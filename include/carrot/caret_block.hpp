@@ -9,12 +9,14 @@
 #include <carrot/block.hpp>
 #include <carrot/color.hpp>
 
+#include "carrot_export.hpp"
+
 namespace carrot
 {
 
 class style;
 
-class caret_block final : public block_base<caret_block>
+class CARROT_EXPORT caret_block final : public block_base<caret_block>
 {
 public:
     caret_block(block marked_block_, long int pos_);
@@ -29,8 +31,8 @@ private:
     long int pos_;
 };
 
-caret_block mark_with_caret(block marked_block, long int caret_position);
-caret_block mark_with_caret(block marked_block, long int caret_position, std::vector<std::string> tags);
+CARROT_EXPORT caret_block mark_with_caret(block marked_block, long int caret_position);
+CARROT_EXPORT caret_block mark_with_caret(block marked_block, long int caret_position, std::vector<std::string> tags);
 }
 
 #endif

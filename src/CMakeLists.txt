@@ -29,8 +29,12 @@ target_compile_features(carrot PUBLIC cxx_std_17)
 target_include_directories(carrot PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include> ${Boost_INCLUDE_DIRS})
 target_link_libraries(carrot PUBLIC ${Boost_LIBRARIES} PRIVATE Boost::disable_autolinking)
 target_compile_options(carrot PRIVATE ${LTO_CXX_OPTIONS})
-set_target_properties(carrot PROPERTIES LINK_FLAGS "${LTO_CXX_OPTIONS}")
+target_link_libraries(carrot PRIVATE "${LTO_CXX_OPTIONS}")
 set_target_properties(carrot PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+generate_export_header(carrot EXPORT_FILE_NAME carrot_export.hpp)
+target_include_directories(carrot PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)
+set_target_properties(carrot PROPERTIES CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN 1)
 
 if (CURSES_FOUND)
     target_include_directories(carrot PRIVATE ${CURSES_INCLUDE_DIR})
@@ -61,6 +65,8 @@ set_property(TARGET carrot APPEND PROPERTY COMPATIBLE_INTERFACE_STRING carrot_MI
 
 install(DIRECTORY ../include DESTINATION .
         FILES_MATCHING PATTERN "*.hpp")
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/carrot_export.hpp DESTINATION ./include)
 
 install(TARGETS carrot EXPORT carrot-targets
         RUNTIME DESTINATION bin

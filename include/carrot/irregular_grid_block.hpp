@@ -8,12 +8,14 @@
 
 #include <carrot/block.hpp>
 
+#include "carrot_export.hpp"
+
 #include <vector>
 
 namespace carrot
 {
 
-class irregular_grid_block final : public block_base<irregular_grid_block>
+class CARROT_EXPORT irregular_grid_block final : public block_base<irregular_grid_block>
 {
 public:
     class row
@@ -39,7 +41,7 @@ private:
     std::vector<row> rows_;
 };
 
-irregular_grid_block make_irregular_grid();
+CARROT_EXPORT irregular_grid_block make_irregular_grid();
 }
 
 #endif

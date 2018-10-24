@@ -8,10 +8,12 @@
 
 #include <carrot/block.hpp>
 
+#include "carrot_export.hpp"
+
 namespace carrot
 {
 
-class placeholder_block final : public block_base<placeholder_block>
+class CARROT_EXPORT placeholder_block final : public block_base<placeholder_block>
 {
 public:
     explicit placeholder_block(std::vector<std::string> flags_);
@@ -21,7 +23,7 @@ public:
     std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
 };
 
-placeholder_block placeholder(std::vector<std::string> flags);
+CARROT_EXPORT placeholder_block placeholder(std::vector<std::string> flags);
 
 }
 

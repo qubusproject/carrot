@@ -9,10 +9,12 @@
 #include <carrot/block.hpp>
 #include <carrot/color.hpp>
 
+#include "carrot_export.hpp"
+
 namespace carrot
 {
 
-class caret_underline_block final : public block_base<caret_underline_block>
+class CARROT_EXPORT caret_underline_block final : public block_base<caret_underline_block>
 {
 public:
     caret_underline_block(block underlined_element_, long int pos_);
@@ -27,9 +29,11 @@ private:
     long int pos_;
 };
 
-caret_underline_block underline_with_caret(block underlined_block, long int caret_position);
-caret_underline_block underline_with_caret(block underlined_block, long int caret_position,
-                                           std::vector<std::string> tags);
-}
+CARROT_EXPORT caret_underline_block underline_with_caret(block underlined_block,
+                                                         long int caret_position);
+CARROT_EXPORT caret_underline_block underline_with_caret(block underlined_block,
+                                                         long int caret_position,
+                                                         std::vector<std::string> tags);
+} // namespace carrot
 
 #endif

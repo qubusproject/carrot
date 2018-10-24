@@ -8,17 +8,19 @@
 
 #include <carrot/block.hpp>
 
+#include "carrot_export.hpp"
+
 namespace carrot
 {
 
-class empty_block final : public block_base<empty_block>
+class CARROT_EXPORT empty_block final : public block_base<empty_block>
 {
 public:
     void render(form & output_form, const style& s) const;
     std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
 };
 
-block make_empty();
+CARROT_EXPORT block make_empty();
 }
 
 #endif

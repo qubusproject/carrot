@@ -7,8 +7,9 @@
 #define CARROT_TEXT_BLOCK_HPP
 
 #include <carrot/block.hpp>
-
 #include <carrot/color.hpp>
+
+#include "carrot_export.hpp"
 
 #include <vector>
 #include <string>
@@ -16,7 +17,7 @@
 namespace carrot
 {
 
-class text_block final : public block_base<text_block>
+class CARROT_EXPORT text_block final : public block_base<text_block>
 {
 public:
     explicit text_block(const std::string& content_);
@@ -30,8 +31,8 @@ private:
     std::vector<std::string> rows_;
 };
 
-text_block text(const std::string& content);
-text_block text(const std::string& content, std::vector<std::string> tags);
+CARROT_EXPORT text_block text(const std::string& content);
+CARROT_EXPORT text_block text(const std::string& content, std::vector<std::string> tags);
 
 }
 

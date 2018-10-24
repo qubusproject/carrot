@@ -13,6 +13,8 @@
 
 #include <carrot/block.hpp>
 
+#include "carrot_export.hpp"
+
 #include <boost/multi_array.hpp>
 
 #include <tuple>
@@ -21,7 +23,7 @@
 namespace carrot
 {
 
-class grid_block final : public block_base<grid_block>
+class CARROT_EXPORT grid_block final : public block_base<grid_block>
 {
 public:
     grid_block(long int rows_, long int columns_);
@@ -48,7 +50,7 @@ private:
     boost::multi_array<block, 2> blocks_;
 };
 
-grid_block make_grid(long int rows, long int columns);
+CARROT_EXPORT grid_block make_grid(long int rows, long int columns);
 } // namespace carrot
 
 #endif

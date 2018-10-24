@@ -9,6 +9,8 @@
 #include <carrot/color.hpp>
 #include <carrot/exception.hpp>
 
+#include "carrot_export.hpp"
+
 #include <boost/variant.hpp>
 
 #include <memory>
@@ -21,7 +23,7 @@
 namespace carrot
 {
 
-class missing_style_info_error : public virtual exception, public virtual std::runtime_error
+class CARROT_EXPORT missing_style_info_error : public virtual exception, public virtual std::runtime_error
 {
 public:
     explicit missing_style_info_error()
@@ -30,7 +32,7 @@ public:
     }
 };
 
-class mismatched_attribute_type_error : public virtual exception, public virtual std::runtime_error
+class CARROT_EXPORT mismatched_attribute_type_error : public virtual exception, public virtual std::runtime_error
 {
 public:
     explicit mismatched_attribute_type_error(std::string attribute_id_)
@@ -40,7 +42,7 @@ public:
     }
 };
 
-class style_rule
+class CARROT_EXPORT style_rule
 {
 public:
     struct attribute
@@ -106,7 +108,7 @@ private:
     std::vector<std::pair<std::string, attribute>> attributes_;
 };
 
-class style
+class CARROT_EXPORT style
 {
 public:
     using integer = style_rule::integer;
@@ -133,7 +135,7 @@ public:
     }
 };
 
-class user_defined_style final : public style
+class CARROT_EXPORT user_defined_style final : public style
 {
 public:
     user_defined_style() = default;
@@ -153,7 +155,7 @@ private:
     std::unique_ptr<style> base_style_;
 };
 
-class augmented_style final : public style
+class CARROT_EXPORT augmented_style final : public style
 {
 public:
     explicit augmented_style(const style& base_style_);
@@ -172,7 +174,7 @@ private:
     const style* base_style_;
 };
 
-std::unique_ptr<style> get_default_style();
+CARROT_EXPORT std::unique_ptr<style> get_default_style();
 }
 
 #endif

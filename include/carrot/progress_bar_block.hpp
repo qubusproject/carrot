@@ -7,13 +7,14 @@
 #define CARROT_PROGRESS_BAR_BLOCK_HPP
 
 #include <carrot/text_block.hpp>
-
 #include <carrot/block.hpp>
+
+#include "carrot_export.hpp"
 
 namespace carrot
 {
 
-class progress_bar_block final : public block_base<progress_bar_block>
+class CARROT_EXPORT progress_bar_block final : public block_base<progress_bar_block>
 {
 public:
     explicit progress_bar_block(long int progress_);
@@ -25,7 +26,7 @@ private:
     text_block text_;
 };
 
-progress_bar_block progress_bar(long int progress);
+CARROT_EXPORT progress_bar_block progress_bar(long int progress);
 }
 
 #endif

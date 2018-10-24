@@ -8,19 +8,21 @@
 
 #include <carrot/exception.hpp>
 
+#include "carrot_export.hpp"
+
 #include <locale>
 #include <stdexcept>
 
 namespace carrot
 {
 
-class invalid_target_error : public virtual exception, public virtual std::logic_error
+class CARROT_EXPORT invalid_target_error : public virtual exception, public virtual std::logic_error
 {
 public:
     explicit invalid_target_error(const std::string& reason_);
 };
 
-class target_info
+class CARROT_EXPORT target_info
 {
 public:
     target_info(std::locale locale_, bool supports_colorized_output_, long int tab_width_);
@@ -35,14 +37,14 @@ private:
     long int tab_width_;
 };
 
-target_info get_stdout_target(long int tab_width = 4);
-target_info get_stdout_target(std::locale locale, long int tab_width = 4);
+CARROT_EXPORT target_info get_stdout_target(long int tab_width = 4);
+CARROT_EXPORT target_info get_stdout_target(std::locale locale, long int tab_width = 4);
 
-target_info get_file_target(long int tab_width = 4);
-target_info get_file_target(std::locale locale, long int tab_width = 4);
+CARROT_EXPORT target_info get_file_target(long int tab_width = 4);
+CARROT_EXPORT target_info get_file_target(std::locale locale, long int tab_width = 4);
 
-target_info get_colorized_target(long int tab_width = 4);
-target_info get_colorized_target(std::locale locale, long int tab_width = 4);
+CARROT_EXPORT target_info get_colorized_target(long int tab_width = 4);
+CARROT_EXPORT target_info get_colorized_target(std::locale locale, long int tab_width = 4);
 
 }
 

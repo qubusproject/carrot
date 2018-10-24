@@ -9,11 +9,13 @@
 #include <carrot/form.hpp>
 #include <carrot/target_info.hpp>
 
+#include "carrot_export.hpp"
+
 #include <string>
 
 namespace carrot
 {
-class plain_form final : public form
+class CARROT_EXPORT plain_form final : public form
 {
 public:
     plain_form(target_info target_, long int rows_ = 0, long int columns_ = 0);

@@ -7,15 +7,16 @@
 #define CARROT_FORM_HPP
 
 #include <carrot/glyph.hpp>
-
 #include <carrot/target_info.hpp>
+
+#include "carrot_export.hpp"
 
 #include <boost/multi_array.hpp>
 
 namespace carrot
 {
 
-class form
+class CARROT_EXPORT form
 {
 public:
     form() = default;

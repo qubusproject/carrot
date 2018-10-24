@@ -8,19 +8,21 @@
 
 #include <carrot/block.hpp>
 
+#include "carrot_export.hpp"
+
 #include <vector>
 #include <utility>
 
 namespace carrot
 {
 
-enum class growth_direction
+enum class CARROT_EXPORT growth_direction
 {
     down,
     right
 };
 
-class line_block final : public block_base<line_block>
+class CARROT_EXPORT line_block final : public block_base<line_block>
 {
 public:
     explicit line_block(growth_direction direction_);
@@ -34,10 +36,10 @@ private:
     std::vector<block> blocks_;
 };
 
-line_block make_line(growth_direction direction);
+CARROT_EXPORT line_block make_line(growth_direction direction);
 
 template<typename... Blocks>
-line_block connect(Blocks... blocks)
+CARROT_EXPORT line_block connect(Blocks... blocks)
 {
     auto line = line_block(growth_direction::right);
 
