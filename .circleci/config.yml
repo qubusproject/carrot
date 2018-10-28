@@ -1,5 +1,9 @@
 version: 2
 
+# Default environment
+environment:
+  BUILD_SHARED_LIBS: FALSE
+
 test_steps: &test_steps
   steps:
     - checkout
@@ -8,7 +12,7 @@ test_steps: &test_steps
         command: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON -DCARROT_ENABLE_SANITIZERS=ON  ../
+          cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON -DCARROT_ENABLE_SANITIZERS=ON -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}  ../
     - run:
         name: Build
         command: |
@@ -21,12 +25,10 @@ test_steps: &test_steps
           ctest  --output-on-failure
 
 gcc_env: &gcc_env
-  environment:
     CC: gcc
     CXX: g++
 
 clang_env: &clang_env
-  environment:
     CC: clang
     CXX: clang++
 
@@ -34,37 +36,44 @@ jobs:
   archlinux-gcc:
     docker:
       - image: qbbproject/archlinux-ci
-    <<: *gcc_env
+    environment:
+      <<: *gcc_env
     <<: *test_steps
 
   ubuntu-lts-gcc:
     docker:
       - image: qubusproject/ubuntu-lts-ci
-    <<: *gcc_env
+    environment:
+      <<: *gcc_env
     <<: *test_steps
 
   ubuntu-gcc:
     docker:
     - image: qubusproject/ubuntu-ci
-    <<: *gcc_env
+    environment:
+      <<: *gcc_env
+      BUILD_SHARED_LIBS: TRUE
     <<: *test_steps
 
   archlinux-clang:
     docker:
     - image: qbbproject/archlinux-ci
-    <<: *clang_env
+    environment:
+      <<: *clang_env
     <<: *test_steps
 
   ubuntu-lts-clang:
     docker:
     - image: qubusproject/ubuntu-lts-ci
-    <<: *clang_env
+    environment:
+      <<: *clang_env
     <<: *test_steps
 
   ubuntu-clang:
     docker:
     - image: qubusproject/ubuntu-ci
-    <<: *clang_env
+    environment:
+      <<: *clang_env
     <<: *test_steps
 
 workflows:
