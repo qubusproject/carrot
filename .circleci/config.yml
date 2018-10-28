@@ -35,7 +35,7 @@ clang_env: &clang_env
 jobs:
   archlinux-gcc:
     docker:
-      - image: qbbproject/archlinux-ci
+      - image: qubusproject/archlinux-ci
     environment:
       <<: *gcc_env
     <<: *test_steps
@@ -57,7 +57,7 @@ jobs:
 
   archlinux-clang:
     docker:
-    - image: qbbproject/archlinux-ci
+    - image: qubusproject/archlinux-ci
     environment:
       <<: *clang_env
     <<: *test_steps
