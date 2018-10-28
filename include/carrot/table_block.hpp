@@ -24,7 +24,7 @@ public:
     invalid_number_of_columns_error(long int expected, long int provided);
 };
 
-class table_block final : public block_base<table_block>
+class CARROT_EXPORT table_block final : public block_base<table_block>
 {
 public:
     explicit table_block(long int columns_);
