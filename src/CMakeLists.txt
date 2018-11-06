@@ -14,7 +14,7 @@ find_package(Curses)
 set(INCLUDE_FILES irregular_grid_block.hpp form.hpp plain_form.hpp frame_block.hpp form_view.hpp text_block.hpp grid_block.hpp
         underline_block.hpp caret_underline_block.hpp block.hpp carrot.hpp empty_block.hpp target_info.hpp
         glyph.hpp indent_block.hpp line_block.hpp list_block.hpp progress_bar_block.hpp checkbox_list_block.hpp
-        caret_block.hpp exception.hpp style.hpp color.hpp color_map.hpp placeholder_block.hpp table_block.hpp)
+        caret_block.hpp exception.hpp style.hpp color.hpp color_map.hpp placeholder_block.hpp table_block.hpp integers.hpp)
 
 foreach(file IN LISTS INCLUDE_FILES)
     list(APPEND FULL_INCLUDE_FILES ${CMAKE_SOURCE_DIR}/include/carrot/${file})
