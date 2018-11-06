@@ -5,6 +5,7 @@
 
 #include <carrot/text_block.hpp>
 
+#include <carrot/integers.hpp>
 #include <carrot/style.hpp>
 #include <carrot/target_info.hpp>
 
@@ -61,23 +62,25 @@ void text_block::render(form& output_form, const style& s) const
     }
 }
 
-std::array<long int, 2> text_block::extent(const target_info& output_target, const style& s [[maybe_unused]]) const
+std::array<long int, 2> text_block::extent(const target_info& output_target,
+                                           const style& s [[maybe_unused]]) const
 {
     long int rows = rows_.size();
 
-    std::function<long int(const std::string&)> get_row_lenght = [&output_target](const std::string& value) {
+    std::function<long int(const std::string&)> get_row_lenght =
+        [&output_target](const std::string& value) {
 #ifdef CARROT_WITH_UNICODE_SUPPORT
-        grapheme_cluster_view gc_view(value, output_target.locale());
+            grapheme_cluster_view gc_view(value, output_target.locale());
 
-        auto first = gc_view.begin();
-        auto last = gc_view.end();
+            auto first = gc_view.begin();
+            auto last = gc_view.end();
 #else
-        auto first = value.begin();
-        auto last = value.end();
+            auto first = value.begin();
+            auto last = value.end();
 #endif
 
-        return distance(first, last);
-    };
+            return integer_cast<long int>(distance(first, last));
+        };
 
     auto row_lenghts = rows_ | boost::adaptors::transformed(get_row_lenght);
 

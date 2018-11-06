@@ -5,6 +5,7 @@
 
 #include <carrot/placeholder_block.hpp>
 
+#include <carrot/integers.hpp>
 #include <carrot/style.hpp>
 
 #ifdef CARROT_WITH_UNICODE_SUPPORT
@@ -61,7 +62,7 @@ std::array<long int, 2> placeholder_block::extent(const target_info& output_targ
     auto last = content.end();
 #endif
 
-    long int width = distance(first, last);
+    auto width = integer_cast<long int>(distance(first, last));
 
     return std::array<long int, 2>{1, width};
 }
