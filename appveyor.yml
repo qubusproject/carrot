@@ -12,7 +12,7 @@ environment:
   CONAN_LOGIN_USERNAME:
     secure: GxHa8NfVU03o0B2OWcFEzg==
   CONAN_PASSWORD:
-    secure: rqy1axsQrrS15a2HzxJlzzCYvG+PmQN2b9os4CM8j7Q=
+    secure: yLZAqpiFUVuNc4PR5EvdI6QLLFfiI3PpMB8RsTiZuhY3rmSQLdMAwvexg1vImvs2
 
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
