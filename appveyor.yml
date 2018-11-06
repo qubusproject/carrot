@@ -7,10 +7,11 @@ environment:
   CONAN_CHANNEL: "testing"
   CONAN_UPLOAD: "https://api.bintray.com/conan/qubusproject/ci-cache"
   CONAN_USER_HOME: "C:\\projects\\conan\\"
+  CONAN_NON_INTERACTIVE: True
 
   CONAN_LOGIN_USERNAME:
     secure: GxHa8NfVU03o0B2OWcFEzg==
-  CONAN_LOGIN_PASSWD:
+  CONAN_PASSWORD:
     secure: rqy1axsQrrS15a2HzxJlzzCYvG+PmQN2b9os4CM8j7Q=
 
   matrix:
@@ -45,3 +46,9 @@ build_script:
 test_script:
   - cmd: cd build
   - cmd: ctest --output-on-failure
+
+after_test:
+  # Upload all dependencies to the CI package cache
+  # To save storage space, we should only do this for packages which do
+  # not provide a pre-built binary as part of the official Conan repositories.
+  - if defined CONAN_PASSWORD conan upload --all -r ci-cache icu/62.1@bincrafters/stable
