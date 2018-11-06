@@ -50,9 +50,7 @@ if (CARROT_WITH_UNICODE_SUPPORT)
     target_compile_definitions(carrot PRIVATE -DCARROT_WITH_UNICODE_SUPPORT)
 endif()
 
-if (MSVC)
-    target_compile_options(carrot PUBLIC -EHsc)
-endif()
+target_compile_options(carrot PUBLIC $<$<CXX_COMPILER_ID:MSVC>:-EHsc>)
 
 set_property(TARGET carrot PROPERTY VERSION 0.2.0)
 set_property(TARGET carrot PROPERTY SOVERSION 0)
