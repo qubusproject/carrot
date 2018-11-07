@@ -11,8 +11,6 @@
 
 #include "carrot_export.hpp"
 
-#include <boost/range/any_range.hpp>
-
 #include <vector>
 #include <stdexcept>
 
