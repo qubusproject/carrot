@@ -19,7 +19,7 @@
 #include <boost/range/algorithm.hpp>
 
 #include <algorithm>
-#include <functional>
+#include <cassert>
 #include <iterator>
 #include <utility>
 
@@ -62,27 +62,46 @@ void text_block::render(form& output_form, const style& s) const
     }
 }
 
+// Workaround for older versions of Boost.Range. Lambdas are not correctly supported.
+namespace
+{
+class get_row_length
+{
+public:
+    using result_type = long int;
+
+    explicit get_row_length(const target_info& output_target_) : output_target_(&output_target_)
+    {
+    }
+
+    result_type operator()(const std::string& value) const
+    {
+        assert(output_target_ != nullptr);
+
+#ifdef CARROT_WITH_UNICODE_SUPPORT
+        grapheme_cluster_view gc_view(value, output_target_->locale());
+
+        auto first = gc_view.begin();
+        auto last = gc_view.end();
+#else
+        auto first = value.begin();
+        auto last = value.end();
+#endif
+
+        return integer_cast<long int>(distance(first, last));
+    }
+
+private:
+    const target_info* output_target_;
+};
+} // namespace
+
 std::array<long int, 2> text_block::extent(const target_info& output_target,
                                            const style& s [[maybe_unused]]) const
 {
     long int rows = rows_.size();
 
-    std::function<long int(const std::string&)> get_row_lenght =
-        [&output_target](const std::string& value) {
-#ifdef CARROT_WITH_UNICODE_SUPPORT
-            grapheme_cluster_view gc_view(value, output_target.locale());
-
-            auto first = gc_view.begin();
-            auto last = gc_view.end();
-#else
-            auto first = value.begin();
-            auto last = value.end();
-#endif
-
-            return integer_cast<long int>(distance(first, last));
-        };
-
-    auto row_lenghts = rows_ | boost::adaptors::transformed(get_row_lenght);
+    auto row_lenghts = rows_ | boost::adaptors::transformed(get_row_length(output_target));
 
     auto max_row_lenght = boost::max_element(row_lenghts);
 
