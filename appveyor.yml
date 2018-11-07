@@ -26,6 +26,7 @@ platform:
   - x64
 
 shallow_clone: true
+skip_branch_with_pr: true
 
 install:
   - set PATH=%PYTHON%;%PATH%;%PYTHON%/Scripts/
