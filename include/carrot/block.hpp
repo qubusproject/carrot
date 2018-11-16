@@ -25,6 +25,14 @@ namespace carrot
 
 class style;
 
+#if __cpp_concepts >= 201507
+template <typename T>
+concept bool Block = requires (T x, form& output_form, const style& s, const target_info& ti) {
+    x.render(output_form, s);
+    x.extent(ti, s);
+};
+#endif
+
 template <typename T>
 class CARROT_EXPORT block_base
 {
@@ -68,11 +76,18 @@ class CARROT_EXPORT block
 public:
     block();
 
+#if __cpp_concepts >= 201507
+    template <Block BlockType>
+    block(BlockType self_) : self_(std::make_unique<block_wrapper<BlockType>>(std::move(self_)))
+    {
+    }
+#else
     template <typename Block,
               typename Enabler = typename std::enable_if<is_block<Block>::value>::type>
     block(Block self_) : self_(std::make_unique<block_wrapper<Block>>(std::move(self_)))
     {
     }
+#endif
 
     block(const block& other)
     {

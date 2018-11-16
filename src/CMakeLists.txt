@@ -7,6 +7,9 @@ option(BUILD_SHARED_LIBS "Build the library as a shared library." OFF)
 
 option(CARROT_WITH_UNICODE_SUPPORT "Enable support for Unicode." ON)
 
+option(CARROT_WITH_EXPERIMENTAL_FEATURES "Enable experimental features." OFF)
+mark_as_advanced(CARROT_WITH_EXPERIMENTAL_FEATURES)
+
 find_package(Boost 1.58.0 REQUIRED)
 
 find_package(Curses)
@@ -31,6 +34,14 @@ target_link_libraries(carrot PUBLIC ${Boost_LIBRARIES} PRIVATE Boost::disable_au
 target_compile_options(carrot PRIVATE ${LTO_CXX_OPTIONS})
 target_link_libraries(carrot PRIVATE "${LTO_CXX_OPTIONS}")
 set_target_properties(carrot PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+if (CARROT_WITH_EXPERIMENTAL_FEATURES)
+    CHECK_CXX_COMPILER_FLAG(-fconcepts COMPILER_HAS_GCC_CONCEPT_FLAG)
+
+    if (COMPILER_HAS_GCC_CONCEPT_FLAG)
+        target_compile_options(carrot PUBLIC -fconcepts)
+    endif()
+endif()
 
 generate_export_header(carrot EXPORT_FILE_NAME carrot_export.hpp)
 target_include_directories(carrot PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)
