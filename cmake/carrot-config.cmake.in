@@ -1,0 +1,16 @@
+include(CMakeFindDependencyMacro)
+
+include("${CMAKE_CURRENT_LIST_DIR}/carrot-targets.cmake")
+
+@PACKAGE_INIT@
+
+set(CARROT_HAS_UNICODE_SUPPORT @CARROT_WITH_UNICODE_SUPPORT@)
+
+find_dependency(Boost 1.58.0)
+find_dependency(Curses)
+
+if (CARROT_HAS_UNICODE_SUPPORT)
+    find_dependency(ICU COMPONENTS uc)
+endif()
+
+check_required_components(carrot)

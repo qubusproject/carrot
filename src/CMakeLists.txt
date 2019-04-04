@@ -83,11 +83,6 @@ export(EXPORT carrot-targets
         NAMESPACE carrot::
         )
 
-configure_file(../cmake/carrot-config.cmake
-        "${CMAKE_CURRENT_BINARY_DIR}/carrot/carrot-config.cmake"
-        COPYONLY
-        )
-
 set(ConfigPackageLocation lib/cmake/carrot)
 
 install(EXPORT carrot-targets
@@ -99,8 +94,13 @@ install(EXPORT carrot-targets
         ${ConfigPackageLocation}
         )
 
+configure_package_config_file(
+        ../cmake/carrot-config.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/carrot-config.cmake
+        INSTALL_DESTINATION ${ConfigPackageLocation}
+        )
+
 install(FILES
-        ../cmake/carrot-config.cmake
         "${CMAKE_CURRENT_BINARY_DIR}/carrot/carrot-config-version.cmake"
         DESTINATION
         ${ConfigPackageLocation})
