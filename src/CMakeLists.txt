@@ -112,6 +112,7 @@ configure_package_config_file(
         )
 
 install(FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/carrot-config.cmake"
         "${CMAKE_CURRENT_BINARY_DIR}/carrot/carrot-config-version.cmake"
         DESTINATION
         ${ConfigPackageLocation})
