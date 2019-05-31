@@ -218,11 +218,11 @@ void plain_form::resize_if_outside_matrix(long int row, long int column)
 
         clear();
 
-        for (long int row = 0; row < old_data.shape()[0]; ++row)
+        for (long int row_index = 0; row_index < old_data.shape()[0]; ++row_index)
         {
-            for (long int column = 0; column < old_data.shape()[1]; ++column)
+            for (long int column_index = 0; column_index < old_data.shape()[1]; ++column_index)
             {
-                data_[row][column] = old_data[row][column];
+                data_[row_index][column_index] = old_data[row_index][column_index];
             }
         }
     }
