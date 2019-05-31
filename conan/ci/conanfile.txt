@@ -1,0 +1,13 @@
+[requires]
+boost/1.70.0@conan/stable
+icu/62.1@bincrafters/stable
+
+[generators]
+cmake_paths
+
+[options]
+icu:shared=True
+icu:data_packaging=library
+
+[imports]
+bin, *.dll -> ./tests/

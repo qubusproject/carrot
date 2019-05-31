@@ -9,6 +9,7 @@ if (CARROT_BUILD_TESTS)
 
 add_library(test_runner OBJECT runner.cpp)
 target_include_directories(test_runner PRIVATE SYSTEM ${PROJECT_SOURCE_DIR}/external/catch/)
+target_compile_options(test_runner PUBLIC $<$<CXX_COMPILER_ID:MSVC>:-EHsc>)
 
 include(Catch)
 
