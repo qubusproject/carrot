@@ -54,10 +54,10 @@ if (CURSES_FOUND)
 endif()
 
 if (CARROT_WITH_UNICODE_SUPPORT)
-    find_package(ICU COMPONENTS uc REQUIRED)
+    find_package(ICU COMPONENTS uc data REQUIRED)
 
     target_sources(carrot PRIVATE grapheme_cluster_view.cpp)
-    target_link_libraries(carrot PRIVATE ICU::uc)
+    target_link_libraries(carrot PRIVATE ICU::uc ICU::data)
     target_compile_definitions(carrot PRIVATE -DCARROT_WITH_UNICODE_SUPPORT)
 endif()
 

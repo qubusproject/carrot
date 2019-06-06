@@ -7,9 +7,9 @@ class CarrotConan(ConanFile):
     license = "BSL-1.0"
     url = "https://github.com/qubusproject/carrot"
     description = "A C++ library for rendering expressive diagnostic messages"
-    settings = "os", "compiler", "build_type", "arch", "cppstd"
+    settings = "os", "compiler", "build_type", "arch"
     generators = "cmake_paths"
-    requires = "boost/1.67.0@conan/stable", "icu/62.1@bincrafters/stable"
+    requires = "boost/1.70.0@conan/stable", "icu/62.1@bincrafters/stable"
     exports_sources = "../*"
 
     def configure(self):
