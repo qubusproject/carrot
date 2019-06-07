@@ -15,6 +15,8 @@ environment:
     secure: yLZAqpiFUVuNc4PR5EvdI6QLLFfiI3PpMB8RsTiZuhY3rmSQLdMAwvexg1vImvs2
 
   matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      MSVC_GENERATOR: Visual Studio 15 2017
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       MSVC_GENERATOR: Visual Studio 16 2019
 
