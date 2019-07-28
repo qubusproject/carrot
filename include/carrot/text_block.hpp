@@ -12,7 +12,7 @@
 #include "carrot_export.hpp"
 
 #include <vector>
-#include <string>
+#include <string_view>
 
 namespace carrot
 {
@@ -20,8 +20,8 @@ namespace carrot
 class CARROT_EXPORT text_block final : public block_base<text_block>
 {
 public:
-    explicit text_block(const std::string& content_);
-    text_block(const std::string& content_, std::vector<std::string> tags_);
+    explicit text_block(std::string_view content_);
+    text_block(std::string_view content_, std::vector<std::string> tags_);
 
     void render(form& output_form, const style& s) const;
 
@@ -31,8 +31,8 @@ private:
     std::vector<std::string> rows_;
 };
 
-CARROT_EXPORT text_block text(const std::string& content);
-CARROT_EXPORT text_block text(const std::string& content, std::vector<std::string> tags);
+CARROT_EXPORT text_block text(std::string_view content);
+CARROT_EXPORT text_block text(std::string_view content, std::vector<std::string> tags);
 
 }
 
