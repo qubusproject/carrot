@@ -26,11 +26,11 @@
 namespace carrot
 {
 
-text_block::text_block(const std::string& content_) : text_block(content_, {})
+text_block::text_block(std::string_view content_) : text_block(content_, {})
 {
 }
 
-text_block::text_block(const std::string& content_, std::vector<std::string> tags_)
+text_block::text_block(std::string_view content_, std::vector<std::string> tags_)
 : block_base<text_block>(std::move(tags_))
 {
     boost::split(rows_, content_, boost::is_any_of("\n"));
@@ -110,12 +110,12 @@ std::array<long int, 2> text_block::extent(const target_info& output_target,
     return std::array<long int, 2>{rows, columns};
 }
 
-text_block text(const std::string& content)
+text_block text(std::string_view content)
 {
     return text_block(content);
 }
 
-text_block text(const std::string& content, std::vector<std::string> flags)
+text_block text(std::string_view content, std::vector<std::string> flags)
 {
     return text_block(content, std::move(flags));
 }
