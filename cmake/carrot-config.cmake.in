@@ -10,7 +10,7 @@ find_dependency(Boost 1.58.0)
 find_dependency(Curses)
 
 if (CARROT_HAS_UNICODE_SUPPORT)
-    find_dependency(ICU COMPONENTS uc)
+    find_dependency(ICU COMPONENTS uc data)
 endif()
 
 check_required_components(carrot)
