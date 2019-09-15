@@ -17,11 +17,10 @@ class CARROT_EXPORT form_view final : public form
 {
 public:
     form_view(form & base_form_, long int row_offset_, long int column_offset_);
-    virtual ~form_view() = default;
 
-    void set(long int row, long int column, glyph value) override;
+    void set(long int row, long int column, glyph value) final;
 
-    const target_info& target() const override;
+    [[nodiscard]] const target_info& target() const final;
 private:
     form* base_form_;
     long int row_offset_;

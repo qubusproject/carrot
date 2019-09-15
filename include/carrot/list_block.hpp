@@ -6,8 +6,8 @@
 #ifndef CARROT_LIST_BLOCK_HPP
 #define CARROT_LIST_BLOCK_HPP
 
-#include <carrot/grid_block.hpp>
 #include <carrot/block.hpp>
+#include <carrot/grid_block.hpp>
 
 #include "carrot_export.hpp"
 
@@ -22,14 +22,15 @@ public:
     list_block& add(block b);
 
     void render(form& output_form, const style& s) const;
-    std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
+    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
+                                                 const style& s) const;
 
 private:
     grid_block grid_;
 };
 
-CARROT_EXPORT list_block make_list();
+[[nodiscard]] CARROT_EXPORT list_block make_list();
 
-}
+} // namespace carrot
 
 #endif

@@ -22,18 +22,18 @@ public:
 
     void render(form& output_form, const style& s) const;
 
-    std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
+    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
+                                                 const style& s) const;
 
 private:
     block underlined_element_;
     long int pos_;
 };
 
-CARROT_EXPORT caret_underline_block underline_with_caret(block underlined_block,
-                                                         long int caret_position);
-CARROT_EXPORT caret_underline_block underline_with_caret(block underlined_block,
-                                                         long int caret_position,
-                                                         std::vector<std::string> tags);
+[[nodiscard]] CARROT_EXPORT caret_underline_block underline_with_caret(block underlined_block,
+                                                                       long int caret_position);
+[[nodiscard]] CARROT_EXPORT caret_underline_block underline_with_caret(
+    block underlined_block, long int caret_position, std::vector<std::string> tags);
 } // namespace carrot
 
 #endif

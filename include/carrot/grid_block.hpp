@@ -36,21 +36,22 @@ public:
     void append_row();
     void append_column();
 
-    long int rows() const;
-    long int cols() const;
+    [[nodiscard]] long int rows() const;
+    [[nodiscard]] long int cols() const;
 
     void render(form& output_form, const style& s) const;
 
-    std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
+    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
+                                                 const style& s) const;
 
 private:
-    std::tuple<std::vector<long int>, std::vector<long int>>
+    [[nodiscard]] std::tuple<std::vector<long int>, std::vector<long int>>
     compute_layout(const target_info& output_target, const style& s) const;
 
     boost::multi_array<block, 2> blocks_;
 };
 
-CARROT_EXPORT grid_block make_grid(long int rows, long int columns);
+[[nodiscard]] CARROT_EXPORT grid_block make_grid(long int rows, long int columns);
 } // namespace carrot
 
 #endif

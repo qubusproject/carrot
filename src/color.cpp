@@ -88,7 +88,7 @@ rgb_color hsl2rgb(const hsl_color& c)
 
     auto m = c.lightness() - C / 2;
 
-    auto[r, g, b] = [&]() -> std::array<float, 3> {
+    auto [r, g, b] = [&]() -> std::array<float, 3> {
         if (c.hue() < 60)
         {
             return {C, X, 0};
@@ -118,7 +118,7 @@ rgb_color hsl2rgb(const hsl_color& c)
     return rgb_color(std::round((r + m) * 255), std::round((g + m) * 255),
                      std::round((b + m) * 255));
 }
-}
+} // namespace
 
 rgb_color rgb(const color& c, const color_table& ctable)
 {
@@ -406,4 +406,4 @@ const std::array<hsl_color, 256>& get_xterm_color_table()
 {
     return xterm_color_table;
 }
-}
+} // namespace carrot

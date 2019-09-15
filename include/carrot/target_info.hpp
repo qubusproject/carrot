@@ -25,11 +25,12 @@ public:
 class CARROT_EXPORT target_info
 {
 public:
-    target_info(std::locale locale_, bool supports_colorized_output_, long int tab_width_);
+    explicit target_info(const std::locale& locale_, bool supports_colorized_output_,
+                         long int tab_width_);
 
-    bool supports_colorized_output() const;
-    long int tab_width() const;
-    const std::locale& locale() const;
+    [[nodiscard]] bool supports_colorized_output() const;
+    [[nodiscard]] long int tab_width() const;
+    [[nodiscard]] const std::locale& locale() const;
 
 private:
     std::locale locale_;
@@ -37,15 +38,18 @@ private:
     long int tab_width_;
 };
 
-CARROT_EXPORT target_info get_stdout_target(long int tab_width = 4);
-CARROT_EXPORT target_info get_stdout_target(std::locale locale, long int tab_width = 4);
+[[nodiscard]] CARROT_EXPORT target_info get_stdout_target(long int tab_width = 4);
+[[nodiscard]] CARROT_EXPORT target_info get_stdout_target(const std::locale& locale,
+                                                          long int tab_width = 4);
 
-CARROT_EXPORT target_info get_file_target(long int tab_width = 4);
-CARROT_EXPORT target_info get_file_target(std::locale locale, long int tab_width = 4);
+[[nodiscard]] CARROT_EXPORT target_info get_file_target(long int tab_width = 4);
+[[nodiscard]] CARROT_EXPORT target_info get_file_target(const std::locale& locale,
+                                                        long int tab_width = 4);
 
-CARROT_EXPORT target_info get_colorized_target(long int tab_width = 4);
-CARROT_EXPORT target_info get_colorized_target(std::locale locale, long int tab_width = 4);
+[[nodiscard]] CARROT_EXPORT target_info get_colorized_target(long int tab_width = 4);
+[[nodiscard]] CARROT_EXPORT target_info get_colorized_target(const std::locale& locale,
+                                                             long int tab_width = 4);
 
-}
+} // namespace carrot
 
 #endif

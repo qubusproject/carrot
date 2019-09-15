@@ -17,10 +17,10 @@ class CARROT_EXPORT empty_block final : public block_base<empty_block>
 {
 public:
     void render(form & output_form, const style& s) const;
-    std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
+    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
 };
 
-CARROT_EXPORT block make_empty();
+[[nodiscard]] CARROT_EXPORT block make_empty();
 }
 
 #endif

@@ -18,17 +18,18 @@ class CARROT_EXPORT frame_block final : public block_base<frame_block>
 public:
     explicit frame_block(block framed_block_, long int margin_ = 1);
 
-    void render(form & output_form, const style& s) const;
+    void render(form& output_form, const style& s) const;
 
-    std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
+    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
+                                                 const style& s) const;
 
 private:
     block framed_block_;
     long int margin_;
 };
 
-CARROT_EXPORT frame_block frame(block framed_block, long int margin = 1);
+[[nodiscard]] CARROT_EXPORT frame_block frame(block framed_block, long int margin = 1);
 
-}
+} // namespace carrot
 
 #endif

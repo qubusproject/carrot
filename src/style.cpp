@@ -14,7 +14,7 @@ style_rule::selector_type::pattern::pattern(std::string pattern_)
 {
     if (pattern_ != "*")
     {
-        this->pattern_ = pattern_;
+        this->pattern_ = std::move(pattern_);
     }
 }
 
@@ -158,25 +158,32 @@ style_rule& augmented_style::add_rule(std::string element_id, std::string tag, s
 
 std::unique_ptr<style> get_default_style()
 {
+    static constexpr short hightest_color_value = 255;
+    static constexpr short lowest_color_value = 0;
+
+    static constexpr style_rule::integer default_indent = 4;
+
     auto s = std::make_unique<user_defined_style>();
 
     s->add_rule("*")
         .add_attribute("color", default_color())
         .add_attribute("background-color", default_color())
         .add_attribute("bold", false)
-        .add_attribute("indent", 4)
+        .add_attribute("indent", default_indent)
         .add_attribute("content", u8"");
 
     s->add_rule("checkbox-list")
-        .add_attribute("symbol-color", rgb_color(0, 255, 0))
+        .add_attribute("symbol-color",
+                       rgb_color(lowest_color_value, hightest_color_value, lowest_color_value))
         .add_attribute("symbol", u8"x");
 
     s->add_rule("caret-underline")
-        .add_attribute("caret.color", rgb_color(0, 255, 0))
+        .add_attribute("caret.color",
+                       rgb_color(lowest_color_value, hightest_color_value, lowest_color_value))
         .add_attribute("caret.bold", false);
 
     s->add_rule("*", "bold").add_attribute("bold", true);
 
     return s;
 }
-}
+} // namespace carrot

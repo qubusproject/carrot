@@ -21,17 +21,21 @@ public:
 
     void render(form& output_form, const style& s) const;
 
-    std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
+    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
+                                                 const style& s) const;
+
 private:
     block indented_block_;
     long int indent_levels_;
 };
 
-CARROT_EXPORT indent_block indent(block indented_block, long int indent_levels = 1);
+[[nodiscard]] CARROT_EXPORT indent_block indent(block indented_block, long int indent_levels = 1);
 
-CARROT_EXPORT indent_block indent(block indented_block, std::vector<std::string> tags);
-CARROT_EXPORT indent_block indent(block indented_block, long int indent_levels, std::vector<std::string> tags);
+[[nodiscard]] CARROT_EXPORT indent_block indent(block indented_block,
+                                                std::vector<std::string> tags);
+[[nodiscard]] CARROT_EXPORT indent_block indent(block indented_block, long int indent_levels,
+                                                std::vector<std::string> tags);
 
-}
+} // namespace carrot
 
 #endif

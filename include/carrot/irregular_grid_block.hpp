@@ -21,7 +21,7 @@ public:
     class row
     {
     public:
-        void render(form & output_form, const style& s) const;
+        void render(form& output_form, const style& s) const;
 
         std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
 
@@ -33,15 +33,16 @@ public:
 
     void add_to_row(long int row, block element);
 
-    void render(form & output_form, const style& s) const;
+    void render(form& output_form, const style& s) const;
 
-    std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
+    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
+                                                 const style& s) const;
 
 private:
     std::vector<row> rows_;
 };
 
-CARROT_EXPORT irregular_grid_block make_irregular_grid();
-}
+[[nodiscard]] CARROT_EXPORT irregular_grid_block make_irregular_grid();
+} // namespace carrot
 
 #endif

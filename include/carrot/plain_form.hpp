@@ -20,13 +20,11 @@ class CARROT_EXPORT plain_form final : public form
 public:
     plain_form(target_info target_, long int rows_ = 0, long int columns_ = 0);
 
-    virtual ~plain_form() = default;
+    void set(long int row, long int column, glyph value) final;
 
-    void set(long int row, long int column, glyph value) override;
+    [[nodiscard]] const target_info& target() const final;
 
-    const target_info& target() const override;
-
-    std::string to_string() const;
+    [[nodiscard]] std::string to_string() const;
 
     void clear();
     void clear(glyph value);

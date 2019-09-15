@@ -5,7 +5,7 @@ namespace carrot
 {
 
 template <typename Destination, typename Source>
-constexpr Destination integer_cast(const Source& value)
+[[nodiscard]] constexpr Destination integer_cast(const Source& value)
 {
     return static_cast<Destination>(value);
 }

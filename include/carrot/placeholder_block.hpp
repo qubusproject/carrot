@@ -20,11 +20,12 @@ public:
 
     void render(form& output_form, const style& s) const;
 
-    std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
+    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
+                                                 const style& s) const;
 };
 
-CARROT_EXPORT placeholder_block placeholder(std::vector<std::string> flags);
+[[nodiscard]] CARROT_EXPORT placeholder_block placeholder(std::vector<std::string> flags);
 
-}
+} // namespace carrot
 
 #endif

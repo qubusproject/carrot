@@ -9,7 +9,7 @@
 #include <memory>
 
 #ifndef CARROT_WITH_UNICODE_SUPPORT
-#   error "grapheme_cluster_view.cpp should not be compiled if the Unicode support has been disabled."
+#error "grapheme_cluster_view.cpp should not be compiled if the Unicode support has been disabled."
 #endif
 
 namespace carrot
@@ -26,7 +26,7 @@ public:
     }
 };
 
-icu::Locale create_icu_locale(std::locale locale)
+icu::Locale create_icu_locale(const std::locale& locale)
 {
     auto icu_locale = icu::Locale::createCanonical(locale.name().c_str());
 
@@ -42,8 +42,12 @@ std::unique_ptr<UText, utext_deleter> create_buffer(std::string_view utf8_string
     auto buffer = std::unique_ptr<UText, utext_deleter>(
         utext_openUTF8(nullptr, utf8_string.data(), utf8_string.size(), &error_code));
 
-    if (!U_SUCCESS(error_code))
-        throw runtime_error("ICU error: "s + u_errorName(error_code));
+    if (U_SUCCESS(error_code) == 0)
+    {
+        const std::string icu_error_prefix = "ICU error: "s;
+
+        throw runtime_error(icu_error_prefix + u_errorName(error_code));
+    }
 
     return buffer;
 }
@@ -58,15 +62,23 @@ create_grapheme_cluster_break_iterator(UText& buffer, const icu::Locale& locale)
     auto iterator = std::unique_ptr<icu::BreakIterator>(
         icu::BreakIterator::createCharacterInstance(locale, error_code));
 
-    if (!U_SUCCESS(error_code))
-        throw runtime_error("ICU error: "s + u_errorName(error_code));
+    if (U_SUCCESS(error_code) == 0)
+    {
+        const std::string icu_error_prefix = "ICU error: "s;
+
+        throw runtime_error(icu_error_prefix + u_errorName(error_code));
+    }
 
     error_code = U_ZERO_ERROR;
 
     iterator->setText(&buffer, error_code);
 
-    if (!U_SUCCESS(error_code))
-        throw runtime_error("ICU error: "s + u_errorName(error_code));
+    if (U_SUCCESS(error_code) == 0)
+    {
+        const std::string icu_error_prefix = "ICU error: "s;
+
+        throw runtime_error(icu_error_prefix + u_errorName(error_code));
+    }
 
     return iterator;
 }
@@ -86,7 +98,7 @@ public:
         next_cluster();
     }
 
-    bool has_next_cluster() const
+    [[nodiscard]] bool has_next_cluster() const
     {
         return !done_;
     }
@@ -111,7 +123,7 @@ public:
         }
     }
 
-    std::string_view get_current_cluster() const
+    [[nodiscard]] std::string_view get_current_cluster() const
     {
         return current_cluster_;
     }
@@ -129,7 +141,7 @@ private:
 };
 
 grapheme_cluster_iterator::grapheme_cluster_iterator(std::string_view utf8_string_,
-                                                     std::locale locale_)
+                                                     const std::locale& locale_)
 : state_(std::make_shared<grapheme_cluster_iterator_state>(utf8_string_, locale_))
 {
 }
@@ -159,7 +171,8 @@ grapheme_cluster_iterator grapheme_cluster_iterator::operator++(int) &
     return copy;
 }
 
-bool operator==(grapheme_cluster_iterator lhs, grapheme_cluster_sentinel rhs)
+bool operator==(const grapheme_cluster_iterator& lhs,
+                [[maybe_unused]] grapheme_cluster_sentinel rhs)
 {
     if (lhs.state_ == nullptr)
         return true;
@@ -167,7 +180,7 @@ bool operator==(grapheme_cluster_iterator lhs, grapheme_cluster_sentinel rhs)
     return !lhs.state_->has_next_cluster();
 }
 
-typename grapheme_cluster_iterator::difference_type distance(grapheme_cluster_iterator first,
+typename grapheme_cluster_iterator::difference_type distance(const grapheme_cluster_iterator& first,
                                                              grapheme_cluster_sentinel last)
 {
     typename grapheme_cluster_iterator::difference_type diff = 0;
@@ -180,17 +193,18 @@ typename grapheme_cluster_iterator::difference_type distance(grapheme_cluster_it
     return diff;
 }
 
-grapheme_cluster_view::grapheme_cluster_view(std::string_view utf8_string_, std::locale locale_)
+grapheme_cluster_view::grapheme_cluster_view(std::string_view utf8_string_,
+                                             const std::locale& locale_)
 : utf8_string_(utf8_string_), locale_(locale_)
 {
 }
 
-grapheme_cluster_iterator grapheme_cluster_view::begin()
+grapheme_cluster_iterator grapheme_cluster_view::begin() const
 {
     return grapheme_cluster_iterator(utf8_string_, locale_);
 }
 
-grapheme_cluster_sentinel grapheme_cluster_view::end()
+grapheme_cluster_sentinel grapheme_cluster_view::end() const
 {
     return grapheme_cluster_sentinel();
 }

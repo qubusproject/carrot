@@ -20,7 +20,7 @@ namespace carrot
 class CARROT_EXPORT invalid_color_map_error : public virtual exception, public virtual std::runtime_error
 {
 public:
-    explicit invalid_color_map_error(std::string message_)
+    explicit invalid_color_map_error(const std::string& message_)
     : std::runtime_error("Invalid color map: " + message_)
     {
     }
@@ -41,7 +41,7 @@ public:
             throw invalid_color_map_error("Insufficient number of colors.");
     }
 
-    std::size_t map_color(const color& c) const;
+    [[nodiscard]] std::size_t map_color(const color& c) const;
 private:
     std::vector<hsl_color> available_colors_;
 };

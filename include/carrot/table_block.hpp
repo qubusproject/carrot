@@ -6,9 +6,9 @@
 #ifndef CARROT_TABLE_BLOCK_HPP
 #define CARROT_TABLE_BLOCK_HPP
 
-#include <carrot/grid_block.hpp>
 #include <carrot/block.hpp>
 #include <carrot/exception.hpp>
+#include <carrot/grid_block.hpp>
 
 #include "carrot_export.hpp"
 
@@ -18,7 +18,8 @@
 namespace carrot
 {
 
-class CARROT_EXPORT invalid_number_of_columns_error : public virtual exception, public virtual std::logic_error
+class CARROT_EXPORT invalid_number_of_columns_error : public virtual exception,
+                                                      public virtual std::logic_error
 {
 public:
     invalid_number_of_columns_error(long int expected, long int provided);
@@ -32,14 +33,15 @@ public:
     table_block& add_row(std::vector<block> columns);
 
     void render(form& output_form, const style& s) const;
-    std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
+    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
+                                                 const style& s) const;
 
 private:
     grid_block grid_;
     long int columns_;
 };
 
-CARROT_EXPORT table_block make_table(long int columns);
-}
+[[nodiscard]] CARROT_EXPORT table_block make_table(long int columns);
+} // namespace carrot
 
 #endif
