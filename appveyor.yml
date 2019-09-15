@@ -42,7 +42,7 @@ install:
   - conan remote add --insert 0 ci-cache https://api.bintray.com/conan/qubusproject/ci-cache
   - conan remote add qubusproject https://api.bintray.com/conan/qubusproject/conan
   - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
-  - "conan install --build outdated -s build_type=%CONFIGURATION% -s compiler.cppstd=17 -s gtest:build_type=Release -if build/ conan/ci/"
+  - "conan install --build outdated -s build_type=%CONFIGURATION% -s compiler.cppstd=17 -s gtest:build_type=Release -if build/ conan/ci/windows/"
 
 before_build:
   - cmd: cmake -H. -Bbuild -G"%MSVC_GENERATOR%" -A%PLATFORM% -DCMAKE_BUILD_TYPE=%CONFIGURATION% -DCMAKE_TOOLCHAIN_FILE=build/conan_paths.cmake -DCARROT_BUILD_TESTS=ON -DCMAKE_CXX_FLAGS="-DBOOST_ALL_NO_LIB"

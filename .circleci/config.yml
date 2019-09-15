@@ -2,17 +2,32 @@ version: 2.1
 
 # Default environment
 environment:
-  BUILD_SHARED_LIBS: FALSE
+  BUILD_SHARED_LIBS: "FALSE"
+  CONAN_NON_INTERACTIVE: True
 
 test_steps: &test_steps
   steps:
     - checkout
     - run:
+        name: Setup
+        command: |
+          apt update -y
+          apt install -y ${COMPILER_PACKAGES} cmake python3-pip
+          pip3 install conan
+          conan user
+          conan remote add --insert 0 ci-cache https://api.bintray.com/conan/qubusproject/ci-cache
+          conan remote add qubusproject https://api.bintray.com/conan/qubusproject/conan
+          conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+          export CC=${COMPILER}-${COMPILER_MAJOR_VERSION}
+          export CXX=${CXX_COMPILER}-${COMPILER_MAJOR_VERSION}
+          conan install --build outdated -s build_type=${CONFIGURATION} -s compiler=${COMPILER} -s compiler.cppstd=17 -s compiler.libcxx=libstdc++11 -s compiler.version=${COMPILER_VERSION} -if build/ conan/ci/linux/
+    - run:
         name: Configure
         command: |
-          mkdir build
+          export CC=${COMPILER}-${COMPILER_MAJOR_VERSION}
+          export CXX=${CXX_COMPILER}-${COMPILER_MAJOR_VERSION}
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCARROT_BUILD_TESTS=ON -DCARROT_ENABLE_SANITIZERS=ON -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}  ../
+          cmake -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake -DCMAKE_BUILD_TYPE=${CONFIGURATION} -DCARROT_BUILD_TESTS=ON -DCARROT_ENABLE_SANITIZERS=ON -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}  ../
     - run:
         name: Build
         command: |
@@ -24,65 +39,64 @@ test_steps: &test_steps
           cd build
           ctest  --output-on-failure
 
-gcc_env: &gcc_env
-    CC: gcc
-    CXX: g++
-
-clang_env: &clang_env
-    CC: clang
-    CXX: clang++
 
 jobs:
-  archlinux-gcc:
+  gcc-8-release:
     docker:
-      - image: qubusproject/archlinux-ci
+      - image: ubuntu:19.04
     environment:
-      <<: *gcc_env
+      COMPILER: gcc
+      CXX_COMPILER: g++
+      COMPILER_VERSION: "8.3"
+      COMPILER_MAJOR_VERSION: "8"
+      COMPILER_PACKAGES: "gcc-8 g++-8"
+      CONFIGURATION: Release
+      BUILD_SHARED_LIBS: "TRUE"
     <<: *test_steps
 
-  ubuntu-lts-gcc:
+  gcc-9-release:
     docker:
-      - image: qubusproject/ubuntu-lts-ci
+      - image: ubuntu:19.04
     environment:
-      <<: *gcc_env
+      COMPILER: gcc
+      CXX_COMPILER: g++
+      COMPILER_VERSION: "9.1"
+      COMPILER_MAJOR_VERSION: "9"
+      COMPILER_PACKAGES: "gcc-9 g++-9"
+      CONFIGURATION: Release
+      BUILD_SHARED_LIBS: "TRUE"
     <<: *test_steps
 
-  ubuntu-gcc:
+  clang-7-release:
     docker:
-    - image: qubusproject/ubuntu-ci
+      - image: ubuntu:19.04
     environment:
-      <<: *gcc_env
-      BUILD_SHARED_LIBS: TRUE
+      COMPILER: clang
+      CXX_COMPILER: clang++
+      COMPILER_VERSION: "7.0"
+      COMPILER_MAJOR_VERSION: "7"
+      COMPILER_PACKAGES: "clang-7"
+      CONFIGURATION: Release
     <<: *test_steps
 
-  archlinux-clang:
+  clang-8-release:
     docker:
-    - image: qubusproject/archlinux-ci
+      - image: ubuntu:19.04
     environment:
-      <<: *clang_env
-    <<: *test_steps
-
-  ubuntu-lts-clang:
-    docker:
-    - image: qubusproject/ubuntu-lts-ci
-    environment:
-      <<: *clang_env
-    <<: *test_steps
-
-  ubuntu-clang:
-    docker:
-    - image: qubusproject/ubuntu-ci
-    environment:
-      <<: *clang_env
+      COMPILER: clang
+      CXX_COMPILER: clang++
+      COMPILER_VERSION: "8"
+      COMPILER_MAJOR_VERSION: "8"
+      COMPILER_PACKAGES: "clang-8"
+      CONFIGURATION: Release
+      BUILD_SHARED_LIBS: "TRUE"
     <<: *test_steps
 
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - archlinux-gcc
-      - ubuntu-lts-gcc
-      - ubuntu-gcc
-      - archlinux-clang
-      - ubuntu-lts-clang
-      - ubuntu-clang
+      - gcc-8-release
+      - gcc-9-release
+      - clang-7-release
+      - clang-8-release
