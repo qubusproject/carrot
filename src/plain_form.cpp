@@ -9,6 +9,8 @@
 
 #include <boost/range/adaptor/sliced.hpp>
 
+#include <fmt/format.h>
+
 #include <string_view>
 #include <utility>
 
@@ -18,18 +20,25 @@ namespace carrot
 namespace
 {
 
-std::string get_escape_sequence_for_color(const color& foreground_color,
-                                          const color& background_color, const color_map& cmap)
+struct color_escape_sequence
 {
-    std::string result;
+    std::size_t foreground_color;
+    std::size_t background_color;
+};
 
-    if (is_default_color(foreground_color))
-    {
-        result += "39";
-    }
-    else
-    {
-        auto foreground_index = cmap.map_color(foreground_color);
+color_escape_sequence get_escape_sequence_for_color(const color& foreground_color,
+                                                    const color& background_color,
+                                                    const color_map& cmap)
+{
+    const std::size_t foreground_color_escape_sequence = [&foreground_color, &cmap] {
+        if (is_default_color(foreground_color))
+        {
+            constexpr std::size_t foreground_default_color_escape_sequence = 39;
+
+            return foreground_default_color_escape_sequence;
+        }
+
+        const std::size_t foreground_index = cmap.map_color(foreground_color);
 
         constexpr std::size_t base_color_boundary = 8;
 
@@ -38,23 +47,21 @@ std::string get_escape_sequence_for_color(const color& foreground_color,
 
         if (foreground_index < base_color_boundary)
         {
-            result += std::to_string(base_color_prefix + foreground_index);
+            return base_color_prefix + foreground_index;
         }
-        else
+
+        return bright_color_prefix + foreground_index - base_color_boundary;
+    }();
+
+    const std::size_t background_color_escape_sequence = [&background_color, &cmap] {
+        if (is_default_color(background_color))
         {
-            result += std::to_string(bright_color_prefix + foreground_index - base_color_boundary);
+            constexpr std::size_t background_default_color_escape_sequence = 49;
+
+            return background_default_color_escape_sequence;
         }
-    }
 
-    result += ';';
-
-    if (is_default_color(background_color))
-    {
-        result += "49";
-    }
-    else
-    {
-        auto background_index = cmap.map_color(background_color);
+        const std::size_t background_index = cmap.map_color(background_color);
 
         constexpr std::size_t base_color_boundary = 8;
 
@@ -63,43 +70,72 @@ std::string get_escape_sequence_for_color(const color& foreground_color,
 
         if (background_index < base_color_boundary)
         {
-            result += std::to_string(base_color_prefix + background_index);
+            return base_color_prefix + background_index;
         }
-        else
-        {
-            result += std::to_string(bright_color_prefix + background_index - base_color_boundary);
-        }
-    }
 
-    return result;
+        return bright_color_prefix + background_index - base_color_boundary;
+    }();
+
+    return {foreground_color_escape_sequence, background_color_escape_sequence};
 }
 
-std::string get_escape_sequence_for_formatting(bool bold)
+constexpr std::size_t get_escape_sequence_for_formatting(bool bold)
 {
-    using namespace std::literals::string_view_literals;
-
-    constexpr std::string_view default_escape_sequence = "22"sv;
-    constexpr std::string_view bold_escape_sequence = "1"sv;
+    constexpr std::size_t default_escape_sequence = 22;
+    constexpr std::size_t bold_escape_sequence = 1;
 
     if (bold)
-        return std::string(bold_escape_sequence.data(), bold_escape_sequence.size());
+        return bold_escape_sequence;
 
-    return std::string(default_escape_sequence.data(), default_escape_sequence.size());
+    return default_escape_sequence;
 }
 
-std::string get_escape_sequences_for_style(const color& foreground_color,
-                                           const color& background_color, bool bold,
-                                           const color_map& cmap)
+struct terminal_escape_sequence
 {
-    static const std::string CSI = "\33[";
+    std::size_t foreground_color = 0;
+    std::size_t background_color = 0;
 
-    return CSI + get_escape_sequence_for_color(foreground_color, background_color, cmap) + "m" +
-           CSI + get_escape_sequence_for_formatting(bold) + "m";
+    std::size_t formatting = 0;
+};
+
+bool operator==(const terminal_escape_sequence& lhs, const terminal_escape_sequence& rhs)
+{
+    return lhs.foreground_color == rhs.foreground_color &&
+           lhs.background_color == rhs.background_color && lhs.formatting == rhs.formatting;
 }
 
-std::string get_default_escape_sequence()
+bool operator!=(const terminal_escape_sequence& lhs, const terminal_escape_sequence& rhs)
 {
-    return "\33[0m";
+    return !(lhs == rhs);
+}
+
+std::string render_escape_sequence(const terminal_escape_sequence& escape_sequence)
+{
+    using namespace std::string_view_literals;
+
+    constexpr std::string_view CSI = "\33["sv;
+
+    return fmt::format("{0}{1};{2}m{0}{3}m", CSI, escape_sequence.foreground_color,
+                       escape_sequence.background_color, escape_sequence.formatting);
+}
+
+terminal_escape_sequence get_escape_sequences_for_style(const color& foreground_color,
+                                                        const color& background_color, bool bold,
+                                                        const color_map& cmap)
+{
+    const auto [foreground_color_escape_sequence, background_color_escape_sequence] =
+        get_escape_sequence_for_color(foreground_color, background_color, cmap);
+    const std::size_t formatting_escape_sequence = get_escape_sequence_for_formatting(bold);
+
+    return {foreground_color_escape_sequence, background_color_escape_sequence,
+            formatting_escape_sequence};
+}
+
+constexpr std::string_view get_default_escape_sequence()
+{
+    using namespace std::string_view_literals;
+
+    return "\33[0m"sv;
 }
 } // namespace
 
@@ -129,7 +165,7 @@ std::string plain_form::to_string() const
 
     color_map cmap(get_xterm_color_table() | boost::adaptors::sliced(0, number_of_base_colors));
 
-    std::string current_escape_seq;
+    terminal_escape_sequence current_escape_seq = {};
 
     for (long int row = 0; row < data_.shape()[0]; ++row)
     {
@@ -170,7 +206,9 @@ std::string plain_form::to_string() const
 
                 if (escape_seq != current_escape_seq)
                 {
-                    result += escape_seq;
+                    current_escape_seq = escape_seq;
+
+                    result += render_escape_sequence(current_escape_seq);
                 }
             }
 
@@ -179,9 +217,9 @@ std::string plain_form::to_string() const
 
         if (target_.supports_colorized_output())
         {
-            current_escape_seq = get_default_escape_sequence();
+            current_escape_seq = {};
 
-            result += current_escape_seq;
+            result += get_default_escape_sequence();
         }
 
         result += '\n';

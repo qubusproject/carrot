@@ -9,7 +9,7 @@ class CarrotConan(ConanFile):
     description = "A C++ library for rendering expressive diagnostic messages"
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake_paths"
-    requires = "boost/1.70.0@conan/stable", "icu/62.1@bincrafters/stable"
+    requires = "boost/1.70.0@conan/stable", "icu/62.1@bincrafters/stable", "fmt/5.3.0@bincrafters/stable"
     exports_sources = "../*"
 
     def configure(self):
