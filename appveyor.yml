@@ -59,3 +59,4 @@ after_test:
   # To save storage space, we should only do this for packages which do
   # not provide a pre-built binary as part of the official Conan repositories.
   - if defined CONAN_PASSWORD conan upload --all -r ci-cache icu/62.1@bincrafters/stable
+  - if defined CONAN_PASSWORD conan upload --all -r ci-cache boost/1.70.0@conan/stable
