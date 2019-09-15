@@ -6,8 +6,8 @@
 #ifndef CARROT_PROGRESS_BAR_BLOCK_HPP
 #define CARROT_PROGRESS_BAR_BLOCK_HPP
 
-#include <carrot/text_block.hpp>
 #include <carrot/block.hpp>
+#include <carrot/text_block.hpp>
 
 #include "carrot_export.hpp"
 
@@ -20,13 +20,14 @@ public:
     explicit progress_bar_block(long int progress_);
 
     void render(form& output_form, const style& s) const;
-    std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
+    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
+                                                 const style& s) const;
 
 private:
     text_block text_;
 };
 
-CARROT_EXPORT progress_bar_block progress_bar(long int progress);
-}
+[[nodiscard]] CARROT_EXPORT progress_bar_block progress_bar(long int progress);
+} // namespace carrot
 
 #endif

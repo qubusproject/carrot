@@ -23,7 +23,8 @@
 namespace carrot
 {
 
-class CARROT_EXPORT missing_style_info_error : public virtual exception, public virtual std::runtime_error
+class CARROT_EXPORT missing_style_info_error : public virtual exception,
+                                               public virtual std::runtime_error
 {
 public:
     explicit missing_style_info_error()
@@ -32,7 +33,8 @@ public:
     }
 };
 
-class CARROT_EXPORT mismatched_attribute_type_error : public virtual exception, public virtual std::runtime_error
+class CARROT_EXPORT mismatched_attribute_type_error : public virtual exception,
+                                                      public virtual std::runtime_error
 {
 public:
     explicit mismatched_attribute_type_error(std::string attribute_id_)
@@ -65,7 +67,8 @@ public:
 
     explicit style_rule(std::string element_id_, std::string id_, std::string tag_);
 
-    std::optional<style_rule::attribute> get_attribute(std::string_view attribute_id) const;
+    [[nodiscard]] std::optional<style_rule::attribute>
+    get_attribute(std::string_view attribute_id) const;
 
     style_rule& add_attribute(std::string attribute_id, attribute value);
 
@@ -74,8 +77,8 @@ public:
     public:
         explicit selector_type(std::string element_id_, std::string id_, std::string tag_);
 
-        bool does_match(std::string_view element_id, std::string_view id,
-                        const std::vector<std::string>& tags) const;
+        [[nodiscard]] bool does_match(std::string_view element_id, std::string_view id,
+                                      const std::vector<std::string>& tags) const;
 
     private:
         class pattern
@@ -83,9 +86,9 @@ public:
         public:
             explicit pattern(std::string pattern_);
 
-            bool does_match(std::string_view value) const;
+            [[nodiscard]] bool does_match(std::string_view value) const;
 
-            bool is_matching_anything() const
+            [[nodiscard]] bool is_matching_anything() const
             {
                 return !pattern_.has_value();
             }
@@ -99,10 +102,11 @@ public:
         pattern tag_;
     };
 
-    const selector_type& selector() const
+    [[nodiscard]] const selector_type& selector() const
     {
         return selector_;
     }
+
 private:
     selector_type selector_;
     std::vector<std::pair<std::string, attribute>> attributes_;
@@ -114,15 +118,17 @@ public:
     using integer = style_rule::integer;
     using attribute = style_rule::attribute;
 
-    virtual ~style() = default;
+    style() = default;
+    virtual ~style() noexcept = default;
 
-    virtual attribute get_attribute(std::string_view element_id, std::string_view id,
-                                    const std::vector<std::string>& tags,
-                                    std::string_view attribute_id) const = 0;
+    [[nodiscard]] virtual attribute get_attribute(std::string_view element_id, std::string_view id,
+                                                  const std::vector<std::string>& tags,
+                                                  std::string_view attribute_id) const = 0;
 
     template <typename T>
-    T get_attribute(std::string_view element_id, std::string_view id,
-                    const std::vector<std::string>& tags, std::string_view attribute_id) const
+    [[nodiscard]] T get_attribute(std::string_view element_id, std::string_view id,
+                                  const std::vector<std::string>& tags,
+                                  std::string_view attribute_id) const
     {
         try
         {
@@ -133,17 +139,24 @@ public:
             throw mismatched_attribute_type_error(std::string(attribute_id));
         }
     }
+
+protected:
+    style(const style&) = default;
+    style(style&&) noexcept = default;
+
+    style& operator=(const style&) = default;
+    style& operator=(style&&) noexcept = default;
 };
 
 class CARROT_EXPORT user_defined_style final : public style
 {
 public:
-    user_defined_style() = default;
+    explicit user_defined_style() = default;
     explicit user_defined_style(std::unique_ptr<style> base_style_);
 
-    attribute get_attribute(std::string_view element_id, std::string_view id,
-                            const std::vector<std::string>& tags,
-                            std::string_view attribute_id) const override;
+    [[nodiscard]] attribute get_attribute(std::string_view element_id, std::string_view id,
+                                          const std::vector<std::string>& tags,
+                                          std::string_view attribute_id) const final;
 
     style_rule& add_rule(std::string element_id);
     style_rule& add_rule(std::string element_id, std::string tag);
@@ -160,9 +173,9 @@ class CARROT_EXPORT augmented_style final : public style
 public:
     explicit augmented_style(const style& base_style_);
 
-    attribute get_attribute(std::string_view element_id, std::string_view id,
-                            const std::vector<std::string>& tags,
-                            std::string_view attribute_id) const override;
+    [[nodiscard]] attribute get_attribute(std::string_view element_id, std::string_view id,
+                                          const std::vector<std::string>& tags,
+                                          std::string_view attribute_id) const final;
 
     style_rule& add_rule(std::string element_id);
     style_rule& add_rule(std::string element_id, std::string tag);
@@ -174,7 +187,7 @@ private:
     const style* base_style_;
 };
 
-CARROT_EXPORT std::unique_ptr<style> get_default_style();
-}
+[[nodiscard]] CARROT_EXPORT std::unique_ptr<style> get_default_style();
+} // namespace carrot
 
 #endif

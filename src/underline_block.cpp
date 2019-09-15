@@ -16,7 +16,7 @@ underline_block::underline_block(block underlined_element_)
 }
 
 underline_block::underline_block(block underlined_element_, std::vector<std::string> tags_)
-: block_base<underline_block>(std::move(tags_)), underlined_element_(underlined_element_)
+: block_base<underline_block>(std::move(tags_)), underlined_element_(std::move(underlined_element_))
 {
 }
 

@@ -27,7 +27,8 @@ class style;
 
 #if __cpp_concepts >= 201507
 template <typename T>
-concept bool Block = requires (T x, form& output_form, const style& s, const target_info& ti) {
+concept bool Block = requires(T x, form& output_form, const style& s, const target_info& ti)
+{
     x.render(output_form, s);
     x.extent(ti, s);
 };
@@ -48,18 +49,24 @@ public:
     {
     }
 
-    std::string_view id() const
+    [[nodiscard]] std::string_view id() const
     {
         return id_;
     }
 
-    const std::vector<std::string>& tags() const
+    [[nodiscard]] const std::vector<std::string>& tags() const
     {
         return tags_;
     }
 
 protected:
     ~block_base() = default;
+
+    block_base(const block_base&) = default;
+    block_base(block_base&&) noexcept = default;
+
+    block_base& operator=(const block_base&) = default;
+    block_base& operator=(block_base&&) noexcept = default;
 
 private:
     std::string id_;
@@ -89,6 +96,8 @@ public:
     }
 #endif
 
+    ~block() noexcept = default;
+
     block(const block& other)
     {
         if (other.self_)
@@ -101,24 +110,26 @@ public:
         }
     }
 
-    block(block&& other) noexcept
-    {
-        self_ = std::move(other.self_);
-    }
+    block(block&& other) noexcept = default;
 
-    block& operator=(block other) noexcept
+    block& operator=(const block& other)
     {
-        other.swap(*this);
+        block copy(other);
+
+        copy.swap(*this);
 
         return *this;
     }
+
+    block& operator=(block&& other) noexcept = default;
 
     void render(form& output_form, const style& s) const
     {
         self_->render(output_form, s);
     }
 
-    std::array<long int, 2> extent(const target_info& output_target, const style& s) const
+    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
+                                                 const style& s) const
     {
         return self_->extent(output_target, s);
     }
@@ -144,11 +155,12 @@ private:
 
         block_interface& operator=(block_interface&&) = delete;
 
-        virtual std::unique_ptr<block_interface> clone() const = 0;
+        [[nodiscard]] virtual std::unique_ptr<block_interface> clone() const = 0;
 
         virtual void render(form& mat, const style& s) const = 0;
 
-        virtual std::array<long int, 2> extent(const target_info& output_target, const style& s) const = 0;
+        [[nodiscard]] virtual std::array<long int, 2> extent(const target_info& output_target,
+                                                             const style& s) const = 0;
     };
 
     template <typename Block>
@@ -159,7 +171,7 @@ private:
         {
         }
 
-        std::unique_ptr<block_interface> clone() const override
+        [[nodiscard]] std::unique_ptr<block_interface> clone() const override
         {
             return std::make_unique<block_wrapper<Block>>(value_);
         }
@@ -169,7 +181,8 @@ private:
             value_.render(output_form, s);
         }
 
-        std::array<long int, 2> extent(const target_info& output_target, const style& s) const override
+        [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
+                                                     const style& s) const override
         {
             return value_.extent(output_target, s);
         };

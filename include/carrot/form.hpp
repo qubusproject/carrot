@@ -30,7 +30,7 @@ public:
 
     virtual void set(long int row, long int column, glyph value) = 0;
 
-    virtual const target_info& target() const = 0;
+    [[nodiscard]] virtual const target_info& target() const = 0;
 };
 }
 

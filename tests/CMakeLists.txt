@@ -29,6 +29,6 @@ add_executable(rendering rendering.cpp $<TARGET_OBJECTS:test_runner>)
 target_include_directories(rendering PRIVATE SYSTEM ${PROJECT_SOURCE_DIR}/external/catch/)
 target_link_libraries(rendering PRIVATE carrot)
 
-catch_discover_tests(default_style)
+catch_discover_tests(rendering)
 
 endif()

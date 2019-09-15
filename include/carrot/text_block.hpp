@@ -11,8 +11,8 @@
 
 #include "carrot_export.hpp"
 
-#include <vector>
 #include <string_view>
+#include <vector>
 
 namespace carrot
 {
@@ -25,15 +25,17 @@ public:
 
     void render(form& output_form, const style& s) const;
 
-    std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
+    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
+                                                 const style& s) const;
 
 private:
     std::vector<std::string> rows_;
 };
 
-CARROT_EXPORT text_block text(std::string_view content);
-CARROT_EXPORT text_block text(std::string_view content, std::vector<std::string> tags);
+[[nodiscard]] CARROT_EXPORT text_block text(std::string_view content);
+[[nodiscard]] CARROT_EXPORT text_block text(std::string_view content,
+                                            std::vector<std::string> tags);
 
-}
+} // namespace carrot
 
 #endif

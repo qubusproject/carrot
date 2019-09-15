@@ -21,14 +21,16 @@ public:
 
     void render(form& output_form, const style& s) const;
 
-    std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
+    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
+                                                 const style& s) const;
 
 private:
     block underlined_element_;
 };
 
-CARROT_EXPORT underline_block underline(block underlined_element);
-CARROT_EXPORT underline_block underline(block underlined_element, std::vector<std::string> tags);
-}
+[[nodiscard]] CARROT_EXPORT underline_block underline(block underlined_element);
+[[nodiscard]] CARROT_EXPORT underline_block underline(block underlined_element,
+                                                      std::vector<std::string> tags);
+} // namespace carrot
 
 #endif

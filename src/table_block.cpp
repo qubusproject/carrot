@@ -30,14 +30,16 @@ table_block& table_block::add_row(std::vector<block> columns)
 
     grid_.append_row();
 
-    std::size_t column_index = 0;
+    constexpr long int column_offset = 2;
+
+    long int column_index = 0;
     for (auto&& column : columns)
     {
-        grid_.set(grid_.rows() - 1, 2 * column_index, std::move(column));
+        grid_.set(grid_.rows() - 1, column_offset * column_index, std::move(column));
 
         if (column_index < columns_ - 1)
         {
-            grid_.set(grid_.rows() - 1, 2 * column_index + 1, text(" "));
+            grid_.set(grid_.rows() - 1, column_offset * column_index + 1, text(" "));
         }
 
         ++column_index;

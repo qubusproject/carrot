@@ -44,15 +44,18 @@ bool terminal_has_colors(int fd)
     if (setupterm(static_cast<char*>(nullptr), fd, &errret) != 0)
         return false;
 
+    // Disable the const_cast check for the next line, tigetnum is not const correct
+    // and does not actually modify the passed string.
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
     bool has_colors = tigetnum(const_cast<char*>("colors")) > 0;
 
     struct term* termp = set_curterm(static_cast<struct term*>(nullptr));
     (void)del_curterm(termp);
 
-    if (has_colors)
-        return true;
-#endif
+    return has_colors;
+#else
     return false;
+#endif
 }
 
 bool has_color_support(int fd)
@@ -73,7 +76,8 @@ invalid_target_error::invalid_target_error(const std::string& reason_)
 {
 }
 
-target_info::target_info(std::locale locale_, bool supports_colorized_output_, long int tab_width_)
+target_info::target_info(const std::locale& locale_, bool supports_colorized_output_,
+                         long int tab_width_)
 : locale_(locale_), supports_colorized_output_(supports_colorized_output_), tab_width_(tab_width_)
 {
 }
@@ -106,7 +110,7 @@ target_info get_stdout_target(long int tab_width)
     return get_stdout_target(get_default_locale(), tab_width);
 }
 
-target_info get_stdout_target(std::locale locale, long int tab_width)
+target_info get_stdout_target(const std::locale& locale, long int tab_width)
 {
 #ifdef __unix__
     bool colorize_output = has_color_support(STDOUT_FILENO);
@@ -121,7 +125,7 @@ target_info get_file_target(long int tab_width)
     return get_file_target(get_default_locale(), tab_width);
 }
 
-target_info get_file_target(std::locale locale, long int tab_width)
+target_info get_file_target(const std::locale& locale, long int tab_width)
 {
     return target_info(locale, false, tab_width);
 }
@@ -131,7 +135,7 @@ target_info get_colorized_target(long int tab_width)
     return get_colorized_target(get_default_locale(), tab_width);
 }
 
-target_info get_colorized_target(std::locale locale, long int tab_width)
+target_info get_colorized_target(const std::locale& locale, long int tab_width)
 {
     return target_info(locale, true, tab_width);
 }

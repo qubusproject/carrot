@@ -24,15 +24,18 @@ public:
 
     void render(form& output_form, const style& s) const;
 
-    std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
+    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
+                                                 const style& s) const;
 
 private:
     block marked_block_;
     long int pos_;
 };
 
-CARROT_EXPORT caret_block mark_with_caret(block marked_block, long int caret_position);
-CARROT_EXPORT caret_block mark_with_caret(block marked_block, long int caret_position, std::vector<std::string> tags);
-}
+[[nodiscard]] CARROT_EXPORT caret_block mark_with_caret(block marked_block,
+                                                        long int caret_position);
+[[nodiscard]] CARROT_EXPORT caret_block mark_with_caret(block marked_block, long int caret_position,
+                                                        std::vector<std::string> tags);
+} // namespace carrot
 
 #endif

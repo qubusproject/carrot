@@ -10,8 +10,8 @@
 
 #include "carrot_export.hpp"
 
-#include <vector>
 #include <utility>
+#include <vector>
 
 namespace carrot
 {
@@ -30,16 +30,18 @@ public:
     line_block& add(block b);
 
     void render(form& output_form, const style& s) const;
-    std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
+    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
+                                                 const style& s) const;
+
 private:
     growth_direction direction_;
     std::vector<block> blocks_;
 };
 
-CARROT_EXPORT line_block make_line(growth_direction direction);
+[[nodiscard]] CARROT_EXPORT line_block make_line(growth_direction direction);
 
-template<typename... Blocks>
-CARROT_EXPORT line_block connect(Blocks... blocks)
+template <typename... Blocks>
+[[nodiscard]] CARROT_EXPORT line_block connect(Blocks... blocks)
 {
     auto line = line_block(growth_direction::right);
 
@@ -49,6 +51,6 @@ CARROT_EXPORT line_block connect(Blocks... blocks)
     return line;
 }
 
-}
+} // namespace carrot
 
 #endif

@@ -24,12 +24,12 @@ public:
     checkbox_list_block& add(bool enabled, block description);
 
     void render(form& output_form, const style& s) const;
-    std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
+    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
 private:
     grid_block grid_;
 };
 
-CARROT_EXPORT checkbox_list_block make_checkbox_list();
+[[nodiscard]] CARROT_EXPORT checkbox_list_block make_checkbox_list();
 
 }
 

@@ -13,7 +13,7 @@ namespace carrot
 {
 
 frame_block::frame_block(block framed_block_, long int margin_)
-: framed_block_(framed_block_), margin_(margin_)
+: framed_block_(std::move(framed_block_)), margin_(margin_)
 {
 }
 

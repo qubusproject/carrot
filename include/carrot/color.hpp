@@ -40,21 +40,20 @@ public:
     {
     }
 
-    constexpr short red() const
+    [[nodiscard]] constexpr short red() const
     {
         return red_;
     }
 
-    constexpr short green() const
+    [[nodiscard]] constexpr short green() const
     {
         return green_;
     }
 
-    constexpr short blue() const
+    [[nodiscard]] constexpr short blue() const
     {
         return blue_;
     }
-
 private:
     short red_;
     short green_;
@@ -69,17 +68,17 @@ public:
     {
     }
 
-    constexpr float hue() const
+    [[nodiscard]] constexpr float hue() const
     {
         return hue_;
     }
 
-    constexpr float saturation() const
+    [[nodiscard]] constexpr float saturation() const
     {
         return saturation_;
     }
 
-    constexpr float lightness() const
+    [[nodiscard]] constexpr float lightness() const
     {
         return lightness_;
     }
@@ -97,7 +96,7 @@ public:
     {
     }
 
-    const std::string& name() const
+    [[nodiscard]] const std::string& name() const
     {
         return name_;
     }
@@ -119,25 +118,25 @@ private:
     std::unordered_map<std::string, color> color_map_;
 };
 
-CARROT_EXPORT color_table get_default_color_table();
+[[nodiscard]] CARROT_EXPORT color_table get_default_color_table();
 
-CARROT_EXPORT rgb_color rgb(const color& c, const color_table& ctable);
-CARROT_EXPORT rgb_color rgb(const color& c);
-CARROT_EXPORT rgb_color rgb(rgb_color c);
+[[nodiscard]] CARROT_EXPORT rgb_color rgb(const color& c, const color_table& ctable);
+[[nodiscard]] CARROT_EXPORT rgb_color rgb(const color& c);
+[[nodiscard]] CARROT_EXPORT rgb_color rgb(rgb_color c);
 
-CARROT_EXPORT hsl_color hsl(const color& c, const color_table& ctable);
-CARROT_EXPORT hsl_color hsl(const color& c);
-CARROT_EXPORT hsl_color hsl(hsl_color c);
+[[nodiscard]] CARROT_EXPORT hsl_color hsl(const color& c, const color_table& ctable);
+[[nodiscard]] CARROT_EXPORT hsl_color hsl(const color& c);
+[[nodiscard]] CARROT_EXPORT hsl_color hsl(hsl_color c);
 
-CARROT_EXPORT color canonicalize(const color& c, const color_table& ctable);
+[[nodiscard]] CARROT_EXPORT color canonicalize(const color& c, const color_table& ctable);
 
-CARROT_EXPORT float distance(const color& color1, const color& color2);
+[[nodiscard]] CARROT_EXPORT float distance(const color& color1, const color& color2);
 
-CARROT_EXPORT color get_default_color();
+[[nodiscard]] CARROT_EXPORT color get_default_color();
 
-CARROT_EXPORT bool is_default_color(const color& c);
+[[nodiscard]] CARROT_EXPORT bool is_default_color(const color& c);
 
-CARROT_EXPORT const std::array<hsl_color, 256>& get_xterm_color_table();
+[[nodiscard]] CARROT_EXPORT const std::array<hsl_color, 256>& get_xterm_color_table();
 }
 
 #endif
