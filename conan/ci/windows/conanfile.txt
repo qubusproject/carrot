@@ -1,6 +1,7 @@
 [requires]
 boost/1.70.0@conan/stable
 icu/62.1@bincrafters/stable
+fmt/5.3.0@bincrafters/stable
 
 [generators]
 cmake_paths

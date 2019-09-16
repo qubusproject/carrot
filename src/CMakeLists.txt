@@ -11,6 +11,7 @@ option(CARROT_WITH_EXPERIMENTAL_FEATURES "Enable experimental features." OFF)
 mark_as_advanced(CARROT_WITH_EXPERIMENTAL_FEATURES)
 
 find_package(Boost 1.58.0 REQUIRED)
+find_package(fmt REQUIRED)
 
 find_package(Curses)
 
@@ -31,7 +32,7 @@ add_library(carrot ${SOURCE_FILES} ${FULL_INCLUDE_FILES})
 target_compile_features(carrot PUBLIC cxx_std_17)
 target_include_directories(carrot PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>)
 target_include_directories(carrot SYSTEM PUBLIC ${Boost_INCLUDE_DIRS})
-target_link_libraries(carrot PUBLIC ${Boost_LIBRARIES} PRIVATE Boost::disable_autolinking)
+target_link_libraries(carrot PUBLIC ${Boost_LIBRARIES} PRIVATE Boost::disable_autolinking fmt::fmt)
 target_compile_options(carrot PRIVATE ${LTO_CXX_OPTIONS})
 target_link_libraries(carrot PRIVATE "${LTO_CXX_OPTIONS}")
 set_target_properties(carrot PROPERTIES POSITION_INDEPENDENT_CODE ON)
