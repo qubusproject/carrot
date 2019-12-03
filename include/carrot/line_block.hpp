@@ -20,12 +20,10 @@ namespace carrot
 
 /** @brief The growth direction of the line.
  */
-enum class CARROT_EXPORT growth_direction
+enum class growth_direction
 {
-    /// The line growth in the downward direction.
-    down,
-    /// The line growth to the right.
-    right
+    down,     ///< The line growth in the downward direction.
+    right    ///< The line growth to the right.
 };
 
 /** @brief A block representing a horizontal or vertical line of blocks.
