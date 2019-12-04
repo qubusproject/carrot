@@ -18,8 +18,8 @@
 namespace carrot
 {
 
-placeholder_block::placeholder_block(std::vector<std::string> flags_)
-: block_base<placeholder_block>(std::move(flags_))
+placeholder_block::placeholder_block(std::vector<std::string> tags_)
+: block_base<placeholder_block>(std::move(tags_))
 {
 }
 
@@ -67,8 +67,8 @@ std::array<long int, 2> placeholder_block::extent(const target_info& output_targ
     return std::array<long int, 2>{1, width};
 }
 
-placeholder_block placeholder(std::vector<std::string> flags)
+placeholder_block placeholder(std::vector<std::string> tags)
 {
-    return placeholder_block(std::move(flags));
+    return placeholder_block(std::move(tags));
 }
 } // namespace carrot
