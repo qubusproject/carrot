@@ -8,7 +8,7 @@
 namespace carrot
 {
 
-form_view::form_view(form & base_form_, long int row_offset_, long int column_offset_)
+form_view::form_view(form & base_form_, long int row_offset_, long int column_offset_) noexcept
 : base_form_(&base_form_), row_offset_(row_offset_), column_offset_(column_offset_)
 {
 }
@@ -18,7 +18,7 @@ void form_view::set(long int row, long int column, glyph value)
     base_form_->set(row_offset_ + row, column_offset_ + column, value);
 }
 
-const target_info& form_view::target() const
+const target_info& form_view::target() const noexcept
 {
     return base_form_->target();
 }

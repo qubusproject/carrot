@@ -9,7 +9,7 @@
 
 namespace carrot
 {
-glyph::glyph()
+glyph::glyph() noexcept
 : content{' '},
   foreground_color(get_default_color()),
   background_color(get_default_color()),
@@ -17,7 +17,7 @@ glyph::glyph()
 {
 }
 
-glyph::glyph(char content)
+glyph::glyph(char content) noexcept
 : content{content},
   foreground_color(get_default_color()),
   background_color(get_default_color()),
@@ -25,7 +25,7 @@ glyph::glyph(char content)
 {
 }
 
-glyph::glyph(std::string content)
+glyph::glyph(std::string content) noexcept
 : content(std::move(content)),
   foreground_color(get_default_color()),
   background_color(get_default_color()),
@@ -33,7 +33,7 @@ glyph::glyph(std::string content)
 {
 }
 
-glyph::glyph(char content, color foreground_color, color background_color, bool bold)
+glyph::glyph(char content, color foreground_color, color background_color, bool bold) noexcept
 : content{content},
   foreground_color(std::move(foreground_color)),
   background_color(std::move(background_color)),
@@ -41,7 +41,8 @@ glyph::glyph(char content, color foreground_color, color background_color, bool 
 {
 }
 
-glyph::glyph(std::string content, color foreground_color, color background_color, bool bold)
+glyph::glyph(std::string content, color foreground_color, color background_color,
+             bool bold) noexcept
 : content(std::move(content)),
   foreground_color(std::move(foreground_color)),
   background_color(std::move(background_color)),
@@ -49,7 +50,8 @@ glyph::glyph(std::string content, color foreground_color, color background_color
 {
 }
 
-glyph::glyph(std::string_view content, color foreground_color, color background_color, bool bold)
+glyph::glyph(std::string_view content, color foreground_color, color background_color,
+             bool bold) noexcept
 : content(content),
   foreground_color(std::move(foreground_color)),
   background_color(std::move(background_color)),

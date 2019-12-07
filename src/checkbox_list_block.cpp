@@ -6,19 +6,21 @@
 #include <carrot/checkbox_list_block.hpp>
 
 #include <carrot/line_block.hpp>
-#include <carrot/text_block.hpp>
 #include <carrot/placeholder_block.hpp>
 #include <carrot/style.hpp>
+#include <carrot/text_block.hpp>
 
-#include <utility>
 #include <memory>
+#include <utility>
+#include <exception>
 
 namespace carrot
 {
 
 namespace
 {
-std::unique_ptr<style> augment_style(const style& s, std::string_view id, const std::vector<std::string>& tags)
+std::unique_ptr<style> augment_style(const style& s, std::string_view id,
+                                     const std::vector<std::string>& tags)
 {
     auto symbol_color = s.get_attribute<color>("checkbox-list", id, tags, "symbol-color");
     auto symbol = s.get_attribute<std::string>("checkbox-list", id, tags, "symbol");
@@ -26,25 +28,25 @@ std::unique_ptr<style> augment_style(const style& s, std::string_view id, const 
     auto ts = std::make_unique<augmented_style>(s);
 
     ts->add_rule("*", "carrot-checkbox-list-symbol")
-            .add_attribute("color", std::move(symbol_color))
-            .add_attribute("content", std::move(symbol));
+        .add_attribute("color", std::move(symbol_color))
+        .add_attribute("content", std::move(symbol));
 
     return ts;
 }
-}
+} // namespace
 
-checkbox_list_block::checkbox_list_block()
-: grid_(0, 2)
+checkbox_list_block::checkbox_list_block() noexcept : grid_(0, 2)
 {
 }
 
-checkbox_list_block& checkbox_list_block::add(bool enabled, block description)
+checkbox_list_block& checkbox_list_block::add(bool enabled, block description) noexcept
 {
     grid_.append_row();
 
     if (enabled)
     {
-        grid_.set(grid_.rows() - 1, 0, text("[") << placeholder({"carrot-checkbox-list-symbol"}) << text("] "));
+        grid_.set(grid_.rows() - 1, 0,
+                  text("[") << placeholder({"carrot-checkbox-list-symbol"}) << text("] "));
     }
     else
     {
@@ -63,16 +65,24 @@ void checkbox_list_block::render(form& output_form, const style& s) const
     grid_.render(output_form, *ts);
 }
 
-std::array<long int, 2> checkbox_list_block::extent(const target_info& output_target, const style& s) const
+std::array<long int, 2> checkbox_list_block::extent(const target_info& output_target,
+                                                    const style& s) const noexcept
 {
-    auto ts = augment_style(s, id(), tags());
+    try
+    {
+        auto ts = augment_style(s, id(), tags());
 
-    return grid_.extent(output_target, *ts);
+        return grid_.extent(output_target, *ts);
+    }
+    catch (const std::exception&)
+    {
+        std::terminate();
+    }
 }
 
-checkbox_list_block make_checkbox_list()
+checkbox_list_block make_checkbox_list() noexcept
 {
     return checkbox_list_block();
 }
 
-}
+} // namespace carrot

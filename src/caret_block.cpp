@@ -12,12 +12,13 @@
 namespace carrot
 {
 
-caret_block::caret_block(block marked_block_, long int pos_)
+caret_block::caret_block(block marked_block_, long int pos_) noexcept
 : caret_block(std::move(marked_block_), pos_, {})
 {
 }
 
-caret_block::caret_block(block marked_block_, long int pos_, std::vector<std::string> tags_)
+caret_block::caret_block(block marked_block_, long int pos_,
+                         std::vector<std::string> tags_) noexcept
 : block_base<caret_block>(std::move(tags_)), marked_block_(std::move(marked_block_)), pos_(pos_)
 {
 }
@@ -37,19 +38,21 @@ void caret_block::render(form& output_form, const style& s) const
 }
 
 std::array<long int, 2> caret_block::extent(const target_info& output_target, const style& s) const
+    noexcept
 {
     auto extent = marked_block_.extent(output_target, s);
 
     return std::array<long int, 2>{extent[0] + 1, extent[1]};
 }
 
-caret_block mark_with_caret(block marked_block, long int caret_position)
+caret_block mark_with_caret(block marked_block, long int caret_position) noexcept
 {
     return caret_block(std::move(marked_block), caret_position);
 }
 
-caret_block mark_with_caret(block marked_block, long int caret_position, std::vector<std::string> tags)
+caret_block mark_with_caret(block marked_block, long int caret_position,
+                            std::vector<std::string> tags) noexcept
 {
     return caret_block(std::move(marked_block), caret_position, std::move(tags));
 }
-}
+} // namespace carrot

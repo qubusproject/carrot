@@ -27,7 +27,7 @@ public:
      * @param underlined_element_ The block which are marked by the caret.
      * @param pos_ The position which is marked by the caret.
      */
-    caret_underline_block(block underlined_element_, long int pos_);
+    caret_underline_block(block underlined_element_, long int pos_) noexcept;
 
     /** @brief Construct a caret underline block.
      *
@@ -35,12 +35,14 @@ public:
      * @param pos_ The position which is marked by the caret.
      * @param tags_ The tags assigned to this block.
      */
-    caret_underline_block(block underlined_element_, long int pos_, std::vector<std::string> tags_);
+    caret_underline_block(block underlined_element_, long int pos_,
+                          std::vector<std::string> tags_) noexcept;
 
     /** @brief Renders the block into the provided form using the specified style.
      *
      * @param output_form The output form.
      * @param s The applied style.
+     * @throws runtime_error If the block could not be rendered.
      */
     void render(form& output_form, const style& s) const;
 
@@ -55,7 +57,7 @@ public:
      * @return The extent of the block.
      */
     [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
-                                                 const style& s) const;
+                                                 const style& s) const noexcept;
 
 private:
     block underlined_element_;
@@ -69,8 +71,8 @@ private:
  *
  *  @return The marked block.
 */
-[[nodiscard]] CARROT_EXPORT caret_underline_block underline_with_caret(block underlined_block,
-                                                                       long int caret_position);
+[[nodiscard]] CARROT_EXPORT caret_underline_block
+underline_with_caret(block underlined_block, long int caret_position) noexcept;
 
 /** @brief Marks a block with a caret at a specific position and underlines it.
  *
@@ -81,7 +83,7 @@ private:
  *  @return The marked block.
 */
 [[nodiscard]] CARROT_EXPORT caret_underline_block underline_with_caret(
-    block underlined_block, long int caret_position, std::vector<std::string> tags);
+    block underlined_block, long int caret_position, std::vector<std::string> tags) noexcept;
 } // namespace carrot
 
 #endif

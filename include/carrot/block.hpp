@@ -46,13 +46,13 @@ class CARROT_EXPORT block_base
 public:
     /** @brief Construct a new block without any tags.
      */
-    block_base() = default;
+    block_base() noexcept = default;
 
     /** @brief Construct a new block with a list of tags.
      *
      * @param tags_ The list of applied tags.
      */
-    explicit block_base(std::vector<std::string> tags_) : block_base("", std::move(tags_))
+    explicit block_base(std::vector<std::string> tags_) noexcept : block_base("", std::move(tags_))
     {
     }
 
@@ -61,7 +61,7 @@ public:
      * @param id_ The id of the block.
      * @param tags_ The list of applied tags.
      */
-    explicit block_base(std::string id_, std::vector<std::string> tags_)
+    explicit block_base(std::string id_, std::vector<std::string> tags_) noexcept
     : id_(std::move(id_)), tags_(std::move(tags_))
     {
     }
@@ -70,7 +70,7 @@ public:
      *
      * @return The ID.
      */
-    [[nodiscard]] std::string_view id() const
+    [[nodiscard]] std::string_view id() const noexcept
     {
         return id_;
     }
@@ -79,13 +79,13 @@ public:
      *
      * @return The list of tags.
      */
-    [[nodiscard]] const std::vector<std::string>& tags() const
+    [[nodiscard]] const std::vector<std::string>& tags() const noexcept
     {
         return tags_;
     }
 
 protected:
-    ~block_base() = default;
+    ~block_base() noexcept = default;
 
     block_base(const block_base&) = default;
     block_base(block_base&&) noexcept = default;
@@ -122,11 +122,12 @@ class CARROT_EXPORT block
 public:
     /** @brief Construct a polymorphic block in its moved-from state.
      */
-    block();
+    block() noexcept;
 
 #if __cpp_concepts >= 201507
     template <Block BlockType>
-    block(BlockType self_) : self_(std::make_unique<block_wrapper<BlockType>>(std::move(self_)))
+    block(BlockType self_) noexcept
+    : self_(std::make_unique<block_wrapper<BlockType>>(std::move(self_)))
     {
     }
 #else
@@ -138,7 +139,7 @@ public:
      */
     template <typename Block,
               typename Enabler = typename std::enable_if<is_block<Block>::value>::type>
-    block(Block self_) : self_(std::make_unique<block_wrapper<Block>>(std::move(self_)))
+    block(Block self_) noexcept : self_(std::make_unique<block_wrapper<Block>>(std::move(self_)))
     {
     }
 #endif
@@ -149,7 +150,7 @@ public:
      *
      * @param other The copied block.
      */
-    block(const block& other)
+    block(const block& other) noexcept
     {
         if (other.self_)
         {
@@ -168,7 +169,7 @@ public:
      * @param other The copied block.
      * @return This object.
      */
-    block& operator=(const block& other)
+    block& operator=(const block& other) noexcept
     {
         block copy(other);
 
@@ -183,6 +184,7 @@ public:
      *
      * @param output_form The output form.
      * @param s The applied style.
+     * @throws runtime_error If the block could not be rendered.
      */
     void render(form& output_form, const style& s) const
     {
@@ -200,7 +202,7 @@ public:
      * @return The extent of the block.
      */
     [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
-                                                 const style& s) const
+                                                 const style& s) const noexcept
     {
         return self_->extent(output_target, s);
     }
@@ -230,12 +232,12 @@ private:
 
         block_interface& operator=(block_interface&&) = delete;
 
-        [[nodiscard]] virtual std::unique_ptr<block_interface> clone() const = 0;
+        [[nodiscard]] virtual std::unique_ptr<const block_interface> clone() const noexcept = 0;
 
         virtual void render(form& mat, const style& s) const = 0;
 
         [[nodiscard]] virtual std::array<long int, 2> extent(const target_info& output_target,
-                                                             const style& s) const = 0;
+                                                             const style& s) const noexcept = 0;
     };
 
     template <typename Block>
@@ -246,7 +248,7 @@ private:
         {
         }
 
-        [[nodiscard]] std::unique_ptr<block_interface> clone() const override
+        [[nodiscard]] std::unique_ptr<const block_interface> clone() const noexcept final
         {
             return std::make_unique<block_wrapper<Block>>(value_);
         }
@@ -257,7 +259,7 @@ private:
         }
 
         [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
-                                                     const style& s) const override
+                                                     const style& s) const noexcept final
         {
             return value_.extent(output_target, s);
         };
@@ -266,7 +268,7 @@ private:
         Block value_;
     };
 
-    std::unique_ptr<block_interface> self_;
+    std::unique_ptr<const block_interface> self_;
 };
 
 /** @brief Concatenates two block horizontally.
@@ -275,7 +277,7 @@ private:
  * @param rhs The right-hand side block.
  * @return The concatenated blocks.
  */
-CARROT_EXPORT block operator<<(block lhs, block rhs);
+CARROT_EXPORT block operator<<(block lhs, block rhs) noexcept;
 
 class plain_form;
 
@@ -283,6 +285,7 @@ class plain_form;
  *
  * @param root The rendered block.
  * @param output_form The output form.
+ * @throws runtime_error If the block could not be rendered.
  */
 CARROT_EXPORT void render(const block& root, plain_form& output_form);
 
@@ -291,6 +294,7 @@ CARROT_EXPORT void render(const block& root, plain_form& output_form);
  * @param root The rendered block.
  * @param output_form The output form.
  * @param s The applied style.
+ * @throws runtime_error If the block could not be rendered.
  */
 CARROT_EXPORT void render(const block& root, plain_form& output_form, const style& s);
 } // namespace carrot

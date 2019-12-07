@@ -15,12 +15,12 @@
 namespace carrot
 {
 
-block::block()
+block::block() noexcept
 : block(make_empty())
 {
 }
 
-block operator<<(block lhs, block rhs)
+block operator<<(block lhs, block rhs) noexcept
 {
     line_block line(growth_direction::right);
 

@@ -15,41 +15,42 @@
 namespace carrot
 {
 
-grid_block::grid_block(long int rows_, long int columns_) : blocks_(boost::extents[rows_][columns_])
+grid_block::grid_block(long int rows_, long int columns_) noexcept
+: blocks_(boost::extents[rows_][columns_])
 {
 }
 
-void grid_block::set(long int row, long int column, block b)
+void grid_block::set(long int row, long int column, block b) noexcept
 {
     blocks_[row][column] = std::move(b);
 }
 
-void grid_block::append_rows(long int n)
+void grid_block::append_rows(long int n) noexcept
 {
     blocks_.resize(boost::extents[blocks_.shape()[0] + n][blocks_.shape()[1]]);
 }
 
-void grid_block::append_columns(long int n)
+void grid_block::append_columns(long int n) noexcept
 {
     blocks_.resize(boost::extents[blocks_.shape()[0]][blocks_.shape()[1] + n]);
 }
 
-void grid_block::append_row()
+void grid_block::append_row() noexcept
 {
     append_rows(1);
 }
 
-void grid_block::append_column()
+void grid_block::append_column() noexcept
 {
     append_columns(1);
 }
 
-long int grid_block::rows() const
+long int grid_block::rows() const noexcept
 {
     return blocks_.shape()[0];
 }
 
-long int grid_block::cols() const
+long int grid_block::cols() const noexcept
 {
     return blocks_.shape()[1];
 }
@@ -81,6 +82,7 @@ void grid_block::render(form& output_form, const style& s) const
 }
 
 std::array<long int, 2> grid_block::extent(const target_info& output_target, const style& s) const
+    noexcept
 {
     std::vector<long int> row_heights;
     std::vector<long int> column_widths;
@@ -94,7 +96,7 @@ std::array<long int, 2> grid_block::extent(const target_info& output_target, con
 }
 
 std::tuple<std::vector<long int>, std::vector<long int>>
-grid_block::compute_layout(const target_info& output_target, const style& s) const
+grid_block::compute_layout(const target_info& output_target, const style& s) const noexcept
 {
     std::vector<long int> row_heights(blocks_.shape()[0]);
     std::vector<long int> column_widths(blocks_.shape()[1]);
@@ -113,7 +115,7 @@ grid_block::compute_layout(const target_info& output_target, const style& s) con
     return std::make_tuple(row_heights, column_widths);
 }
 
-grid_block make_grid(long int rows, long int columns)
+grid_block make_grid(long int rows, long int columns) noexcept
 {
     return grid_block(rows, columns);
 }

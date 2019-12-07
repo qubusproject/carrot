@@ -24,19 +24,20 @@ public:
      *
      * @param underlined_element_ The block to be underlined.
      */
-    explicit underline_block(block underlined_element_);
+    explicit underline_block(block underlined_element_) noexcept;
 
     /** @brief Constructs a new underlined block.
      *
      * @param underlined_element_ The block to be underlined.
      * @param tags_ The tags associated with this block.
      */
-    underline_block(block underlined_element_, std::vector<std::string> tags_);
+    underline_block(block underlined_element_, std::vector<std::string> tags_) noexcept;
 
     /** @brief Renders the block into the provided form using the specified style.
      *
      * @param output_form The output form.
      * @param s The applied style.
+     * @throws runtime_error If the block could not be rendered.
      */
     void render(form& output_form, const style& s) const;
 
@@ -51,7 +52,7 @@ public:
      * @return The extent of the block.
      */
     [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
-                                                 const style& s) const;
+                                                 const style& s) const noexcept;
 
 private:
     block underlined_element_;
@@ -62,7 +63,7 @@ private:
  * @param underlined_element The block to be underlined.
  * @return The underlined block.
  */
-[[nodiscard]] CARROT_EXPORT underline_block underline(block underlined_element);
+[[nodiscard]] CARROT_EXPORT underline_block underline(block underlined_element) noexcept;
 
 /** @brief Underlines a block.
  *
@@ -71,7 +72,7 @@ private:
  * @return The underlined block.
  */
 [[nodiscard]] CARROT_EXPORT underline_block underline(block underlined_element,
-                                                      std::vector<std::string> tags);
+                                                      std::vector<std::string> tags) noexcept;
 } // namespace carrot
 
 #endif

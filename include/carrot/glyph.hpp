@@ -25,19 +25,21 @@ struct CARROT_EXPORT glyph
     /** @brief Constructs an empty glyph.
      *
      */
-    glyph();
+    glyph() noexcept;
 
     /** @brief Constructs a glyph from the specified character.
      *
      * @param content The content of the glyph.
      */
-    glyph(char content);
+    glyph(char content) noexcept;
 
     /** @brief Constructs a glyph from the specified UTF-8 encoded grapheme cluster.
      *
+     * @pre content should contain a valid UTF-encoded grapheme cluster.
+     *
      * @param content The content of the glyph.
      */
-    explicit glyph(std::string content);
+    explicit glyph(std::string content) noexcept;
 
     /** @brief Constructs a glyph from the specified character and styling options.
      *
@@ -46,25 +48,32 @@ struct CARROT_EXPORT glyph
      * @param background_color The background color of the glyph.
      * @param bold Marks the glyph as bold.
      */
-    glyph(char content, color foreground_color, color background_color, bool bold);
+    explicit glyph(char content, color foreground_color, color background_color,
+                   bool bold) noexcept;
 
     /** @brief Constructs a glyph from the specified UTF-8 encoded grapheme cluster and styling options.
+     *
+     * @pre content should contain a valid UTF-encoded grapheme cluster.
      *
      * @param content The content of the glyph.
      * @param foreground_color The foreground color of the glyph.
      * @param background_color The background color of the glyph.
      * @param bold Marks the glyph as bold.
      */
-    glyph(std::string content, color foreground_color, color background_color, bool bold);
+    explicit glyph(std::string content, color foreground_color, color background_color,
+                   bool bold) noexcept;
 
     /** @brief Constructs a glyph from the specified UTF-8 encoded grapheme cluster and styling options.
+     *
+     * @pre content should contain a valid UTF-encoded grapheme cluster.
      *
      * @param content The content of the glyph.
      * @param foreground_color The foreground color of the glyph.
      * @param background_color The background color of the glyph.
      * @param bold Marks the glyph as bold.
      */
-    glyph(std::string_view content, color foreground_color, color background_color, bool bold);
+    explicit glyph(std::string_view content, color foreground_color, color background_color,
+                   bool bold) noexcept;
 
     /// The content of the glyph as a UTF-8 encoded grapheme cluster.
     std::string content;
@@ -75,6 +84,6 @@ struct CARROT_EXPORT glyph
     /// True, if the glyph is bold. False, otherwise.
     bool bold;
 };
-}
+} // namespace carrot
 
 #endif

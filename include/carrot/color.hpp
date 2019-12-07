@@ -21,11 +21,13 @@
  */
 namespace carrot
 {
-class CARROT_EXPORT invalid_color_error : public virtual exception, public virtual std::runtime_error
+/** @brief Exception thrown if an invalid color has been encountered.
+ */
+class CARROT_EXPORT invalid_color_error : public ::carrot::runtime_error
 {
 public:
     explicit invalid_color_error(std::string message_)
-    : std::runtime_error("Invalid color: " + std::move(message_))
+    : runtime_error("Invalid color: " + std::move(message_))
     {
     }
 };
@@ -55,7 +57,7 @@ public:
     /** @brief The red component.
      * @return The component.
      */
-    [[nodiscard]] constexpr short red() const
+    [[nodiscard]] constexpr short red() const noexcept
     {
         return red_;
     }
@@ -63,7 +65,7 @@ public:
     /** @brief The green component.
     * @return The component.
     */
-    [[nodiscard]] constexpr short green() const
+    [[nodiscard]] constexpr short green() const noexcept
     {
         return green_;
     }
@@ -71,10 +73,11 @@ public:
     /** @brief The blue component.
     * @return The component.
     */
-    [[nodiscard]] constexpr short blue() const
+    [[nodiscard]] constexpr short blue() const noexcept
     {
         return blue_;
     }
+
 private:
     short red_;
     short green_;
@@ -101,7 +104,7 @@ public:
      *
      * @return The component.
      */
-    [[nodiscard]] constexpr float hue() const
+    [[nodiscard]] constexpr float hue() const noexcept
     {
         return hue_;
     }
@@ -110,7 +113,7 @@ public:
      *
      * @return The component.
      */
-    [[nodiscard]] constexpr float saturation() const
+    [[nodiscard]] constexpr float saturation() const noexcept
     {
         return saturation_;
     }
@@ -119,7 +122,7 @@ public:
      *
      * @return The component.
      */
-    [[nodiscard]] constexpr float lightness() const
+    [[nodiscard]] constexpr float lightness() const noexcept
     {
         return lightness_;
     }
@@ -138,7 +141,7 @@ public:
     /** @brief Construct a new named color.
      * @param name_ The name of the color.
      */
-    explicit named_color(std::string name_) : name_(std::move(name_))
+    explicit named_color(std::string name_) noexcept : name_(std::move(name_))
     {
     }
 
@@ -146,7 +149,7 @@ public:
      *
      * @return The name.
      */
-    [[nodiscard]] const std::string& name() const
+    [[nodiscard]] const std::string& name() const noexcept
     {
         return name_;
     }
@@ -170,12 +173,13 @@ public:
      * @param c The color value.
      * @return This table.
      */
-    color_table& add_color(std::string name, color c);
+    color_table& add_color(std::string name, color c) noexcept;
 
     /** @brief Lookup a named color.
      *
      * @param name The name of the color.
      * @return The color with the specified name.
+     * @throws runtime_error If the name does not correspond with a valid color.
      */
     const color& lookup_color(const std::string& name) const;
 
@@ -187,7 +191,7 @@ private:
  *
  * @return The default color table.
  */
-[[nodiscard]] CARROT_EXPORT color_table get_default_color_table();
+[[nodiscard]] CARROT_EXPORT color_table get_default_color_table() noexcept;
 
 /** @brief Converts a color into its RGB representation.
  *
@@ -196,6 +200,7 @@ private:
  * @param c The converted color.
  * @param ctable The color tabled used to convert named colors.
  * @return The RGB representation.
+ * @throws runtime_error If the color has no valid RGB representation.
  */
 [[nodiscard]] CARROT_EXPORT rgb_color rgb(const color& c, const color_table& ctable);
 
@@ -205,6 +210,7 @@ private:
  *
  * @param c The converted color.
  * @return The RGB representation.
+ * @throws runtime_error If the color has no valid RGB representation.
  */
 [[nodiscard]] CARROT_EXPORT rgb_color rgb(const color& c);
 
@@ -213,7 +219,7 @@ private:
  * @param c The converted color.
  * @return The RGB representation.
  */
-[[nodiscard]] CARROT_EXPORT rgb_color rgb(rgb_color c);
+[[nodiscard]] CARROT_EXPORT rgb_color rgb(rgb_color c) noexcept;
 
 /** @brief Converts a color into its HSL representation.
  *
@@ -222,6 +228,7 @@ private:
  * @param c The converted color.
  * @param ctable The color tabled used to convert named colors.
  * @return The HSL representation.
+ * @throws runtime_error If the color has no valid HLS representation.
  */
 [[nodiscard]] CARROT_EXPORT hsl_color hsl(const color& c, const color_table& ctable);
 
@@ -231,6 +238,7 @@ private:
  *
  * @param c The converted color.
  * @return The HSL representation.
+ * @throws runtime_error If the color has no valid HLS representation.
  */
 [[nodiscard]] CARROT_EXPORT hsl_color hsl(const color& c);
 
@@ -239,7 +247,7 @@ private:
  * @param c The converted color.
  * @return The HSL representation.
  */
-[[nodiscard]] CARROT_EXPORT hsl_color hsl(hsl_color c);
+[[nodiscard]] CARROT_EXPORT hsl_color hsl(hsl_color c) noexcept;
 
 /** @brief Canonicalizes the specified color.
  *
@@ -247,6 +255,7 @@ private:
  * @param c The color which is canonicalized.
  * @param ctable The color table used to canonicalize named colors.
  * @return The canonicalized colors.
+ * @throws runtime_error If the color has no canonical representation.
  */
 [[nodiscard]] CARROT_EXPORT color canonicalize(const color& c, const color_table& ctable);
 
@@ -255,6 +264,7 @@ private:
  * @param color1 The first color.
  * @param color2 The second color.
  * @return The distance.
+ * @throws runtime_error If the distance could not be calculated.
  */
 [[nodiscard]] CARROT_EXPORT float distance(const color& color1, const color& color2);
 
@@ -262,20 +272,24 @@ private:
  *
  * @return The default color.
  */
-[[nodiscard]] CARROT_EXPORT color get_default_color();
+[[nodiscard]] CARROT_EXPORT color get_default_color() noexcept;
 
 /** @brief Determines if the specified color is the default color.
  *
  * @param c The tested color.
  * @return True if the tested color is the default color, false otherwise.
  */
-[[nodiscard]] CARROT_EXPORT bool is_default_color(const color& c);
+[[nodiscard]] CARROT_EXPORT bool is_default_color(const color& c) noexcept;
+
+/// The size of the XTerm color table.
+constexpr int xterm_color_table_size = 256;
 
 /** @brief Gets the XTerm color table.
  *
  * @return The XTerm color table.
  */
-[[nodiscard]] CARROT_EXPORT const std::array<hsl_color, 256>& get_xterm_color_table();
-}
+[[nodiscard]] CARROT_EXPORT const std::array<hsl_color, xterm_color_table_size>&
+get_xterm_color_table() noexcept;
+} // namespace carrot
 
 #endif

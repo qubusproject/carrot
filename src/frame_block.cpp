@@ -12,12 +12,12 @@
 namespace carrot
 {
 
-frame_block::frame_block(block framed_block_, long int margin_)
+frame_block::frame_block(block framed_block_, long int margin_) noexcept
 : framed_block_(std::move(framed_block_)), margin_(margin_)
 {
 }
 
-void frame_block::render(form & output_form, const style& s) const
+void frame_block::render(form& output_form, const style& s) const
 {
     auto extent = framed_block_.extent(output_form.target(), s);
 
@@ -39,15 +39,16 @@ void frame_block::render(form & output_form, const style& s) const
 }
 
 std::array<long int, 2> frame_block::extent(const target_info& output_target, const style& s) const
+    noexcept
 {
     auto extent = framed_block_.extent(output_target, s);
 
     return std::array<long int, 2>{extent[0] + 2 * margin_ + 2, extent[1] + 2 * margin_ + 2};
 }
 
-frame_block frame(block framed_block, long int margin)
+frame_block frame(block framed_block, long int margin) noexcept
 {
     return frame_block(std::move(framed_block), margin);
 }
 
-}
+} // namespace carrot

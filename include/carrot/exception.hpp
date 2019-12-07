@@ -10,17 +10,35 @@
 
 #include <exception>
 #include <stdexcept>
+#include <utility>
 
+/** @brief carrot's root namespace.
+ */
 namespace carrot
 {
 
+/** @brief The base class for all exceptions thrown by carrot.
+ */
 class CARROT_EXPORT exception : public std::exception
 {
 };
 
-class CARROT_EXPORT runtime_error : public virtual exception, public virtual std::runtime_error
+/** @brief A runtime error thrown by carrot.
+ */
+class CARROT_EXPORT runtime_error : public virtual exception
 {
-    using std::runtime_error::runtime_error;
+public:
+    explicit runtime_error(std::string message)
+    : m_message(std::move(message))
+    {
+    }
+
+    [[nodiscard]] const char* what() const noexcept override
+    {
+        return m_message.c_str();
+    }
+private:
+    std::string m_message;
 };
 
 }

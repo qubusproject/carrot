@@ -23,19 +23,20 @@ class CARROT_EXPORT list_block final : public block_base<list_block>
 public:
     /** @brief Constructs an empty list.
      */
-    list_block();
+    list_block() noexcept;
 
     /** @brief Adds a new block to the end of the list.
      *
      * @param b The block to be added.
      * @return This list.
      */
-    list_block& add(block b);
+    list_block& add(block b) noexcept;
 
     /** @brief Renders the block into the provided form using the specified style.
      *
      * @param output_form The output form.
      * @param s The applied style.
+     * @throws runtime_error If the block could not be rendered.
      */
     void render(form& output_form, const style& s) const;
 
@@ -50,7 +51,7 @@ public:
      * @return The extent of the block.
      */
     [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
-                                                 const style& s) const;
+                                                 const style& s) const noexcept;
 
 private:
     grid_block grid_;
@@ -60,7 +61,7 @@ private:
  *
  * @return The new list.
  */
-[[nodiscard]] CARROT_EXPORT list_block make_list();
+[[nodiscard]] CARROT_EXPORT list_block make_list() noexcept;
 
 } // namespace carrot
 

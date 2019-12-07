@@ -11,14 +11,13 @@
 #include "carrot_export.hpp"
 
 #include <locale>
-#include <stdexcept>
 
 /** @brief carrot's root namespace.
  */
 namespace carrot
 {
 
-class CARROT_EXPORT invalid_target_error : public virtual exception, public virtual std::logic_error
+class CARROT_EXPORT invalid_target_error : public runtime_error
 {
 public:
     explicit invalid_target_error(const std::string& reason_);
@@ -36,25 +35,25 @@ public:
      * @param tab_width_ The tabulator width.
      */
     explicit target_info(const std::locale& locale_, bool supports_colorized_output_,
-                         long int tab_width_);
+                         long int tab_width_) noexcept;
 
     /** @brief Query if colorized output is supported.
      *
      * @return True, if colorized output is supported.
      */
-    [[nodiscard]] bool supports_colorized_output() const;
+    [[nodiscard]] bool supports_colorized_output() const noexcept;
 
     /** @brief Queries the tabulator width.
      *
      * @return The tabulator width.
      */
-    [[nodiscard]] long int tab_width() const;
+    [[nodiscard]] long int tab_width() const noexcept;
 
     /** @brief Queries the locale of the target.
      *
      * @return The locale.
      */
-    [[nodiscard]] const std::locale& locale() const;
+    [[nodiscard]] const std::locale& locale() const noexcept;
 
 private:
     std::locale locale_;
@@ -67,7 +66,7 @@ private:
  * @param tab_width The tabulator width.
  * @return The target information.
  */
-[[nodiscard]] CARROT_EXPORT target_info get_stdout_target(long int tab_width = 4);
+[[nodiscard]] CARROT_EXPORT target_info get_stdout_target(long int tab_width = 4) noexcept;
 
 /** @brief Queries the target information for the standard output.
  *
@@ -76,14 +75,14 @@ private:
  * @return The target information.
  */
 [[nodiscard]] CARROT_EXPORT target_info get_stdout_target(const std::locale& locale,
-                                                          long int tab_width = 4);
+                                                          long int tab_width = 4) noexcept;
 
 /** @brief Queries the target information for an arbitrary text file target.
  *
  * @param tab_width The tabulator width.
  * @return The target information.
  */
-[[nodiscard]] CARROT_EXPORT target_info get_file_target(long int tab_width = 4);
+[[nodiscard]] CARROT_EXPORT target_info get_file_target(long int tab_width = 4) noexcept;
 
 /** @brief Queries the target information for an arbitrary text file target.
  *
@@ -92,14 +91,14 @@ private:
  * @return The target information.
  */
 [[nodiscard]] CARROT_EXPORT target_info get_file_target(const std::locale& locale,
-                                                        long int tab_width = 4);
+                                                        long int tab_width = 4) noexcept;
 
 /** @brief Queries the target information for a generic target with colorization support.
  *
  * @param tab_width The tabulator width.
  * @return The target information.
  */
-[[nodiscard]] CARROT_EXPORT target_info get_colorized_target(long int tab_width = 4);
+[[nodiscard]] CARROT_EXPORT target_info get_colorized_target(long int tab_width = 4) noexcept;
 
 /** @brief Queries the target information for a generic target with colorization support.
  *
@@ -108,7 +107,7 @@ private:
  * @return The target information.
  */
 [[nodiscard]] CARROT_EXPORT target_info get_colorized_target(const std::locale& locale,
-                                                             long int tab_width = 4);
+                                                             long int tab_width = 4) noexcept;
 
 } // namespace carrot
 

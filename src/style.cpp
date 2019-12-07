@@ -18,7 +18,7 @@ style_rule::selector_type::pattern::pattern(std::string pattern_)
     }
 }
 
-bool style_rule::selector_type::pattern::does_match(std::string_view value) const
+bool style_rule::selector_type::pattern::does_match(std::string_view value) const noexcept
 {
     if (pattern_)
     {
@@ -34,7 +34,7 @@ style_rule::selector_type::selector_type(std::string element_id_, std::string id
 }
 
 bool style_rule::selector_type::does_match(std::string_view element_id, std::string_view id,
-                                           const std::vector<std::string>& tags) const
+                                           const std::vector<std::string>& tags) const noexcept
 {
     if (!element_id_.does_match(element_id))
         return false;
@@ -57,6 +57,7 @@ style_rule::style_rule(std::string element_id_, std::string id_, std::string tag
 }
 
 std::optional<style_rule::attribute> style_rule::get_attribute(std::string_view attribute_id) const
+    noexcept
 {
     auto search_result =
         std::find_if(attributes_.begin(), attributes_.end(),
@@ -99,24 +100,25 @@ style::attribute user_defined_style::get_attribute(std::string_view element_id, 
     throw missing_style_info_error();
 }
 
-style_rule& user_defined_style::add_rule(std::string element_id)
+style_rule& user_defined_style::add_rule(std::string element_id) noexcept
 {
     return add_rule(std::move(element_id), "*");
 }
 
-style_rule& user_defined_style::add_rule(std::string element_id, std::string tag)
+style_rule& user_defined_style::add_rule(std::string element_id, std::string tag) noexcept
 {
     return add_rule(std::move(element_id), std::move(tag), "*");
 }
 
-style_rule& user_defined_style::add_rule(std::string element_id, std::string tag, std::string id)
+style_rule& user_defined_style::add_rule(std::string element_id, std::string tag,
+                                         std::string id) noexcept
 {
     rules_.emplace_back(std::move(element_id), std::move(id), std::move(tag));
 
     return rules_.back();
 }
 
-augmented_style::augmented_style(const style& base_style_) : base_style_(&base_style_)
+augmented_style::augmented_style(const style& base_style_) noexcept : base_style_(&base_style_)
 {
 }
 
@@ -139,24 +141,25 @@ style::attribute augmented_style::get_attribute(std::string_view element_id, std
     throw missing_style_info_error();
 }
 
-style_rule& augmented_style::add_rule(std::string element_id)
+style_rule& augmented_style::add_rule(std::string element_id) noexcept
 {
     return add_rule(std::move(element_id), "*");
 }
 
-style_rule& augmented_style::add_rule(std::string element_id, std::string tag)
+style_rule& augmented_style::add_rule(std::string element_id, std::string tag) noexcept
 {
     return add_rule(std::move(element_id), std::move(tag), "*");
 }
 
-style_rule& augmented_style::add_rule(std::string element_id, std::string tag, std::string id)
+style_rule& augmented_style::add_rule(std::string element_id, std::string tag,
+                                      std::string id) noexcept
 {
     rules_.emplace_back(std::move(element_id), std::move(id), std::move(tag));
 
     return rules_.back();
 }
 
-std::unique_ptr<style> get_default_style()
+std::unique_ptr<style> get_default_style() noexcept
 {
     static constexpr short hightest_color_value = 255;
     static constexpr short lowest_color_value = 0;

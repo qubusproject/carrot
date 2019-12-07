@@ -14,7 +14,7 @@ namespace carrot
  * @return The converted value.
  */
 template <typename Destination, typename Source>
-[[nodiscard]] constexpr Destination integer_cast(const Source& value)
+[[nodiscard]] constexpr Destination integer_cast(const Source& value) noexcept
 {
     return static_cast<Destination>(value);
 }

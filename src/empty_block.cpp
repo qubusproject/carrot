@@ -13,12 +13,12 @@ void empty_block::render(form& output_form [[maybe_unused]], const style& s [[ma
 }
 
 std::array<long int, 2> empty_block::extent(const target_info& output_target [[maybe_unused]],
-                                            const style& s [[maybe_unused]]) const
+                                            const style& s [[maybe_unused]]) const noexcept
 {
     return std::array<long int, 2>{0, 0};
 }
 
-block make_empty()
+block make_empty() noexcept
 {
     return empty_block();
 }

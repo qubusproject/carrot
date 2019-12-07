@@ -12,13 +12,13 @@
 namespace carrot
 {
 
-caret_underline_block::caret_underline_block(block underlined_element_, long int pos_)
+caret_underline_block::caret_underline_block(block underlined_element_, long int pos_) noexcept
 : caret_underline_block(std::move(underlined_element_), pos_, {})
 {
 }
 
 caret_underline_block::caret_underline_block(block underlined_element_, long int pos_,
-                                             std::vector<std::string> tags_)
+                                             std::vector<std::string> tags_) noexcept
 : block_base<caret_underline_block>(std::move(tags_)),
   underlined_element_(std::move(underlined_element_)),
   pos_(pos_)
@@ -53,21 +53,22 @@ void caret_underline_block::render(form& output_form, const style& s) const
     }
 }
 
-std::array<long int, 2> caret_underline_block::extent(const target_info& output_target, const style& s) const
+std::array<long int, 2> caret_underline_block::extent(const target_info& output_target,
+                                                      const style& s) const noexcept
 {
     auto extent = underlined_element_.extent(output_target, s);
 
     return std::array<long int, 2>{extent[0] + 1, extent[1]};
 }
 
-caret_underline_block underline_with_caret(block underlined_block, long int caret_position)
+caret_underline_block underline_with_caret(block underlined_block, long int caret_position) noexcept
 {
     return caret_underline_block(std::move(underlined_block), caret_position);
 }
 
 caret_underline_block underline_with_caret(block underlined_block, long int caret_position,
-                                           std::vector<std::string> tags)
+                                           std::vector<std::string> tags) noexcept
 {
     return caret_underline_block(std::move(underlined_block), caret_position, std::move(tags));
 }
-}
+} // namespace carrot

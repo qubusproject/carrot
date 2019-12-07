@@ -1,5 +1,5 @@
 Checks: "-*,modernize-*,performance-*,readability-*,-readability-braces-around-statements,-readability-implicit-bool-conversion,
-         -readability-uppercase-literal-suffix,
+         -readability-uppercase-literal-suffix,-modernize-use-trailing-return-type,
          clang-analyzer-*,-clang-analyzer-alpha*, cppcoreguidelines-*,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,misc-*,
          -clang-analyzer-alpha.core.CastToStruct, bugprone-*,-bugprone-bool-pointer-implicit-conversion"
 CheckOptions: [{key: AllowPointerConditions, value: 1},

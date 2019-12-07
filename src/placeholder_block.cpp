@@ -12,13 +12,14 @@
 #include "grapheme_cluster_view.hpp"
 #endif
 
+#include <exception>
 #include <iterator>
 #include <utility>
 
 namespace carrot
 {
 
-placeholder_block::placeholder_block(std::vector<std::string> tags_)
+placeholder_block::placeholder_block(std::vector<std::string> tags_) noexcept
 : block_base<placeholder_block>(std::move(tags_))
 {
 }
@@ -48,26 +49,33 @@ void placeholder_block::render(form& output_form, const style& s) const
 }
 
 std::array<long int, 2> placeholder_block::extent(const target_info& output_target,
-                                                  const style& s) const
+                                                  const style& s) const noexcept
 {
-    auto content = s.get_attribute<std::string>("placeholder", id(), tags(), "content");
+    try
+    {
+        auto content = s.get_attribute<std::string>("placeholder", id(), tags(), "content");
 
 #ifdef CARROT_WITH_UNICODE_SUPPORT
-    grapheme_cluster_view gc_view(content, output_target.locale());
+        grapheme_cluster_view gc_view(content, output_target.locale());
 
-    auto first = gc_view.begin();
-    auto last = gc_view.end();
+        auto first = gc_view.begin();
+        auto last = gc_view.end();
 #else
-    auto first = content.begin();
-    auto last = content.end();
+        auto first = content.begin();
+        auto last = content.end();
 #endif
 
-    auto width = integer_cast<long int>(distance(first, last));
+        auto width = integer_cast<long int>(distance(first, last));
 
-    return std::array<long int, 2>{1, width};
+        return std::array<long int, 2>{1, width};
+    }
+    catch (const std::exception&)
+    {
+        std::terminate();
+    }
 }
 
-placeholder_block placeholder(std::vector<std::string> tags)
+placeholder_block placeholder(std::vector<std::string> tags) noexcept
 {
     return placeholder_block(std::move(tags));
 }

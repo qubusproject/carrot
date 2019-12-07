@@ -11,12 +11,11 @@
 
 namespace carrot
 {
-list_block::list_block()
-: grid_(0, 2)
+list_block::list_block() noexcept : grid_(0, 2)
 {
 }
 
-list_block& list_block::add(block b)
+list_block& list_block::add(block b) noexcept
 {
     grid_.append_row();
 
@@ -32,12 +31,13 @@ void list_block::render(form& output_form, const style& s) const
 }
 
 std::array<long int, 2> list_block::extent(const target_info& output_target, const style& s) const
+    noexcept
 {
     return grid_.extent(output_target, s);
 }
 
-list_block make_list()
+list_block make_list() noexcept
 {
     return list_block();
 }
-}
+} // namespace carrot

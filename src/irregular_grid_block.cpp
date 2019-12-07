@@ -12,7 +12,7 @@
 namespace carrot
 {
 
-void irregular_grid_block::row::render(form & output_form, const style& s) const
+void irregular_grid_block::row::render(form& output_form, const style& s) const
 {
     long int column_offset = 0;
 
@@ -28,7 +28,8 @@ void irregular_grid_block::row::render(form & output_form, const style& s) const
     }
 }
 
-std::array<long int, 2> irregular_grid_block::row::extent(const target_info& output_target, const style& s) const
+std::array<long int, 2> irregular_grid_block::row::extent(const target_info& output_target,
+                                                          const style& s) const noexcept
 {
     std::array<long int, 2> result{0, 0};
 
@@ -43,12 +44,12 @@ std::array<long int, 2> irregular_grid_block::row::extent(const target_info& out
     return result;
 }
 
-void irregular_grid_block::row::append(block element)
+void irregular_grid_block::row::append(block element) noexcept
 {
     elements_.push_back(std::move(element));
 }
 
-void irregular_grid_block::add_to_row(long int row, block element)
+void irregular_grid_block::add_to_row(long int row, block element) noexcept
 {
     rows_.resize(std::max(static_cast<std::size_t>(row + 1), rows_.size()));
 
@@ -71,7 +72,8 @@ void irregular_grid_block::render(form& output_form, const style& s) const
     }
 }
 
-std::array<long int, 2> irregular_grid_block::extent(const target_info& output_target, const style& s) const
+std::array<long int, 2> irregular_grid_block::extent(const target_info& output_target,
+                                                     const style& s) const noexcept
 {
     std::array<long int, 2> result{0, 0};
 
@@ -86,8 +88,8 @@ std::array<long int, 2> irregular_grid_block::extent(const target_info& output_t
     return result;
 }
 
-irregular_grid_block make_irregular_grid()
+irregular_grid_block make_irregular_grid() noexcept
 {
     return irregular_grid_block();
 }
-}
+} // namespace carrot
