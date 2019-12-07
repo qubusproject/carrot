@@ -24,8 +24,9 @@ public:
      *
      * @param output_form The output form.
      * @param s The applied style.
+     * @throws runtime_error If the block could not be rendered.
      */
-    void render(form & output_form, const style& s) const;
+    void render(form& output_form, const style& s) const;
 
     /** @brief Calculates the extent of the block.
      *
@@ -37,14 +38,15 @@ public:
      * @param s The applied style.
      * @return The extent of the block.
      */
-    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
+    [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
+                                                 const style& s) const noexcept;
 };
 
 /** @brief Creates a new empty block.
  *
  * @return The new block.
  */
-[[nodiscard]] CARROT_EXPORT block make_empty();
-}
+[[nodiscard]] CARROT_EXPORT block make_empty() noexcept;
+} // namespace carrot
 
 #endif

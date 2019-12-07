@@ -28,13 +28,14 @@ public:
      * @param row_offset_ The row offset.
      * @param column_offset_ The column offset.
      */
-    explicit form_view(form& base_form_, long int row_offset_, long int column_offset_);
+    explicit form_view(form& base_form_, long int row_offset_, long int column_offset_) noexcept;
 
     /** @brief Sets the specified form slot to the provided glyph.
      *
      * @param row The row index of the slot.
      * @param column The column index of the slot.
      * @param value The new value of the slot.
+     * @throws runtime_error If the slot could not be set.
      */
     void set(long int row, long int column, glyph value) final;
 
@@ -44,7 +45,7 @@ public:
      *
      * @return The backing target.
      */
-    [[nodiscard]] const target_info& target() const final;
+    [[nodiscard]] const target_info& target() const noexcept final;
 
 private:
     form* base_form_;

@@ -12,7 +12,7 @@
 namespace carrot
 {
 
-color_table& color_table::add_color(std::string name, color c)
+color_table& color_table::add_color(std::string name, color c) noexcept
 {
     color_map_.emplace(std::move(name), std::move(c));
 
@@ -29,14 +29,19 @@ const color& color_table::lookup_color(const std::string& name) const
     return search_result->second;
 }
 
-color_table get_default_color_table()
+color_table get_default_color_table() noexcept
 {
     return color_table();
 }
 
 namespace
 {
-hsl_color rgb2hls(const rgb_color& c)
+/** @brief Converts an RGB-encoded color value to its HLS-encoding.
+ *
+ * @param c An RGB-encoded color value.
+ * @return The color's HLS representation.
+ */
+hsl_color rgb2hls(const rgb_color& c) noexcept
 {
     float r = c.red() / 255.0f;
     float g = c.green() / 255.0f;
@@ -80,7 +85,12 @@ hsl_color rgb2hls(const rgb_color& c)
     return hsl_color(H, S, L);
 }
 
-rgb_color hsl2rgb(const hsl_color& c)
+/** @brief Converts an HLS-encoded color value to its RGB-encoding.
+ *
+ * @param c An HLS-encoded color value.
+ * @return The color's RGB representation.
+ */
+rgb_color hsl2rgb(const hsl_color& c) noexcept
 {
     auto C = (1 - std::abs(2 * c.lightness() - 1)) * c.saturation();
 
@@ -124,7 +134,7 @@ rgb_color rgb(const color& c, const color_table& ctable)
 {
     struct rgb_converter
     {
-        explicit rgb_converter(const color_table& ctable) : ctable(&ctable)
+        explicit rgb_converter(const color_table& ctable) noexcept : ctable(&ctable)
         {
         }
 
@@ -133,12 +143,12 @@ rgb_color rgb(const color& c, const color_table& ctable)
             throw invalid_color_error("Trying to use the default color as an explicit color.");
         }
 
-        rgb_color operator()(const rgb_color& c) const
+        rgb_color operator()(const rgb_color& c) const noexcept
         {
             return c;
         }
 
-        rgb_color operator()(const hsl_color& c) const
+        rgb_color operator()(const hsl_color& c) const noexcept
         {
             return hsl2rgb(c);
         }
@@ -163,12 +173,12 @@ rgb_color rgb(const color& c)
             throw invalid_color_error("Trying to use the default color as an explicit color.");
         }
 
-        rgb_color operator()(const rgb_color& c) const
+        rgb_color operator()(const rgb_color& c) const noexcept
         {
             return c;
         }
 
-        rgb_color operator()(const hsl_color& c) const
+        rgb_color operator()(const hsl_color& c) const noexcept
         {
             return hsl2rgb(c);
         }
@@ -182,7 +192,7 @@ rgb_color rgb(const color& c)
     return boost::apply_visitor(rgb_converter(), c);
 }
 
-rgb_color rgb(rgb_color c)
+rgb_color rgb(rgb_color c) noexcept
 {
     return c;
 }
@@ -200,12 +210,12 @@ hsl_color hsl(const color& c, const color_table& ctable)
             throw invalid_color_error("Trying to use the default color as an explicit color.");
         }
 
-        hsl_color operator()(const rgb_color& c) const
+        hsl_color operator()(const rgb_color& c) const noexcept
         {
             return rgb2hls(c);
         }
 
-        hsl_color operator()(const hsl_color& c) const
+        hsl_color operator()(const hsl_color& c) const noexcept
         {
             return c;
         }
@@ -230,12 +240,12 @@ hsl_color hsl(const color& c)
             throw invalid_color_error("Trying to use the default color as an explicit color.");
         }
 
-        hsl_color operator()(const rgb_color& c) const
+        hsl_color operator()(const rgb_color& c) const noexcept
         {
             return rgb2hls(c);
         }
 
-        hsl_color operator()(const hsl_color& c) const
+        hsl_color operator()(const hsl_color& c) const noexcept
         {
             return c;
         }
@@ -249,7 +259,7 @@ hsl_color hsl(const color& c)
     return boost::apply_visitor(hsl_converter(), c);
 }
 
-hsl_color hsl(hsl_color c)
+hsl_color hsl(hsl_color c) noexcept
 {
     return c;
 }
@@ -300,19 +310,19 @@ float distance(const color& color1, const color& color2)
            std::abs(color1_hsl.lightness() - color2_hsl.lightness());
 }
 
-color get_default_color()
+color get_default_color() noexcept
 {
     return default_color();
 }
 
-bool is_default_color(const color& c)
+bool is_default_color(const color& c) noexcept
 {
     return boost::get<default_color>(&c) != nullptr;
 }
 
 namespace
 {
-constexpr std::array<hsl_color, 256> xterm_color_table = {{
+constexpr std::array<hsl_color, xterm_color_table_size> xterm_color_table = {{
     {0.00000000f, 0.0f, 0.0f},     {0.00000000f, 1.0f, 0.25f},    {120.00000000f, 1.0f, 0.25f},
     {60.00000000f, 1.0f, 0.25f},   {240.00000000f, 1.0f, 0.25f},  {300.00000000f, 1.0f, 0.25f},
     {180.00000000f, 1.0f, 0.25f},  {0.00000000f, 0.0f, 0.75f},    {0.00000000f, 0.0f, 0.5f},
@@ -402,7 +412,7 @@ constexpr std::array<hsl_color, 256> xterm_color_table = {{
 }};
 }
 
-const std::array<hsl_color, 256>& get_xterm_color_table()
+const std::array<hsl_color, xterm_color_table_size>& get_xterm_color_table() noexcept
 {
     return xterm_color_table;
 }

@@ -20,13 +20,6 @@
 namespace carrot
 {
 
-class CARROT_EXPORT invalid_number_of_columns_error : public virtual exception,
-                                                      public virtual std::logic_error
-{
-public:
-    invalid_number_of_columns_error(long int expected, long int provided);
-};
-
 /** @brief A block representing a table of blocks.
  */
 class CARROT_EXPORT table_block final : public block_base<table_block>
@@ -38,7 +31,7 @@ public:
      *
      * @param columns_ The number of columns.
      */
-    explicit table_block(long int columns_);
+    explicit table_block(long int columns_) noexcept;
 
     /** @brief Adds another row to the table.
      *
@@ -47,6 +40,8 @@ public:
      *
      * @param columns The columns which form the row.
      * @return This table.
+     * @throws runtime_error If the number of provided columns does not the match
+     *                       the number of columns in the table.
      */
     table_block& add_row(std::vector<block> columns);
 
@@ -54,6 +49,7 @@ public:
      *
      * @param output_form The output form.
      * @param s The applied style.
+     * @throws runtime_error If the block could not be rendered.
      */
     void render(form& output_form, const style& s) const;
 
@@ -68,7 +64,7 @@ public:
      * @return The extent of the block.
      */
     [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
-                                                 const style& s) const;
+                                                 const style& s) const noexcept;
 
 private:
     grid_block grid_;
@@ -80,7 +76,7 @@ private:
  * @param columns The number of columns in the table.
  * @return The new table.
  */
-[[nodiscard]] CARROT_EXPORT table_block make_table(long int columns);
+[[nodiscard]] CARROT_EXPORT table_block make_table(long int columns) noexcept;
 } // namespace carrot
 
 #endif

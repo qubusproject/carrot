@@ -10,12 +10,12 @@
 namespace carrot
 {
 
-underline_block::underline_block(block underlined_element_)
+underline_block::underline_block(block underlined_element_) noexcept
 : underline_block(std::move(underlined_element_), {})
 {
 }
 
-underline_block::underline_block(block underlined_element_, std::vector<std::string> tags_)
+underline_block::underline_block(block underlined_element_, std::vector<std::string> tags_) noexcept
 : block_base<underline_block>(std::move(tags_)), underlined_element_(std::move(underlined_element_))
 {
 }
@@ -32,20 +32,21 @@ void underline_block::render(form& output_form, const style& s) const
     }
 }
 
-std::array<long int, 2> underline_block::extent(const target_info& output_target, const style& s) const
+std::array<long int, 2> underline_block::extent(const target_info& output_target,
+                                                const style& s) const noexcept
 {
     auto extent = underlined_element_.extent(output_target, s);
 
     return std::array<long int, 2>{extent[0] + 1, extent[1]};
 }
 
-underline_block underline(block underlined_element)
+underline_block underline(block underlined_element) noexcept
 {
     return underline_block(std::move(underlined_element));
 }
 
-underline_block underline(block underlined_element, std::vector<std::string> tags)
+underline_block underline(block underlined_element, std::vector<std::string> tags) noexcept
 {
     return underline_block(std::move(underlined_element), std::move(tags));
 }
-}
+} // namespace carrot

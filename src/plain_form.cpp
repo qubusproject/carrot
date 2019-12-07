@@ -28,7 +28,7 @@ struct color_escape_sequence
 
 color_escape_sequence get_escape_sequence_for_color(const color& foreground_color,
                                                     const color& background_color,
-                                                    const color_map& cmap)
+                                                    const color_map& cmap) noexcept
 {
     const std::size_t foreground_color_escape_sequence = [&foreground_color, &cmap] {
         if (is_default_color(foreground_color))
@@ -79,7 +79,7 @@ color_escape_sequence get_escape_sequence_for_color(const color& foreground_colo
     return {foreground_color_escape_sequence, background_color_escape_sequence};
 }
 
-constexpr std::size_t get_escape_sequence_for_formatting(bool bold)
+constexpr std::size_t get_escape_sequence_for_formatting(bool bold) noexcept
 {
     constexpr std::size_t default_escape_sequence = 22;
     constexpr std::size_t bold_escape_sequence = 1;
@@ -109,7 +109,7 @@ bool operator!=(const terminal_escape_sequence& lhs, const terminal_escape_seque
     return !(lhs == rhs);
 }
 
-std::string render_escape_sequence(const terminal_escape_sequence& escape_sequence)
+std::string render_escape_sequence(const terminal_escape_sequence& escape_sequence) noexcept
 {
     using namespace std::string_view_literals;
 
@@ -121,7 +121,7 @@ std::string render_escape_sequence(const terminal_escape_sequence& escape_sequen
 
 terminal_escape_sequence get_escape_sequences_for_style(const color& foreground_color,
                                                         const color& background_color, bool bold,
-                                                        const color_map& cmap)
+                                                        const color_map& cmap) noexcept
 {
     const auto [foreground_color_escape_sequence, background_color_escape_sequence] =
         get_escape_sequence_for_color(foreground_color, background_color, cmap);
@@ -131,7 +131,7 @@ terminal_escape_sequence get_escape_sequences_for_style(const color& foreground_
             formatting_escape_sequence};
 }
 
-constexpr std::string_view get_default_escape_sequence()
+constexpr std::string_view get_default_escape_sequence() noexcept
 {
     using namespace std::string_view_literals;
 
@@ -139,7 +139,7 @@ constexpr std::string_view get_default_escape_sequence()
 }
 } // namespace
 
-plain_form::plain_form(target_info target_, long int rows_, long int columns_)
+plain_form::plain_form(target_info target_, long int rows_, long int columns_) noexcept
 : target_(std::move(target_)), data_(boost::extents[rows_][columns_]), clear_glyph_(' ')
 {
 }
@@ -151,7 +151,7 @@ void plain_form::set(long int row, long int column, glyph value)
     data_[row][column] = value;
 }
 
-const target_info& plain_form::target() const
+const target_info& plain_form::target() const noexcept
 {
     return target_;
 }
@@ -233,7 +233,7 @@ std::string plain_form::to_string() const
     return result;
 }
 
-void plain_form::clear()
+void plain_form::clear() noexcept
 {
     for (long int row = 0; row < data_.shape()[0]; ++row)
     {
@@ -244,14 +244,14 @@ void plain_form::clear()
     }
 }
 
-void plain_form::clear(glyph value)
+void plain_form::clear(glyph value) noexcept
 {
     clear_glyph_ = std::move(value);
 
     clear();
 }
 
-void plain_form::resize_if_outside_matrix(long int row, long int column)
+void plain_form::resize_if_outside_matrix(long int row, long int column) noexcept
 {
     if (row >= data_.shape()[0] || column >= data_.shape()[1])
     {

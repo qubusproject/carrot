@@ -25,12 +25,13 @@ public:
      *
      * @param progress_ The progress.
      */
-    explicit progress_bar_block(long int progress_);
+    explicit progress_bar_block(long int progress_) noexcept;
 
     /** @brief Renders the block into the provided form using the specified style.
      *
      * @param output_form The output form.
      * @param s The applied style.
+     * @throws runtime_error If the block could not be rendered.
      */
     void render(form& output_form, const style& s) const;
 
@@ -45,7 +46,7 @@ public:
      * @return The extent of the block.
      */
     [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
-                                                 const style& s) const;
+                                                 const style& s) const noexcept;
 
 private:
     text_block text_;
@@ -56,7 +57,7 @@ private:
  * @param progress The progress.
  * @return The progress bar.
  */
-[[nodiscard]] CARROT_EXPORT progress_bar_block progress_bar(long int progress);
+[[nodiscard]] CARROT_EXPORT progress_bar_block progress_bar(long int progress) noexcept;
 } // namespace carrot
 
 #endif

@@ -15,7 +15,6 @@
 
 #include <memory>
 #include <optional>
-#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -25,23 +24,31 @@
 namespace carrot
 {
 
-class CARROT_EXPORT missing_style_info_error : public virtual exception,
-                                               public virtual std::runtime_error
+/** @brief The exception thrown if the style misses vital information.
+ */
+class CARROT_EXPORT missing_style_info_error final : public runtime_error
 {
 public:
+    /** Construct a new exception.
+     */
     explicit missing_style_info_error()
-    : std::runtime_error("The current style does not contain an applicable rule.")
+        : runtime_error("The current style does not contain an applicable rule.")
     {
     }
 };
 
-class CARROT_EXPORT mismatched_attribute_type_error : public virtual exception,
-                                                      public virtual std::runtime_error
+/** @brief The exception thrown if a style attribute is converted to a wrong type.
+ */
+class CARROT_EXPORT mismatched_attribute_type_error final : public runtime_error
 {
 public:
+    /** Construct a new exception.
+     *
+     * @param attribute_id_ The ID of the attribute.
+     */
     explicit mismatched_attribute_type_error(std::string attribute_id_)
-    : std::runtime_error("The requested type does not match the type of attribute " +
-                         std::move(attribute_id_) + ".")
+        : runtime_error("The requested type does not match the type of attribute " +
+                        std::move(attribute_id_) + ".")
     {
     }
 };
@@ -64,7 +71,7 @@ public:
          * @param value The value.
          */
         template <typename T>
-        attribute(T value) : value(std::move(value))
+        attribute(T value) noexcept : value(std::move(value))
         {
         }
 
@@ -72,7 +79,7 @@ public:
          *
          * @param value The value.
          */
-        attribute(const char* value) : value(std::string(value))
+        attribute(const char* value) noexcept : value(std::string(value))
         {
         }
 
@@ -91,6 +98,7 @@ public:
      * @param element_id_ The element type pattern.
      * @param id_ The block ID pattern.
      * @param tag_ The tag pattern.
+     * @throws runtime_error If the rule would be invalid.
      */
     explicit style_rule(std::string element_id_, std::string id_, std::string tag_);
 
@@ -100,7 +108,7 @@ public:
      * @return The attribute.
      */
     [[nodiscard]] std::optional<style_rule::attribute>
-    get_attribute(std::string_view attribute_id) const;
+    get_attribute(std::string_view attribute_id) const noexcept;
 
     /** @brief Add an attribute to the rule.
      *
@@ -109,6 +117,7 @@ public:
      * @param attribute_id The ID of the attribute.
      * @param value The value.
      * @return This rule.
+     * @throws runtime_error If the attribute already exists.
      */
     style_rule& add_attribute(std::string attribute_id, attribute value);
 
@@ -122,6 +131,7 @@ public:
          * @param element_id_ The element type pattern.
          * @param id_ The block ID pattern.
          * @param tag_ The tag pattern.
+         * @throws runtime_error If the selector would not be valid.
          */
         explicit selector_type(std::string element_id_, std::string id_, std::string tag_);
 
@@ -134,7 +144,7 @@ public:
          * @return True, if the selector matches the block. False, otherwise.
          */
         [[nodiscard]] bool does_match(std::string_view element_id, std::string_view id,
-                                      const std::vector<std::string>& tags) const;
+                                      const std::vector<std::string>& tags) const noexcept;
 
     private:
         class pattern
@@ -142,9 +152,9 @@ public:
         public:
             explicit pattern(std::string pattern_);
 
-            [[nodiscard]] bool does_match(std::string_view value) const;
+            [[nodiscard]] bool does_match(std::string_view value) const noexcept;
 
-            [[nodiscard]] bool is_matching_anything() const
+            [[nodiscard]] bool is_matching_anything() const noexcept
             {
                 return !pattern_.has_value();
             }
@@ -162,7 +172,7 @@ public:
      *
      * @return The block selectors.
      */
-    [[nodiscard]] const selector_type& selector() const
+    [[nodiscard]] const selector_type& selector() const noexcept
     {
         return selector_;
     }
@@ -184,7 +194,7 @@ public:
 
     /** @brief Constructs an empty style.
      */
-    style() = default;
+    style() noexcept = default;
 
     virtual ~style() noexcept = default;
 
@@ -195,6 +205,7 @@ public:
      * @param tags The tags of the block.
      * @param attribute_id The ID of the attribute.
      * @return The attribute value.
+     * @throws runtime_error If the style does not contain information about the attribute.
      */
     [[nodiscard]] virtual attribute get_attribute(std::string_view element_id, std::string_view id,
                                                   const std::vector<std::string>& tags,
@@ -208,6 +219,8 @@ public:
      * @param tags The tags of the block.
      * @param attribute_id The ID of the attribute.
      * @return The attribute value.
+     * @throws runtime_error If the style does not contain information about the attribute
+     *                       or the wrong attribute style has been specified.
      */
     template <typename T>
     [[nodiscard]] T get_attribute(std::string_view element_id, std::string_view id,
@@ -243,7 +256,7 @@ class CARROT_EXPORT user_defined_style final : public style
 public:
     /** @brief Constructs an empty style.
      */
-    explicit user_defined_style() = default;
+    explicit user_defined_style() noexcept = default;
 
     /** @brief Constructs a style which is derived from the specified style.
      *
@@ -258,6 +271,7 @@ public:
      * @param tags The tags of the block.
      * @param attribute_id The ID of the attribute.
      * @return The attribute value.
+     * @throws runtime_error If the style does not contain information about the attribute.
      */
     [[nodiscard]] attribute get_attribute(std::string_view element_id, std::string_view id,
                                           const std::vector<std::string>& tags,
@@ -268,7 +282,7 @@ public:
      * @param element_id The element types for which this rule will be applied.
      * @return This created rule.
      */
-    style_rule& add_rule(std::string element_id);
+    style_rule& add_rule(std::string element_id) noexcept;
 
     /** @brief Add a new rule.
      *
@@ -276,7 +290,7 @@ public:
      * @param tag The tags for which this rule will be applied.
      * @return This created rule.
      */
-    style_rule& add_rule(std::string element_id, std::string tag);
+    style_rule& add_rule(std::string element_id, std::string tag) noexcept;
 
     /** @brief Add a new rule.
      *
@@ -285,7 +299,7 @@ public:
      * @param id The IDs for which this rule will be applied.
      * @return This created rule.
      */
-    style_rule& add_rule(std::string element_id, std::string tag, std::string id);
+    style_rule& add_rule(std::string element_id, std::string tag, std::string id) noexcept;
 
 private:
     std::vector<style_rule> rules_;
@@ -307,7 +321,7 @@ public:
      *
      * @param base_style_ The base style.
      */
-    explicit augmented_style(const style& base_style_);
+    explicit augmented_style(const style& base_style_) noexcept;
 
     /** @brief Queries the attribute value for a block with the specified element type, ID and tags.
      *
@@ -316,6 +330,7 @@ public:
      * @param tags The tags of the block.
      * @param attribute_id The ID of the attribute.
      * @return The attribute value.
+     * @throws runtime_error If the style does not contain information about the attribute.
      */
     [[nodiscard]] attribute get_attribute(std::string_view element_id, std::string_view id,
                                           const std::vector<std::string>& tags,
@@ -326,7 +341,7 @@ public:
     * @param element_id The element types for which this rule will be applied.
     * @return This created rule.
     */
-    style_rule& add_rule(std::string element_id);
+    style_rule& add_rule(std::string element_id) noexcept;
 
     /** @brief Add a new rule.
      *
@@ -334,7 +349,7 @@ public:
      * @param tag The tags for which this rule will be applied.
      * @return This created rule.
      */
-    style_rule& add_rule(std::string element_id, std::string tag);
+    style_rule& add_rule(std::string element_id, std::string tag) noexcept;
 
     /** @brief Add a new rule.
      *
@@ -343,7 +358,7 @@ public:
      * @param id The IDs for which this rule will be applied.
      * @return This created rule.
      */
-    style_rule& add_rule(std::string element_id, std::string tag, std::string id);
+    style_rule& add_rule(std::string element_id, std::string tag, std::string id) noexcept;
 
 private:
     std::vector<style_rule> rules_;
@@ -355,7 +370,7 @@ private:
  *
  * @return The default style.
  */
-[[nodiscard]] CARROT_EXPORT std::unique_ptr<style> get_default_style();
+[[nodiscard]] CARROT_EXPORT std::unique_ptr<style> get_default_style() noexcept;
 } // namespace carrot
 
 #endif

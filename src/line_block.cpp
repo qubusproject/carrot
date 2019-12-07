@@ -13,11 +13,11 @@
 namespace carrot
 {
 
-line_block::line_block(growth_direction direction_) : direction_(direction_)
+line_block::line_block(growth_direction direction_) noexcept : direction_(direction_)
 {
 }
 
-line_block& line_block::add(block b)
+line_block& line_block::add(block b) noexcept
 {
     blocks_.push_back(std::move(b));
 
@@ -34,27 +34,28 @@ void line_block::render(form& output_form, const style& s) const
 
         switch (direction_)
         {
-            case growth_direction::right:
-            {
-                form_view view(output_form, 0, offset);
-                block.render(view, s);
+        case growth_direction::right:
+        {
+            form_view view(output_form, 0, offset);
+            block.render(view, s);
 
-                offset += extent[1];
-                break;
-            }
-            case growth_direction::down:
-            {
-                form_view view(output_form, offset, 0);
-                block.render(view, s);
+            offset += extent[1];
+            break;
+        }
+        case growth_direction::down:
+        {
+            form_view view(output_form, offset, 0);
+            block.render(view, s);
 
-                offset += extent[0];
-                break;
-            }
+            offset += extent[0];
+            break;
+        }
         }
     }
 }
 
 std::array<long int, 2> line_block::extent(const target_info& output_target, const style& s) const
+    noexcept
 {
     std::array<long int, 2> result{0, 0};
 
@@ -78,8 +79,8 @@ std::array<long int, 2> line_block::extent(const target_info& output_target, con
     return result;
 }
 
-line_block make_line(growth_direction direction)
+line_block make_line(growth_direction direction) noexcept
 {
     return line_block(direction);
 }
-}
+} // namespace carrot

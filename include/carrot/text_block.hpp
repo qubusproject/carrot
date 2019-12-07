@@ -30,19 +30,20 @@ public:
      *
      * @param content_ The content.
      */
-    explicit text_block(std::string_view content_);
+    explicit text_block(std::string_view content_) noexcept;
 
     /** @brief Constructs a text block.
      *
      * @param content_ The content.
      * @param tags_ The tags associated with this block.
      */
-    text_block(std::string_view content_, std::vector<std::string> tags_);
+    text_block(std::string_view content_, std::vector<std::string> tags_) noexcept;
 
     /** @brief Renders the block into the provided form using the specified style.
      *
      * @param output_form The output form.
      * @param s The applied style.
+     * @throws runtime_error If the block could not be rendered.
      */
     void render(form& output_form, const style& s) const;
 
@@ -57,7 +58,7 @@ public:
      * @return The extent of the block.
      */
     [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
-                                                 const style& s) const;
+                                                 const style& s) const noexcept;
 
 private:
     std::vector<std::string> rows_;
@@ -68,7 +69,7 @@ private:
  * @param content The content.
  * @return The new text block.
  */
-[[nodiscard]] CARROT_EXPORT text_block text(std::string_view content);
+[[nodiscard]] CARROT_EXPORT text_block text(std::string_view content) noexcept;
 
 /** @brief Creates a new text block.
  *
@@ -77,7 +78,7 @@ private:
  * @return The new text block.
  */
 [[nodiscard]] CARROT_EXPORT text_block text(std::string_view content,
-                                            std::vector<std::string> tags);
+                                            std::vector<std::string> tags) noexcept;
 
 } // namespace carrot
 

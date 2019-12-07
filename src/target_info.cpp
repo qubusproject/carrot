@@ -35,7 +35,7 @@ namespace
 std::mutex term_mutex;
 #endif
 
-bool terminal_has_colors(int fd)
+bool terminal_has_colors(int fd) noexcept
 {
 #ifdef HAVE_TERMINFO
     std::lock_guard<std::mutex> guard(term_mutex);
@@ -58,7 +58,7 @@ bool terminal_has_colors(int fd)
 #endif
 }
 
-bool has_color_support(int fd)
+bool has_color_support(int fd) noexcept
 {
 #ifdef __unix__
     bool is_a_tty = isatty(fd) > 0;
@@ -72,45 +72,45 @@ bool has_color_support(int fd)
 } // namespace
 
 invalid_target_error::invalid_target_error(const std::string& reason_)
-: std::logic_error("Invalid target: " + reason_)
+: runtime_error("Invalid target: " + reason_)
 {
 }
 
 target_info::target_info(const std::locale& locale_, bool supports_colorized_output_,
-                         long int tab_width_)
+                         long int tab_width_) noexcept
 : locale_(locale_), supports_colorized_output_(supports_colorized_output_), tab_width_(tab_width_)
 {
 }
 
-bool target_info::supports_colorized_output() const
+bool target_info::supports_colorized_output() const noexcept
 {
     return supports_colorized_output_;
 }
 
-long int target_info::tab_width() const
+long int target_info::tab_width() const noexcept
 {
     return tab_width_;
 }
 
-const std::locale& target_info::locale() const
+const std::locale& target_info::locale() const noexcept
 {
     return locale_;
 }
 
 namespace
 {
-std::locale get_default_locale()
+std::locale get_default_locale() noexcept
 {
     return std::locale("");
 }
 } // namespace
 
-target_info get_stdout_target(long int tab_width)
+target_info get_stdout_target(long int tab_width) noexcept
 {
     return get_stdout_target(get_default_locale(), tab_width);
 }
 
-target_info get_stdout_target(const std::locale& locale, long int tab_width)
+target_info get_stdout_target(const std::locale& locale, long int tab_width) noexcept
 {
 #ifdef __unix__
     bool colorize_output = has_color_support(STDOUT_FILENO);
@@ -120,22 +120,22 @@ target_info get_stdout_target(const std::locale& locale, long int tab_width)
     return target_info(locale, colorize_output, tab_width);
 }
 
-target_info get_file_target(long int tab_width)
+target_info get_file_target(long int tab_width) noexcept
 {
     return get_file_target(get_default_locale(), tab_width);
 }
 
-target_info get_file_target(const std::locale& locale, long int tab_width)
+target_info get_file_target(const std::locale& locale, long int tab_width) noexcept
 {
     return target_info(locale, false, tab_width);
 }
 
-target_info get_colorized_target(long int tab_width)
+target_info get_colorized_target(long int tab_width) noexcept
 {
     return get_colorized_target(get_default_locale(), tab_width);
 }
 
-target_info get_colorized_target(const std::locale& locale, long int tab_width)
+target_info get_colorized_target(const std::locale& locale, long int tab_width) noexcept
 {
     return target_info(locale, true, tab_width);
 }

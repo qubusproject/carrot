@@ -47,13 +47,13 @@ public:
          * @param s The applied style.
          * @return The extent of the row.
          */
-        std::array<long int, 2> extent(const target_info& output_target, const style& s) const;
+        std::array<long int, 2> extent(const target_info& output_target, const style& s) const noexcept;
 
         /** @brief Appends another block to the row.
          *
          * @param element The block to be added.
          */
-        void append(block element);
+        void append(block element) noexcept;
 
     private:
         std::vector<block> elements_;
@@ -64,12 +64,13 @@ public:
      * @param row The index of the row.
      * @param element The block to be added.
      */
-    void add_to_row(long int row, block element);
+    void add_to_row(long int row, block element) noexcept;
 
     /** @brief Renders the block into the provided form using the specified style.
      *
      * @param output_form The output form.
      * @param s The applied style.
+     * @throws runtime_error If the block could not be rendered.
      */
     void render(form& output_form, const style& s) const;
 
@@ -84,7 +85,7 @@ public:
      * @return The extent of the block.
      */
     [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
-                                                 const style& s) const;
+                                                 const style& s) const noexcept;
 
 private:
     std::vector<row> rows_;
@@ -96,7 +97,7 @@ private:
  *
  * @return The new grid.
  */
-[[nodiscard]] CARROT_EXPORT irregular_grid_block make_irregular_grid();
+[[nodiscard]] CARROT_EXPORT irregular_grid_block make_irregular_grid() noexcept;
 } // namespace carrot
 
 #endif

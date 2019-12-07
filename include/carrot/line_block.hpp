@@ -35,7 +35,7 @@ public:
      *
      * @param direction_ The direction in which the line grows.
      */
-    explicit line_block(growth_direction direction_);
+    explicit line_block(growth_direction direction_) noexcept;
 
     /** @brief Adds another block to the line.
      *
@@ -45,12 +45,13 @@ public:
      * @param b The block to be added.
      * @return This line.
      */
-    line_block& add(block b);
+    line_block& add(block b) noexcept;
 
     /** @brief Renders the block into the provided form using the specified style.
      *
      * @param output_form The output form.
      * @param s The applied style.
+     * @throws runtime_error If the block could not be rendered.
      */
     void render(form& output_form, const style& s) const;
 
@@ -65,7 +66,7 @@ public:
      * @return The extent of the block.
      */
     [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
-                                                 const style& s) const;
+                                                 const style& s) const noexcept;
 
 private:
     growth_direction direction_;
@@ -77,7 +78,7 @@ private:
  * @param direction The growth direction of the line.
  * @return The new line.
  */
-[[nodiscard]] CARROT_EXPORT line_block make_line(growth_direction direction);
+[[nodiscard]] CARROT_EXPORT line_block make_line(growth_direction direction) noexcept;
 
 /** @brief Connects a list of blocks as a horizontal line.
  *
@@ -86,7 +87,7 @@ private:
  * @return The new line.
  */
 template <typename... Blocks>
-[[nodiscard]] CARROT_EXPORT line_block connect(Blocks... blocks)
+[[nodiscard]] CARROT_EXPORT line_block connect(Blocks... blocks) noexcept
 {
     auto line = line_block(growth_direction::right);
 

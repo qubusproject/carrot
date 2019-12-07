@@ -26,11 +26,11 @@
 namespace carrot
 {
 
-text_block::text_block(std::string_view content_) : text_block(content_, {})
+text_block::text_block(std::string_view content_) noexcept : text_block(content_, {})
 {
 }
 
-text_block::text_block(std::string_view content_, std::vector<std::string> tags_)
+text_block::text_block(std::string_view content_, std::vector<std::string> tags_) noexcept
 : block_base<text_block>(std::move(tags_))
 {
     boost::split(rows_, content_, boost::is_any_of("\n"));
@@ -70,11 +70,12 @@ class get_row_length
 public:
     using result_type = long int;
 
-    explicit get_row_length(const target_info& output_target_) : output_target_(&output_target_)
+    explicit get_row_length(const target_info& output_target_) noexcept
+    : output_target_(&output_target_)
     {
     }
 
-    result_type operator()(const std::string& value) const
+    result_type operator()(const std::string& value) const noexcept
     {
         assert(output_target_ != nullptr);
 
@@ -97,7 +98,7 @@ private:
 } // namespace
 
 std::array<long int, 2> text_block::extent(const target_info& output_target,
-                                           const style& s [[maybe_unused]]) const
+                                           const style& s [[maybe_unused]]) const noexcept
 {
     long int rows = rows_.size();
 
@@ -110,12 +111,12 @@ std::array<long int, 2> text_block::extent(const target_info& output_target,
     return std::array<long int, 2>{rows, columns};
 }
 
-text_block text(std::string_view content)
+text_block text(std::string_view content) noexcept
 {
     return text_block(content);
 }
 
-text_block text(std::string_view content, std::vector<std::string> flags)
+text_block text(std::string_view content, std::vector<std::string> flags) noexcept
 {
     return text_block(content, std::move(flags));
 }

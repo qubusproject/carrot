@@ -88,7 +88,7 @@ TEST_CASE("Empty color maps are invalid", "[color]")
 
     std::vector<hsl_color> colors;
 
-    REQUIRE_THROWS_AS(color_map(colors), invalid_color_map_error);
+    REQUIRE_THROWS_AS(color_map(colors), runtime_error);
 }
 
 TEST_CASE("Color map initialisation", "[color]")
@@ -142,12 +142,12 @@ TEST_CASE("Named color support", "[color]")
 {
     using namespace carrot;
 
-    REQUIRE_THROWS_AS(rgb(named_color("red")), invalid_color_error);
-    REQUIRE_THROWS_AS(hsl(named_color("red")), invalid_color_error);
+    REQUIRE_THROWS_AS(rgb(named_color("red")), runtime_error);
+    REQUIRE_THROWS_AS(hsl(named_color("red")), runtime_error);
 
     color_table ctable;
 
-    REQUIRE_THROWS_AS(rgb(named_color("red"), ctable), invalid_color_error);
+    REQUIRE_THROWS_AS(rgb(named_color("red"), ctable), runtime_error);
 
     ctable = get_default_color_table();
 
@@ -178,12 +178,12 @@ TEST_CASE("Special default colors", "[color]")
 
     auto ctable = get_default_color_table();
 
-    REQUIRE_THROWS_AS(rgb(get_default_color()), invalid_color_error);
-    REQUIRE_THROWS_AS(rgb(get_default_color(), ctable), invalid_color_error);
-    REQUIRE_THROWS_AS(hsl(get_default_color()), invalid_color_error);
-    REQUIRE_THROWS_AS(hsl(get_default_color(), ctable), invalid_color_error);
+    REQUIRE_THROWS_AS(rgb(get_default_color()), runtime_error);
+    REQUIRE_THROWS_AS(rgb(get_default_color(), ctable), runtime_error);
+    REQUIRE_THROWS_AS(hsl(get_default_color()), runtime_error);
+    REQUIRE_THROWS_AS(hsl(get_default_color(), ctable), runtime_error);
 
-    REQUIRE_THROWS_AS(canonicalize(get_default_color(), ctable), invalid_color_error);
+    REQUIRE_THROWS_AS(canonicalize(get_default_color(), ctable), runtime_error);
 
     REQUIRE(is_default_color(get_default_color()));
 }

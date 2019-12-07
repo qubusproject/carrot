@@ -25,8 +25,8 @@ namespace carrot
 class CARROT_EXPORT form
 {
 public:
-    form() = default;
-    virtual ~form() = default;
+    form() noexcept = default;
+    virtual ~form() noexcept = default;
 
     form(const form&) = delete;
     form& operator=(const form&) = delete;
@@ -42,6 +42,7 @@ public:
      * @param row The row index of the slot.
      * @param column The column index of the slot.
      * @param value The new value of the slot.
+     * @throws runtime_error If the slot could not be set.
      */
     virtual void set(long int row, long int column, glyph value) = 0;
 
@@ -49,7 +50,7 @@ public:
      *
      * @return The backing target.
      */
-    [[nodiscard]] virtual const target_info& target() const = 0;
+    [[nodiscard]] virtual const target_info& target() const noexcept = 0;
 };
 }
 

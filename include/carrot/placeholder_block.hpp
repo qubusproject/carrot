@@ -27,12 +27,13 @@ public:
      *
      * @param tags_ The tags associated with the placeholder.
      */
-    explicit placeholder_block(std::vector<std::string> tags_);
+    explicit placeholder_block(std::vector<std::string> tags_) noexcept;
 
     /** @brief Renders the block into the provided form using the specified style.
      *
      * @param output_form The output form.
      * @param s The applied style.
+     * @throws runtime_error If the block could not be rendered.
      */
     void render(form& output_form, const style& s) const;
 
@@ -47,7 +48,7 @@ public:
      * @return The extent of the block.
      */
     [[nodiscard]] std::array<long int, 2> extent(const target_info& output_target,
-                                                 const style& s) const;
+                                                 const style& s) const noexcept;
 };
 
 /** @brief Creates a new placeholder.
@@ -55,7 +56,7 @@ public:
  * @param tags The tags associated with the placeholder.
  * @return The placeholder.
  */
-[[nodiscard]] CARROT_EXPORT placeholder_block placeholder(std::vector<std::string> tags);
+[[nodiscard]] CARROT_EXPORT placeholder_block placeholder(std::vector<std::string> tags) noexcept;
 
 } // namespace carrot
 

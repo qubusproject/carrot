@@ -10,7 +10,7 @@
 namespace carrot
 {
 
-progress_bar_block::progress_bar_block(long int progress_)
+progress_bar_block::progress_bar_block(long int progress_) noexcept
 : text_(std::string(progress_, '+'))
 {
 }
@@ -20,13 +20,14 @@ void progress_bar_block::render(form& output_form, const style& s) const
     text_.render(output_form, s);
 }
 
-std::array<long int, 2> progress_bar_block::extent(const target_info& output_target, const style& s) const
+std::array<long int, 2> progress_bar_block::extent(const target_info& output_target,
+                                                   const style& s) const noexcept
 {
     return text_.extent(output_target, s);
 }
 
-progress_bar_block progress_bar(long int progress)
+progress_bar_block progress_bar(long int progress) noexcept
 {
     return progress_bar_block(progress);
 }
-}
+} // namespace carrot
