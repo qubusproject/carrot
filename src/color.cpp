@@ -5,6 +5,8 @@
 
 #include <carrot/color.hpp>
 
+#include <carrot/integers.hpp>
+
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -43,9 +45,14 @@ namespace
  */
 hsl_color rgb2hls(const rgb_color& c) noexcept
 {
-    float r = c.red() / 255.0f;
-    float g = c.green() / 255.0f;
-    float b = c.blue() / 255.0f;
+    constexpr short rgb_component_maximum = 255;
+
+    float r = convert_constrained_integer<float>(c.red(), short(0), rgb_component_maximum) /
+              rgb_component_maximum;
+    float g = convert_constrained_integer<float>(c.green(), short(0), rgb_component_maximum) /
+              rgb_component_maximum;
+    float b = convert_constrained_integer<float>(c.blue(), short(0), rgb_component_maximum) /
+              rgb_component_maximum;
 
     auto c_min = std::min({r, g, b});
     auto c_max = std::max({r, g, b});
@@ -56,30 +63,34 @@ hsl_color rgb2hls(const rgb_color& c) noexcept
 
     auto S = delta == 0 ? 0 : delta / (1 - std::abs(2 * L - 1));
 
+    constexpr short degree_maximum = 360;
+
+    constexpr short number_of_hexagon_edges = 6;
+    constexpr short angular_shift_per_edge = 60;
+
     auto H = [&]() -> float {
         if (delta == 0)
-        {
             return 0;
-        }
-        else if (c_max == r)
+
+        if (c_max == r)
         {
-            auto result = std::fmod((g - b) / delta, 6.0f) * 60;
+            auto result =
+                std::fmod((g - b) / delta, number_of_hexagon_edges) * angular_shift_per_edge;
 
             if (b > g)
             {
-                result += 360;
+                result += degree_maximum;
             }
 
             return result;
         }
-        else if (c_max == g)
+
+        if (c_max == g)
         {
-            return ((b - r) / delta + 2) * 60;
+            return ((b - r) / delta + 2) * angular_shift_per_edge;
         }
-        else
-        {
-            return ((r - g) / delta + 4) * 60;
-        }
+
+        return ((r - g) / delta + 4) * angular_shift_per_edge;
     }();
 
     return hsl_color(H, S, L);
@@ -92,41 +103,53 @@ hsl_color rgb2hls(const rgb_color& c) noexcept
  */
 rgb_color hsl2rgb(const hsl_color& c) noexcept
 {
-    auto C = (1 - std::abs(2 * c.lightness() - 1)) * c.saturation();
+    constexpr short angular_shift_per_edge = 60;
 
-    auto X = C * (1 - std::abs(std::fmod(c.hue() / 60, 2.0f) - 1));
+    float C = (1 - std::abs(2 * c.lightness() - 1)) * c.saturation();
 
-    auto m = c.lightness() - C / 2;
+    float X = C * (1 - std::abs(std::fmod(c.hue() / angular_shift_per_edge, 2.0f) - 1));
+
+    float m = c.lightness() - C / 2;
 
     auto [r, g, b] = [&]() -> std::array<float, 3> {
-        if (c.hue() < 60)
+        if (c.hue() < angular_shift_per_edge)
         {
             return {C, X, 0};
         }
-        else if (c.hue() < 120)
+
+        if (c.hue() < 2 * angular_shift_per_edge)
         {
             return {X, C, 0};
         }
-        else if (c.hue() < 180)
+
+        if (c.hue() < 3 * angular_shift_per_edge)
         {
             return {0, C, X};
         }
-        else if (c.hue() < 240)
+
+        if (c.hue() < 4 * angular_shift_per_edge)
         {
             return {0, X, C};
         }
-        else if (c.hue() < 300)
+
+        if (c.hue() < 5 * angular_shift_per_edge)
         {
             return {X, 0, C};
         }
-        else
-        {
-            return {C, 0, X};
-        }
+
+        return {C, 0, X};
     }();
 
-    return rgb_color(std::round((r + m) * 255), std::round((g + m) * 255),
-                     std::round((b + m) * 255));
+    constexpr short rgb_component_maximum = 255;
+
+    const auto r_discrete = convert_constrained_integer<short>(
+        std::round((r + m) * rgb_component_maximum), short(0), rgb_component_maximum);
+    const auto g_discrete = convert_constrained_integer<short>(
+        std::round((g + m) * rgb_component_maximum), short(0), rgb_component_maximum);
+    const auto b_discrete = convert_constrained_integer<short>(
+        std::round((b + m) * rgb_component_maximum), short(0), rgb_component_maximum);
+
+    return rgb_color(r_discrete, g_discrete, b_discrete);
 }
 } // namespace
 
@@ -138,7 +161,7 @@ rgb_color rgb(const color& c, const color_table& ctable)
         {
         }
 
-        rgb_color operator()(const default_color&) const
+        rgb_color operator()(const default_color& c [[maybe_unused]]) const
         {
             throw invalid_color_error("Trying to use the default color as an explicit color.");
         }
@@ -168,7 +191,7 @@ rgb_color rgb(const color& c)
 {
     struct rgb_converter
     {
-        rgb_color operator()(const default_color&) const
+        rgb_color operator()(const default_color& c [[maybe_unused]]) const
         {
             throw invalid_color_error("Trying to use the default color as an explicit color.");
         }
@@ -183,7 +206,7 @@ rgb_color rgb(const color& c)
             return hsl2rgb(c);
         }
 
-        rgb_color operator()(const named_color&) const
+        rgb_color operator()(const named_color& c [[maybe_unused]]) const
         {
             throw invalid_color_error("Unknown named color.");
         }
@@ -205,7 +228,7 @@ hsl_color hsl(const color& c, const color_table& ctable)
         {
         }
 
-        hsl_color operator()(const default_color&) const
+        hsl_color operator()(const default_color& c [[maybe_unused]]) const
         {
             throw invalid_color_error("Trying to use the default color as an explicit color.");
         }
@@ -235,7 +258,7 @@ hsl_color hsl(const color& c)
 {
     struct hsl_converter
     {
-        hsl_color operator()(const default_color&) const
+        hsl_color operator()(const default_color& c [[maybe_unused]]) const
         {
             throw invalid_color_error("Trying to use the default color as an explicit color.");
         }
@@ -250,7 +273,7 @@ hsl_color hsl(const color& c)
             return c;
         }
 
-        hsl_color operator()(const named_color&) const
+        hsl_color operator()(const named_color& c [[maybe_unused]]) const
         {
             throw invalid_color_error("Unknown named color.");
         }
@@ -272,7 +295,7 @@ color canonicalize(const color& c, const color_table& ctable)
         {
         }
 
-        color operator()(const default_color&) const
+        color operator()(const default_color& c [[maybe_unused]]) const
         {
             throw invalid_color_error("Trying to use the default color as an explicit color.");
         }
@@ -305,7 +328,9 @@ float distance(const color& color1, const color& color2)
     auto color1_hsl = hsl(color1);
     auto color2_hsl = hsl(color2);
 
-    return std::abs(color1_hsl.hue() / 360.0f - color2_hsl.hue() / 360.0f) +
+    constexpr float degree_maximum = 360;
+
+    return std::abs(color1_hsl.hue() / degree_maximum - color2_hsl.hue() / degree_maximum) +
            std::abs(color1_hsl.saturation() - color2_hsl.saturation()) +
            std::abs(color1_hsl.lightness() - color2_hsl.lightness());
 }
