@@ -48,7 +48,7 @@ jobs:
       CXX_COMPILER: g++
       COMPILER_VERSION: "10.1"
       COMPILER_MAJOR_VERSION: "10"
-      COMPILER_PACKAGES: "gcc-10 g++-10"
+      COMPILER_PACKAGES: "gcc g++"
       CONFIGURATION: Release
       BUILD_SHARED_LIBS: "TRUE"
     <<: *test_steps
