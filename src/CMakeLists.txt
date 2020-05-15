@@ -17,7 +17,7 @@ find_package(Curses)
 
 add_library(carrot)
 
-target_compile_features(carrot PUBLIC cxx_std_17)
+target_compile_features(carrot PUBLIC cxx_std_20)
 target_include_directories(carrot PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/interface> $<INSTALL_INTERFACE:include>)
 target_include_directories(carrot SYSTEM PUBLIC ${Boost_INCLUDE_DIRS})
 target_link_libraries(carrot PUBLIC ${Boost_LIBRARIES} PRIVATE Boost::disable_autolinking fmt::fmt)
