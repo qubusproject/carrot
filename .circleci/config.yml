@@ -17,7 +17,6 @@ test_steps: &test_steps
           conan user
           conan remote add --insert 0 ci-cache https://api.bintray.com/conan/qubusproject/ci-cache
           conan remote add qubusproject https://api.bintray.com/conan/qubusproject/conan
-          conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
           export CC=${COMPILER}-${COMPILER_MAJOR_VERSION}
           export CXX=${CXX_COMPILER}-${COMPILER_MAJOR_VERSION}
           conan install --build outdated -s build_type=${CONFIGURATION} -s compiler=${COMPILER} -s compiler.cppstd=17 -s compiler.libcxx=libstdc++11 -s compiler.version=${COMPILER_VERSION} -if build/ conan/ci/linux/
@@ -41,53 +40,15 @@ test_steps: &test_steps
 
 
 jobs:
-  gcc-8-release:
+  gcc-10-release:
     docker:
-      - image: ubuntu:19.04
+      - image: gcc:10.1
     environment:
       COMPILER: gcc
       CXX_COMPILER: g++
-      COMPILER_VERSION: "8.3"
-      COMPILER_MAJOR_VERSION: "8"
-      COMPILER_PACKAGES: "gcc-8 g++-8"
-      CONFIGURATION: Release
-      BUILD_SHARED_LIBS: "TRUE"
-    <<: *test_steps
-
-  gcc-9-release:
-    docker:
-      - image: ubuntu:19.04
-    environment:
-      COMPILER: gcc
-      CXX_COMPILER: g++
-      COMPILER_VERSION: "9.1"
-      COMPILER_MAJOR_VERSION: "9"
-      COMPILER_PACKAGES: "gcc-9 g++-9"
-      CONFIGURATION: Release
-      BUILD_SHARED_LIBS: "TRUE"
-    <<: *test_steps
-
-  clang-7-release:
-    docker:
-      - image: ubuntu:19.04
-    environment:
-      COMPILER: clang
-      CXX_COMPILER: clang++
-      COMPILER_VERSION: "7.0"
-      COMPILER_MAJOR_VERSION: "7"
-      COMPILER_PACKAGES: "clang-7"
-      CONFIGURATION: Release
-    <<: *test_steps
-
-  clang-8-release:
-    docker:
-      - image: ubuntu:19.04
-    environment:
-      COMPILER: clang
-      CXX_COMPILER: clang++
-      COMPILER_VERSION: "8"
-      COMPILER_MAJOR_VERSION: "8"
-      COMPILER_PACKAGES: "clang-8"
+      COMPILER_VERSION: "10.1"
+      COMPILER_MAJOR_VERSION: "10"
+      COMPILER_PACKAGES: "gcc-10 g++-10"
       CONFIGURATION: Release
       BUILD_SHARED_LIBS: "TRUE"
     <<: *test_steps
@@ -96,7 +57,4 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - gcc-8-release
-      - gcc-9-release
-      - clang-7-release
-      - clang-8-release
+      - gcc-10-release

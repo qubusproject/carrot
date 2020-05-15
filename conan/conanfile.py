@@ -1,6 +1,7 @@
 from conans import ConanFile, CMake
 from conans.tools import download, unzip
 
+
 class CarrotConan(ConanFile):
     name = "carrot"
     version = "0.2.0"
@@ -9,7 +10,7 @@ class CarrotConan(ConanFile):
     description = "A C++ library for rendering expressive diagnostic messages"
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake_paths"
-    requires = "boost/1.70.0@conan/stable", "icu/62.1@bincrafters/stable", "fmt/5.3.0@bincrafters/stable"
+    requires = "boost/1.73.0", "icu/64.2", "fmt/6.2.1"
     exports_sources = "../*"
 
     def configure(self):
