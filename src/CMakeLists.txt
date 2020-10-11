@@ -5,7 +5,7 @@
 
 option(BUILD_SHARED_LIBS "Build the library as a shared library." OFF)
 
-option(CARROT_WITH_UNICODE_SUPPORT "Enable support for Unicode." ON)
+option(CARROT_WITH_UNICODE_SUPPORT "Enable support for Unicode." OFF)
 
 option(CARROT_WITH_EXPERIMENTAL_FEATURES "Enable experimental features." OFF)
 mark_as_advanced(CARROT_WITH_EXPERIMENTAL_FEATURES)

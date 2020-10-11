@@ -1,8 +1,6 @@
 version: '{branch}-{build}'
 
 environment:
-  PYTHON: "C:\\Python36-x64"
-
   CONAN_USERNAME: "qubusproject"
   CONAN_CHANNEL: "testing"
   CONAN_UPLOAD: "https://api.bintray.com/conan/qubusproject/ci-cache"
@@ -15,8 +13,6 @@ environment:
     secure: yLZAqpiFUVuNc4PR5EvdI6QLLFfiI3PpMB8RsTiZuhY3rmSQLdMAwvexg1vImvs2
 
   matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      MSVC_GENERATOR: Visual Studio 15 2017
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       MSVC_GENERATOR: Visual Studio 16 2019
 
@@ -35,9 +31,9 @@ install:
   - unzip cmake-3.14.4-win64-x64.zip
   - set PATH=cmake-3.14.4-win64-x64/bin;%PATH%
   - cmake --version
-  - set PATH=%PYTHON%;%PATH%;%PYTHON%/Scripts/
+  - set PATH=%PATH%;%PYTHON%/Scripts/
   - python --version
-  - pip3.exe install conan --upgrade
+  - pip.exe install conan --upgrade
   - conan user
   - conan remote add --insert 0 ci-cache https://api.bintray.com/conan/qubusproject/ci-cache
   - conan remote add qubusproject https://api.bintray.com/conan/qubusproject/conan
