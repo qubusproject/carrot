@@ -253,7 +253,7 @@ private:
             return std::make_unique<block_wrapper<Block>>(value_);
         }
 
-        void render(form& output_form, const style& s) const override
+        void render(form& output_form, const style& s) const final
         {
             value_.render(output_form, s);
         }
@@ -277,7 +277,7 @@ private:
  * @param rhs The right-hand side block.
  * @return The concatenated blocks.
  */
-CARROT_EXPORT block operator<<(block lhs, block rhs) noexcept;
+[[nodiscard]] CARROT_EXPORT block operator<<(block lhs, block rhs) noexcept;
 
 class plain_form;
 
