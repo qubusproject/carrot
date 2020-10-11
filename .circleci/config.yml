@@ -20,14 +20,14 @@ test_steps: &test_steps
           conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
           export CC=${COMPILER}-${COMPILER_MAJOR_VERSION}
           export CXX=${CXX_COMPILER}-${COMPILER_MAJOR_VERSION}
-          conan install --build outdated -s build_type=${CONFIGURATION} -s compiler=${COMPILER} -s compiler.cppstd=17 -s compiler.libcxx=libstdc++11 -s compiler.version=${COMPILER_VERSION} -if build/ conan/ci/linux/
+          conan install --build outdated -s build_type=${CONFIGURATION} -s compiler=${COMPILER} -s compiler.cppstd=17 -s compiler.libcxx=libstdc++11 -s compiler.version=${COMPILER_VERSION} -if build/ .
     - run:
         name: Configure
         command: |
           export CC=${COMPILER}-${COMPILER_MAJOR_VERSION}
           export CXX=${CXX_COMPILER}-${COMPILER_MAJOR_VERSION}
           cd build
-          cmake -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake -DCMAKE_BUILD_TYPE=${CONFIGURATION} -DCARROT_BUILD_TESTS=ON -DCARROT_ENABLE_SANITIZERS=ON -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}  ../
+          cmake -DCMAKE_BUILD_TYPE=${CONFIGURATION} -DCARROT_BUILD_TESTS=ON -DCARROT_ENABLE_SANITIZERS=ON -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}  ../
     - run:
         name: Build
         command: |
