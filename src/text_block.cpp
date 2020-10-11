@@ -100,7 +100,7 @@ private:
 std::array<long int, 2> text_block::extent(const target_info& output_target,
                                            const style& s [[maybe_unused]]) const noexcept
 {
-    long int rows = rows_.size();
+    long int rows = integer_cast<long int>(rows_.size());
 
     auto row_lenghts = rows_ | boost::adaptors::transformed(get_row_length(output_target));
 

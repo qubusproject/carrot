@@ -9,6 +9,8 @@
 
 #include <carrot/form_view.hpp>
 
+#include <carrot/integers.hpp>
+
 #include <algorithm>
 #include <utility>
 
@@ -47,12 +49,12 @@ void grid_block::append_column() noexcept
 
 long int grid_block::rows() const noexcept
 {
-    return blocks_.shape()[0];
+    return integer_cast<long int>(blocks_.shape()[0]);
 }
 
 long int grid_block::cols() const noexcept
 {
-    return blocks_.shape()[1];
+    return integer_cast<long int>(blocks_.shape()[1]);
 }
 
 void grid_block::render(form& output_form, const style& s) const

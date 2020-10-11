@@ -7,6 +7,8 @@
 
 #include <carrot/color_map.hpp>
 
+#include <carrot/integers.hpp>
+
 #include <boost/range/adaptor/sliced.hpp>
 
 #include <fmt/format.h>
@@ -167,10 +169,10 @@ std::string plain_form::to_string() const
 
     terminal_escape_sequence current_escape_seq = {};
 
-    for (long int row = 0; row < data_.shape()[0]; ++row)
+    for (long int row = 0; row < integer_cast<long int>(data_.shape()[0]); ++row)
     {
         long int last_significant_column = [&] {
-            long int column = data_.shape()[1];
+            long int column = integer_cast<long int>(data_.shape()[1]);
 
             for (; column-- > 0;)
             {
@@ -235,9 +237,9 @@ std::string plain_form::to_string() const
 
 void plain_form::clear() noexcept
 {
-    for (long int row = 0; row < data_.shape()[0]; ++row)
+    for (long int row = 0; row < integer_cast<long int>(data_.shape()[0]); ++row)
     {
-        for (long int column = 0; column < data_.shape()[1]; ++column)
+        for (long int column = 0; column < integer_cast<long int>(data_.shape()[1]); ++column)
         {
             data_[row][column] = clear_glyph_;
         }
