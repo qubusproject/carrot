@@ -1,26 +1,28 @@
-#  Copyright (c) 2015-2018 Christopher Hinz
+#  Copyright (c) 2015-2020 Christopher Hinz
 #
 #  Distributed under the Boost Software License, Version 1.0. (See accompanying
 #  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 option(BUILD_SHARED_LIBS "Build the library as a shared library." OFF)
 
-option(CARROT_WITH_UNICODE_SUPPORT "Enable support for Unicode." ON)
+option(CARROT_WITH_UNICODE_SUPPORT "Enable support for Unicode." OFF)
 
 option(CARROT_WITH_EXPERIMENTAL_FEATURES "Enable experimental features." OFF)
 mark_as_advanced(CARROT_WITH_EXPERIMENTAL_FEATURES)
 
-find_package(Boost 1.58.0 REQUIRED)
-find_package(fmt REQUIRED)
+set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR} ${CMAKE_MODULE_PATH})
+set(CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR} ${CMAKE_PREFIX_PATH})
 
-find_package(Curses)
+find_package(Boost 1.58.0 CONFIG REQUIRED)
+find_package(fmt CONFIG REQUIRED)
+
+find_package(Curses CONFIG)
 
 add_library(carrot)
 
 target_compile_features(carrot PUBLIC cxx_std_17)
 target_include_directories(carrot PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/interface> $<INSTALL_INTERFACE:include>)
-target_include_directories(carrot SYSTEM PUBLIC ${Boost_INCLUDE_DIRS})
-target_link_libraries(carrot PUBLIC ${Boost_LIBRARIES} PRIVATE Boost::disable_autolinking fmt::fmt)
+target_link_libraries(carrot PUBLIC Boost::Boost PRIVATE fmt::fmt)
 target_compile_options(carrot PRIVATE ${LTO_CXX_OPTIONS})
 target_link_libraries(carrot PRIVATE "${LTO_CXX_OPTIONS}")
 set_target_properties(carrot PROPERTIES POSITION_INDEPENDENT_CODE ON)
@@ -70,7 +72,7 @@ if (CURSES_FOUND)
 endif()
 
 if (CARROT_WITH_UNICODE_SUPPORT)
-    find_package(ICU COMPONENTS uc data REQUIRED)
+    find_package(ICU CONFIG COMPONENTS uc data REQUIRED)
 
     target_sources(carrot PRIVATE grapheme_cluster_view.hpp grapheme_cluster_view.cpp)
     target_link_libraries(carrot PRIVATE ICU::uc ICU::data)
