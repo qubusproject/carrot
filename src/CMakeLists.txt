@@ -88,7 +88,7 @@ set_property(TARGET carrot PROPERTY INTERFACE_carrot_MINOR_VERSION 2)
 set_property(TARGET carrot APPEND PROPERTY COMPATIBLE_INTERFACE_STRING carrot_MAJOR_VERSION)
 set_property(TARGET carrot APPEND PROPERTY COMPATIBLE_INTERFACE_STRING carrot_MINOR_VERSION)
 
-install(DIRECTORY interface/carrot DESTINATION ./include/carrot
+install(DIRECTORY interface/carrot DESTINATION ./include
         FILES_MATCHING PATTERN "*.hpp")
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/carrot_export.hpp DESTINATION ./include)
