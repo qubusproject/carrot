@@ -60,7 +60,7 @@ jobs:
         run: conan config install -t dir -sf ${{ matrix.os }}-${{ matrix.c_compiler }}-ci ./conan/
 
       - name: Install depdendencies
-        run: conan install -pr:a ${{ matrix.build_type }} --build=missing .
+        run: conan install -pr:a ${{ matrix.build_type }} --build=missing --install-folder=${{ github.workspace }}/build .
 
       - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
