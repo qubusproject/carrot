@@ -6,6 +6,4 @@ compiler.cppstd=20
 compiler.runtime=dynamic
 compiler.runtime_type=Release
 build_type=Release
-[options]
-[build_requires]
-[env]
+
