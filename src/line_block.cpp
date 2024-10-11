@@ -6,6 +6,7 @@
 #include <carrot/line_block.hpp>
 
 #include <carrot/form_view.hpp>
+#include <carrot/block.hpp>
 
 #include <algorithm>
 #include <utility>

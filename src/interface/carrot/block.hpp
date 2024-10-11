@@ -29,7 +29,7 @@ class style;
 
 #if __cpp_concepts >= 201507
 template <typename T>
-concept bool Block = requires(T x, form& output_form, const style& s, const target_info& ti)
+concept Block = requires(T x, form& output_form, const style& s, const target_info& ti)
 {
     x.render(output_form, s);
     x.extent(ti, s);
