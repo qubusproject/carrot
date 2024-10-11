@@ -56,6 +56,11 @@ jobs:
           echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
           echo "conan-config-dir=${{ matrix.os }}-${{ matrix.c_compiler }}-ci" >> "$GITHUB_OUTPUT"
 
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+         python-version: '3.12'
+
       - name: Install Conan
         id: conan
         uses: turtlebrowser/get-conan@main
