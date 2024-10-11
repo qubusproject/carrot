@@ -6,4 +6,6 @@ compiler.version=14
 compiler.cppstd=20
 compiler.libcxx=libstdc++11
 build_type=Release
-
+[buildenv]
+CC=/usr/bin/gcc-14
+CXX=/usr/bin/g++-14

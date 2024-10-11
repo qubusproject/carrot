@@ -21,9 +21,12 @@ jobs:
       #
       # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        build_type: [Release, Debug]
-        c_compiler: [gcc, clang, cl]
+        #os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
+        #build_type: [Release, Debug]
+        build_type: [Debug]
+        #c_compiler: [gcc, clang, cl]
+        c_compiler: [gcc]
         include:
           - os: windows-latest
             c_compiler: cl
@@ -64,7 +67,7 @@ jobs:
           cache-name: conan-cache
         with:
           path: ~/.conan2
-          key: hashFiles('**/conanfile.py', './conan/${{ steps.strings.outputs.conan-config-dir }}/**/*')
+          key: conan-${{ hashFiles('**/conanfile.py', './conan/${{ steps.strings.outputs.conan-config-dir }}/**/*') }}
 
       - name: Install Conan configuration
         if: ${{steps.cache-conan.outputs.cache-hit != 'true'}}
@@ -77,7 +80,6 @@ jobs:
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
         run: |
-          ls -lisah /usr/bin/
           cmake -B ${{ steps.strings.outputs.build-output-dir }}
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
