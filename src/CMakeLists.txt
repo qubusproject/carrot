@@ -22,7 +22,7 @@ add_library(carrot)
 
 target_compile_features(carrot PUBLIC cxx_std_17)
 target_include_directories(carrot PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/interface> $<INSTALL_INTERFACE:include>)
-target_link_libraries(carrot PUBLIC Boost::Boost PRIVATE fmt::fmt)
+target_link_libraries(carrot PUBLIC Boost::headers PRIVATE fmt::fmt)
 target_compile_options(carrot PRIVATE ${LTO_CXX_OPTIONS})
 target_link_libraries(carrot PRIVATE "${LTO_CXX_OPTIONS}")
 set_target_properties(carrot PROPERTIES POSITION_INDEPENDENT_CODE ON)
@@ -103,7 +103,7 @@ include(CMakePackageConfigHelpers)
 
 write_basic_package_version_file(
         "${CMAKE_CURRENT_BINARY_DIR}/carrot/carrot-config-version.cmake"
-        VERSION 0.2.0
+        VERSION 0.3.0
         COMPATIBILITY AnyNewerVersion
 )
 
